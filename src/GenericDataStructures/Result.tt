@@ -1,0 +1,96 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+using System;
+
+namespace GenericDataStructures
+{
+<#
+    for(int failureTypes = 1; failureTypes <= GetNumberOfFailureTypes(); failureTypes++)
+    {
+#>
+    public class <#= GetClassName(failureTypes) #>
+    {
+        private readonly object? _value;
+        private readonly byte? _failureTypeIndex;
+
+        public Result(TSuccess value)
+        {
+            _value = value;
+        }
+
+<#
+    for(int failureIndex = 0; failureIndex < failureTypes; failureIndex++)
+    {
+#>
+        public Result(TFailure<#= failureIndex + 1 #> value)
+        {
+            _value = value;
+            _failureTypeIndex = <#= failureIndex #>;
+        }
+
+<#
+    }
+#>
+        public bool IsSuccess => !_failureTypeIndex.HasValue;
+
+        public static implicit operator <#= GetClassName(failureTypes) #>(TSuccess value) => new <#= GetClassName(failureTypes) #>(value);
+
+<#
+    for(int failureIndex = 0; failureIndex < failureTypes; failureIndex++)
+    {
+#>
+        public static implicit operator <#= GetClassName(failureTypes) #>(TFailure<#= failureIndex + 1 #> value) => new <#= GetClassName(failureTypes) #>(value);
+
+<#
+    }
+#>
+        public void OnSuccess(Action<TSuccess> action)
+        {
+            if (IsSuccess)
+            {
+                action((TSuccess)_value!);
+            }
+        }
+
+        public TOutput Match<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, <# Write(string.Join(", ", Enumerable.Range(1, failureTypes).Select(failureNumber => $"Func<TFailure{failureNumber}, TOutput> onFailure{failureNumber}Func"))); #>)
+        {
+            return _failureTypeIndex switch
+            {
+<#
+    for(int failureIndex = 0; failureIndex < failureTypes; failureIndex++)
+    {
+#>
+                <#= failureIndex #> => onFailure<#= failureIndex + 1 #>Func((TFailure<#= failureIndex + 1 #>)_value!),
+<#
+    }
+#>
+                _ => onSuccessFunc((TSuccess)_value!)
+            };
+        }
+    }
+<#
+    if (failureTypes != GetNumberOfFailureTypes())
+    {
+        Write(Environment.NewLine);
+    }    
+#>
+<#
+    }
+#>
+}
+<#+
+private int GetNumberOfFailureTypes()
+{
+    return 8;
+}
+#>
+<#+
+private string GetClassName(int failureTypes)
+{
+    return $"Result<TSuccess, { string.Join(", ", Enumerable.Range(1, failureTypes).Select(failureNumber => $"TFailure{failureNumber}")) }>";
+}
+#>

@@ -1,0 +1,576 @@
+﻿using System;
+
+namespace GenericDataStructures
+{
+    public class Result<TSuccess, TFailure1>
+    {
+        private readonly object? _value;
+        private readonly byte? _failureTypeIndex;
+
+        public Result(TSuccess value)
+        {
+            _value = value;
+        }
+
+        public Result(TFailure1 value)
+        {
+            _value = value;
+            _failureTypeIndex = 0;
+        }
+
+        public bool IsSuccess => !_failureTypeIndex.HasValue;
+
+        public static implicit operator Result<TSuccess, TFailure1>(TSuccess value) => new Result<TSuccess, TFailure1>(value);
+
+        public static implicit operator Result<TSuccess, TFailure1>(TFailure1 value) => new Result<TSuccess, TFailure1>(value);
+
+        public void OnSuccess(Action<TSuccess> action)
+        {
+            if (IsSuccess)
+            {
+                action((TSuccess)_value!);
+            }
+        }
+
+        public TOutput Match<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func)
+        {
+            return _failureTypeIndex switch
+            {
+                0 => onFailure1Func((TFailure1)_value!),
+                _ => onSuccessFunc((TSuccess)_value!)
+            };
+        }
+    }
+
+    public class Result<TSuccess, TFailure1, TFailure2>
+    {
+        private readonly object? _value;
+        private readonly byte? _failureTypeIndex;
+
+        public Result(TSuccess value)
+        {
+            _value = value;
+        }
+
+        public Result(TFailure1 value)
+        {
+            _value = value;
+            _failureTypeIndex = 0;
+        }
+
+        public Result(TFailure2 value)
+        {
+            _value = value;
+            _failureTypeIndex = 1;
+        }
+
+        public bool IsSuccess => !_failureTypeIndex.HasValue;
+
+        public static implicit operator Result<TSuccess, TFailure1, TFailure2>(TSuccess value) => new Result<TSuccess, TFailure1, TFailure2>(value);
+
+        public static implicit operator Result<TSuccess, TFailure1, TFailure2>(TFailure1 value) => new Result<TSuccess, TFailure1, TFailure2>(value);
+
+        public static implicit operator Result<TSuccess, TFailure1, TFailure2>(TFailure2 value) => new Result<TSuccess, TFailure1, TFailure2>(value);
+
+        public void OnSuccess(Action<TSuccess> action)
+        {
+            if (IsSuccess)
+            {
+                action((TSuccess)_value!);
+            }
+        }
+
+        public TOutput Match<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func, Func<TFailure2, TOutput> onFailure2Func)
+        {
+            return _failureTypeIndex switch
+            {
+                0 => onFailure1Func((TFailure1)_value!),
+                1 => onFailure2Func((TFailure2)_value!),
+                _ => onSuccessFunc((TSuccess)_value!)
+            };
+        }
+    }
+
+    public class Result<TSuccess, TFailure1, TFailure2, TFailure3>
+    {
+        private readonly object? _value;
+        private readonly byte? _failureTypeIndex;
+
+        public Result(TSuccess value)
+        {
+            _value = value;
+        }
+
+        public Result(TFailure1 value)
+        {
+            _value = value;
+            _failureTypeIndex = 0;
+        }
+
+        public Result(TFailure2 value)
+        {
+            _value = value;
+            _failureTypeIndex = 1;
+        }
+
+        public Result(TFailure3 value)
+        {
+            _value = value;
+            _failureTypeIndex = 2;
+        }
+
+        public bool IsSuccess => !_failureTypeIndex.HasValue;
+
+        public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3>(TSuccess value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3>(value);
+
+        public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3>(TFailure1 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3>(value);
+
+        public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3>(TFailure2 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3>(value);
+
+        public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3>(TFailure3 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3>(value);
+
+        public void OnSuccess(Action<TSuccess> action)
+        {
+            if (IsSuccess)
+            {
+                action((TSuccess)_value!);
+            }
+        }
+
+        public TOutput Match<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func, Func<TFailure2, TOutput> onFailure2Func, Func<TFailure3, TOutput> onFailure3Func)
+        {
+            return _failureTypeIndex switch
+            {
+                0 => onFailure1Func((TFailure1)_value!),
+                1 => onFailure2Func((TFailure2)_value!),
+                2 => onFailure3Func((TFailure3)_value!),
+                _ => onSuccessFunc((TSuccess)_value!)
+            };
+        }
+    }
+
+    public class Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4>
+    {
+        private readonly object? _value;
+        private readonly byte? _failureTypeIndex;
+
+        public Result(TSuccess value)
+        {
+            _value = value;
+        }
+
+        public Result(TFailure1 value)
+        {
+            _value = value;
+            _failureTypeIndex = 0;
+        }
+
+        public Result(TFailure2 value)
+        {
+            _value = value;
+            _failureTypeIndex = 1;
+        }
+
+        public Result(TFailure3 value)
+        {
+            _value = value;
+            _failureTypeIndex = 2;
+        }
+
+        public Result(TFailure4 value)
+        {
+            _value = value;
+            _failureTypeIndex = 3;
+        }
+
+        public bool IsSuccess => !_failureTypeIndex.HasValue;
+
+        public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4>(TSuccess value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4>(value);
+
+        public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4>(TFailure1 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4>(value);
+
+        public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4>(TFailure2 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4>(value);
+
+        public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4>(TFailure3 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4>(value);
+
+        public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4>(TFailure4 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4>(value);
+
+        public void OnSuccess(Action<TSuccess> action)
+        {
+            if (IsSuccess)
+            {
+                action((TSuccess)_value!);
+            }
+        }
+
+        public TOutput Match<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func, Func<TFailure2, TOutput> onFailure2Func, Func<TFailure3, TOutput> onFailure3Func, Func<TFailure4, TOutput> onFailure4Func)
+        {
+            return _failureTypeIndex switch
+            {
+                0 => onFailure1Func((TFailure1)_value!),
+                1 => onFailure2Func((TFailure2)_value!),
+                2 => onFailure3Func((TFailure3)_value!),
+                3 => onFailure4Func((TFailure4)_value!),
+                _ => onSuccessFunc((TSuccess)_value!)
+            };
+        }
+    }
+
+    public class Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>
+    {
+        private readonly object? _value;
+        private readonly byte? _failureTypeIndex;
+
+        public Result(TSuccess value)
+        {
+            _value = value;
+        }
+
+        public Result(TFailure1 value)
+        {
+            _value = value;
+            _failureTypeIndex = 0;
+        }
+
+        public Result(TFailure2 value)
+        {
+            _value = value;
+            _failureTypeIndex = 1;
+        }
+
+        public Result(TFailure3 value)
+        {
+            _value = value;
+            _failureTypeIndex = 2;
+        }
+
+        public Result(TFailure4 value)
+        {
+            _value = value;
+            _failureTypeIndex = 3;
+        }
+
+        public Result(TFailure5 value)
+        {
+            _value = value;
+            _failureTypeIndex = 4;
+        }
+
+        public bool IsSuccess => !_failureTypeIndex.HasValue;
+
+        public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>(TSuccess value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>(value);
+
+        public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>(TFailure1 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>(value);
+
+        public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>(TFailure2 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>(value);
+
+        public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>(TFailure3 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>(value);
+
+        public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>(TFailure4 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>(value);
+
+        public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>(TFailure5 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>(value);
+
+        public void OnSuccess(Action<TSuccess> action)
+        {
+            if (IsSuccess)
+            {
+                action((TSuccess)_value!);
+            }
+        }
+
+        public TOutput Match<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func, Func<TFailure2, TOutput> onFailure2Func, Func<TFailure3, TOutput> onFailure3Func, Func<TFailure4, TOutput> onFailure4Func, Func<TFailure5, TOutput> onFailure5Func)
+        {
+            return _failureTypeIndex switch
+            {
+                0 => onFailure1Func((TFailure1)_value!),
+                1 => onFailure2Func((TFailure2)_value!),
+                2 => onFailure3Func((TFailure3)_value!),
+                3 => onFailure4Func((TFailure4)_value!),
+                4 => onFailure5Func((TFailure5)_value!),
+                _ => onSuccessFunc((TSuccess)_value!)
+            };
+        }
+    }
+
+    public class Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>
+    {
+        private readonly object? _value;
+        private readonly byte? _failureTypeIndex;
+
+        public Result(TSuccess value)
+        {
+            _value = value;
+        }
+
+        public Result(TFailure1 value)
+        {
+            _value = value;
+            _failureTypeIndex = 0;
+        }
+
+        public Result(TFailure2 value)
+        {
+            _value = value;
+            _failureTypeIndex = 1;
+        }
+
+        public Result(TFailure3 value)
+        {
+            _value = value;
+            _failureTypeIndex = 2;
+        }
+
+        public Result(TFailure4 value)
+        {
+            _value = value;
+            _failureTypeIndex = 3;
+        }
+
+        public Result(TFailure5 value)
+        {
+            _value = value;
+            _failureTypeIndex = 4;
+        }
+
+        public Result(TFailure6 value)
+        {
+            _value = value;
+            _failureTypeIndex = 5;
+        }
+
+        public bool IsSuccess => !_failureTypeIndex.HasValue;
+
+        public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>(TSuccess value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>(value);
+
+        public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>(TFailure1 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>(value);
+
+        public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>(TFailure2 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>(value);
+
+        public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>(TFailure3 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>(value);
+
+        public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>(TFailure4 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>(value);
+
+        public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>(TFailure5 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>(value);
+
+        public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>(TFailure6 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>(value);
+
+        public void OnSuccess(Action<TSuccess> action)
+        {
+            if (IsSuccess)
+            {
+                action((TSuccess)_value!);
+            }
+        }
+
+        public TOutput Match<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func, Func<TFailure2, TOutput> onFailure2Func, Func<TFailure3, TOutput> onFailure3Func, Func<TFailure4, TOutput> onFailure4Func, Func<TFailure5, TOutput> onFailure5Func, Func<TFailure6, TOutput> onFailure6Func)
+        {
+            return _failureTypeIndex switch
+            {
+                0 => onFailure1Func((TFailure1)_value!),
+                1 => onFailure2Func((TFailure2)_value!),
+                2 => onFailure3Func((TFailure3)_value!),
+                3 => onFailure4Func((TFailure4)_value!),
+                4 => onFailure5Func((TFailure5)_value!),
+                5 => onFailure6Func((TFailure6)_value!),
+                _ => onSuccessFunc((TSuccess)_value!)
+            };
+        }
+    }
+
+    public class Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>
+    {
+        private readonly object? _value;
+        private readonly byte? _failureTypeIndex;
+
+        public Result(TSuccess value)
+        {
+            _value = value;
+        }
+
+        public Result(TFailure1 value)
+        {
+            _value = value;
+            _failureTypeIndex = 0;
+        }
+
+        public Result(TFailure2 value)
+        {
+            _value = value;
+            _failureTypeIndex = 1;
+        }
+
+        public Result(TFailure3 value)
+        {
+            _value = value;
+            _failureTypeIndex = 2;
+        }
+
+        public Result(TFailure4 value)
+        {
+            _value = value;
+            _failureTypeIndex = 3;
+        }
+
+        public Result(TFailure5 value)
+        {
+            _value = value;
+            _failureTypeIndex = 4;
+        }
+
+        public Result(TFailure6 value)
+        {
+            _value = value;
+            _failureTypeIndex = 5;
+        }
+
+        public Result(TFailure7 value)
+        {
+            _value = value;
+            _failureTypeIndex = 6;
+        }
+
+        public bool IsSuccess => !_failureTypeIndex.HasValue;
+
+        public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>(TSuccess value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>(value);
+
+        public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>(TFailure1 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>(value);
+
+        public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>(TFailure2 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>(value);
+
+        public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>(TFailure3 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>(value);
+
+        public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>(TFailure4 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>(value);
+
+        public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>(TFailure5 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>(value);
+
+        public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>(TFailure6 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>(value);
+
+        public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>(TFailure7 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>(value);
+
+        public void OnSuccess(Action<TSuccess> action)
+        {
+            if (IsSuccess)
+            {
+                action((TSuccess)_value!);
+            }
+        }
+
+        public TOutput Match<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func, Func<TFailure2, TOutput> onFailure2Func, Func<TFailure3, TOutput> onFailure3Func, Func<TFailure4, TOutput> onFailure4Func, Func<TFailure5, TOutput> onFailure5Func, Func<TFailure6, TOutput> onFailure6Func, Func<TFailure7, TOutput> onFailure7Func)
+        {
+            return _failureTypeIndex switch
+            {
+                0 => onFailure1Func((TFailure1)_value!),
+                1 => onFailure2Func((TFailure2)_value!),
+                2 => onFailure3Func((TFailure3)_value!),
+                3 => onFailure4Func((TFailure4)_value!),
+                4 => onFailure5Func((TFailure5)_value!),
+                5 => onFailure6Func((TFailure6)_value!),
+                6 => onFailure7Func((TFailure7)_value!),
+                _ => onSuccessFunc((TSuccess)_value!)
+            };
+        }
+    }
+
+    public class Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>
+    {
+        private readonly object? _value;
+        private readonly byte? _failureTypeIndex;
+
+        public Result(TSuccess value)
+        {
+            _value = value;
+        }
+
+        public Result(TFailure1 value)
+        {
+            _value = value;
+            _failureTypeIndex = 0;
+        }
+
+        public Result(TFailure2 value)
+        {
+            _value = value;
+            _failureTypeIndex = 1;
+        }
+
+        public Result(TFailure3 value)
+        {
+            _value = value;
+            _failureTypeIndex = 2;
+        }
+
+        public Result(TFailure4 value)
+        {
+            _value = value;
+            _failureTypeIndex = 3;
+        }
+
+        public Result(TFailure5 value)
+        {
+            _value = value;
+            _failureTypeIndex = 4;
+        }
+
+        public Result(TFailure6 value)
+        {
+            _value = value;
+            _failureTypeIndex = 5;
+        }
+
+        public Result(TFailure7 value)
+        {
+            _value = value;
+            _failureTypeIndex = 6;
+        }
+
+        public Result(TFailure8 value)
+        {
+            _value = value;
+            _failureTypeIndex = 7;
+        }
+
+        public bool IsSuccess => !_failureTypeIndex.HasValue;
+
+        public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>(TSuccess value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>(value);
+
+        public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>(TFailure1 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>(value);
+
+        public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>(TFailure2 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>(value);
+
+        public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>(TFailure3 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>(value);
+
+        public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>(TFailure4 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>(value);
+
+        public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>(TFailure5 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>(value);
+
+        public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>(TFailure6 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>(value);
+
+        public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>(TFailure7 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>(value);
+
+        public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>(TFailure8 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>(value);
+
+        public void OnSuccess(Action<TSuccess> action)
+        {
+            if (IsSuccess)
+            {
+                action((TSuccess)_value!);
+            }
+        }
+
+        public TOutput Match<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func, Func<TFailure2, TOutput> onFailure2Func, Func<TFailure3, TOutput> onFailure3Func, Func<TFailure4, TOutput> onFailure4Func, Func<TFailure5, TOutput> onFailure5Func, Func<TFailure6, TOutput> onFailure6Func, Func<TFailure7, TOutput> onFailure7Func, Func<TFailure8, TOutput> onFailure8Func)
+        {
+            return _failureTypeIndex switch
+            {
+                0 => onFailure1Func((TFailure1)_value!),
+                1 => onFailure2Func((TFailure2)_value!),
+                2 => onFailure3Func((TFailure3)_value!),
+                3 => onFailure4Func((TFailure4)_value!),
+                4 => onFailure5Func((TFailure5)_value!),
+                5 => onFailure6Func((TFailure6)_value!),
+                6 => onFailure7Func((TFailure7)_value!),
+                7 => onFailure8Func((TFailure8)_value!),
+                _ => onSuccessFunc((TSuccess)_value!)
+            };
+        }
+    }
+}

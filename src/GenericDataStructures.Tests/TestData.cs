@@ -71,6 +71,22 @@ namespace GenericDataStructures.Tests
                     },
                 }
             },
+            {
+                typeof(byte),
+                new object?[]
+                {
+                    (byte)123,
+                    (byte)0,
+                }
+            },
+            {
+                typeof(long),
+                new object?[]
+                {
+                    long.MaxValue,
+                    123456789L,
+                }
+            },
         };
 
         public static IEnumerable<object?> GetPossibleValues(Type testType)

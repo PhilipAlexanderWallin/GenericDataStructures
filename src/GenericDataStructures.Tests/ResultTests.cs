@@ -8,7 +8,7 @@ namespace GenericDataStructures.Tests
 {
     public class ResultTests
     {
-        private const int NumberOfSupportedFailureTypes = 1;
+        private const int NumberOfFailureTypesToTestWith = 8;
 
         private int _delegatesCalled;
 
@@ -97,7 +97,7 @@ namespace GenericDataStructures.Tests
 
         private static void ForEachResultTypeToTest(Action<Type> action)
         {
-            for (var numberOfFailureTypes = 1; numberOfFailureTypes <= NumberOfSupportedFailureTypes; numberOfFailureTypes++)
+            for (var numberOfFailureTypes = 1; numberOfFailureTypes <= NumberOfFailureTypesToTestWith; numberOfFailureTypes++)
             {
                 foreach (var testTypeSet in TestData.GetTestTypeSets(numberOfFailureTypes + 1))
                 {
