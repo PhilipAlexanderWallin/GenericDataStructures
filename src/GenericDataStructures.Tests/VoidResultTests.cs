@@ -163,14 +163,13 @@ namespace GenericDataStructures.Tests
         private static Type GetVoidResultType(ICollection<Type> genericTypesToUse)
         {
             var typeName = $"{nameof(GenericDataStructures)}.VoidResult`{genericTypesToUse.Count}, GenericDataStructures";
-            var nonGenericResultType = Type.GetType(typeName);
-            if (nonGenericResultType == null)
+            var genericResultType = Type.GetType(typeName);
+            if (genericResultType == null)
             {
                 throw new InvalidOperationException("VoidResult type not found");
             }
 
-            var resultType = nonGenericResultType.MakeGenericType(genericTypesToUse.ToArray());
-            return resultType;
+            return genericResultType.MakeGenericType(genericTypesToUse.ToArray());
         }
 
         private static IEnumerable<Type> GetFailureTypes(Type resultType)

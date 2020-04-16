@@ -13,6 +13,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Union.tt">
+      <LastGenOutput>Union.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
     <None Update="VoidResult.tt">
       <LastGenOutput>VoidResult.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -28,6 +32,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Union.cs">
+      <DependentUpon>Union.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Update="Result.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
