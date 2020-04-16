@@ -10,8 +10,6 @@ namespace GenericDataStructures.Tests
     {
         private const int NumberOfFailureTypesToTestWith = 8;
 
-        private int _delegatesCalled;
-
         [Test]
         public void WhenConstructedWithSuccessTypeResultIsSuccess()
         {
@@ -55,7 +53,7 @@ namespace GenericDataStructures.Tests
                 {
                     foreach (var value in TestData.GetPossibleValues(resultValueType))
                     {
-                        _delegatesCalled = 0;
+                        var delegateMonitor = new DelegateMonitor();
 
                         var result = CreateResult(resultType, resultValueType, value);
 
@@ -63,19 +61,19 @@ namespace GenericDataStructures.Tests
                             .Select(genericType =>
                             {
                                 var delegateType = typeof(Func<,>).MakeGenericType(genericType, typeof(string));
-                                var genericConvertToStringMethod = GetType().GetMethod(nameof(ConvertToString), System.Reflection.BindingFlags.NonPublic | BindingFlags.Instance);
+                                var genericConvertToStringMethod = typeof(DelegateMonitor).GetMethod(nameof(DelegateMonitor.ConvertToString), BindingFlags.Public | BindingFlags.Instance);
                                 if (genericConvertToStringMethod == null)
                                 {
                                     throw new InvalidOperationException("Convert method not found");
                                 }
 
                                 var convertToStringMethod = genericConvertToStringMethod.MakeGenericMethod(genericType);
-                                return Delegate.CreateDelegate(delegateType, this, convertToStringMethod);
+                                return Delegate.CreateDelegate(delegateType, delegateMonitor, convertToStringMethod);
                             })
                             .Cast<object>()
                             .ToArray();
 
-                        var genericMatchMethod = resultType.GetMethod("Match");
+                        var genericMatchMethod = resultType.GetMethods().Single(method => method.Name == "Match" && method.IsGenericMethod);
 
                         if (genericMatchMethod == null)
                         {
@@ -88,8 +86,56 @@ namespace GenericDataStructures.Tests
 
                         Assert.AreEqual(matchResult, value?.ToString());
 
-                        // No other delegates were called
-                        Assert.AreEqual(1, _delegatesCalled);
+                        Assert.AreEqual(1, delegateMonitor.TotalCalls);
+
+                        Assert.AreEqual(1, delegateMonitor.GetCalls(resultValueType));
+                    }
+                }
+            });
+        }
+
+        [Test]
+        public void OnlyActionForTheSameIndexedParameterTypeIsCalledOnMatch()
+        {
+            ForEachResultTypeToTest(resultType =>
+            {
+                var resultTypeGenericTypes = GetAllTypes(resultType).ToList();
+                foreach (var resultValueType in resultTypeGenericTypes)
+                {
+                    foreach (var value in TestData.GetPossibleValues(resultValueType))
+                    {
+                        var delegateMonitor = new DelegateMonitor();
+
+                        var result = CreateResult(resultType, resultValueType, value);
+
+                        var voidDelegates = resultTypeGenericTypes
+                            .Select(genericType =>
+                            {
+                                var delegateType = typeof(Action<>).MakeGenericType(genericType);
+                                var genericNoOperationMethod = typeof(DelegateMonitor).GetMethod(nameof(DelegateMonitor.NoOperation), BindingFlags.Public | BindingFlags.Instance);
+                                if (genericNoOperationMethod == null)
+                                {
+                                    throw new InvalidOperationException("No operation method not found");
+                                }
+
+                                var noOperationMethod = genericNoOperationMethod.MakeGenericMethod(genericType);
+                                return Delegate.CreateDelegate(delegateType, delegateMonitor, noOperationMethod);
+                            })
+                            .Cast<object>()
+                            .ToArray();
+
+                        var matchMethod = resultType.GetMethods().Single(method => method.Name == "Match" && !method.IsGenericMethod);
+
+                        if (matchMethod == null)
+                        {
+                            throw new InvalidOperationException("Match method not found");
+                        }
+
+                        matchMethod.Invoke(result, voidDelegates);
+
+                        Assert.AreEqual(1, delegateMonitor.TotalCalls);
+
+                        Assert.AreEqual(1, delegateMonitor.GetCalls(resultValueType));
                     }
                 }
             });
@@ -145,12 +191,6 @@ namespace GenericDataStructures.Tests
             }
 
             return successConstructor.Invoke(new[] { value });
-        }
-
-        private string? ConvertToString<T>(T @object)
-        {
-            _delegatesCalled++;
-            return @object?.ToString();
         }
     }
 }

@@ -71,6 +71,22 @@ namespace GenericDataStructures
                 _ => onSuccessFunc((TSuccess)_value!)
             };
         }
+
+        public void Match(Action<TSuccess> onSuccessAction, <# Write(string.Join(", ", Enumerable.Range(1, failureTypes).Select(failureNumber => $"Action<TFailure{failureNumber}> onFailure{failureNumber}Action"))); #>)
+        {
+            switch (_failureTypeIndex)
+            {
+<#
+    for(int failureIndex = 0; failureIndex < failureTypes; failureIndex++)
+    {
+#>
+                case <#= failureIndex #>: onFailure<#= failureIndex + 1 #>Action((TFailure<#= failureIndex + 1 #>)_value!); break;
+<#
+    }
+#>
+                default: onSuccessAction((TSuccess)_value!); break;
+            }
+        }
     }
 <#
     if (failureTypes != GetNumberOfFailureTypes())

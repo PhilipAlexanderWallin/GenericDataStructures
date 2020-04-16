@@ -40,6 +40,15 @@ namespace GenericDataStructures
                 _ => onSuccessFunc((TSuccess)_value!)
             };
         }
+
+        public void Match(Action<TSuccess> onSuccessAction, Action<TFailure1> onFailure1Action)
+        {
+            switch (_failureTypeIndex)
+            {
+                case 0: onFailure1Action((TFailure1)_value!); break;
+                default: onSuccessAction((TSuccess)_value!); break;
+            }
+        }
     }
 
     public class Result<TSuccess, TFailure1, TFailure2>
@@ -88,6 +97,16 @@ namespace GenericDataStructures
                 1 => onFailure2Func((TFailure2)_value!),
                 _ => onSuccessFunc((TSuccess)_value!)
             };
+        }
+
+        public void Match(Action<TSuccess> onSuccessAction, Action<TFailure1> onFailure1Action, Action<TFailure2> onFailure2Action)
+        {
+            switch (_failureTypeIndex)
+            {
+                case 0: onFailure1Action((TFailure1)_value!); break;
+                case 1: onFailure2Action((TFailure2)_value!); break;
+                default: onSuccessAction((TSuccess)_value!); break;
+            }
         }
     }
 
@@ -146,6 +165,17 @@ namespace GenericDataStructures
                 2 => onFailure3Func((TFailure3)_value!),
                 _ => onSuccessFunc((TSuccess)_value!)
             };
+        }
+
+        public void Match(Action<TSuccess> onSuccessAction, Action<TFailure1> onFailure1Action, Action<TFailure2> onFailure2Action, Action<TFailure3> onFailure3Action)
+        {
+            switch (_failureTypeIndex)
+            {
+                case 0: onFailure1Action((TFailure1)_value!); break;
+                case 1: onFailure2Action((TFailure2)_value!); break;
+                case 2: onFailure3Action((TFailure3)_value!); break;
+                default: onSuccessAction((TSuccess)_value!); break;
+            }
         }
     }
 
@@ -213,6 +243,18 @@ namespace GenericDataStructures
                 3 => onFailure4Func((TFailure4)_value!),
                 _ => onSuccessFunc((TSuccess)_value!)
             };
+        }
+
+        public void Match(Action<TSuccess> onSuccessAction, Action<TFailure1> onFailure1Action, Action<TFailure2> onFailure2Action, Action<TFailure3> onFailure3Action, Action<TFailure4> onFailure4Action)
+        {
+            switch (_failureTypeIndex)
+            {
+                case 0: onFailure1Action((TFailure1)_value!); break;
+                case 1: onFailure2Action((TFailure2)_value!); break;
+                case 2: onFailure3Action((TFailure3)_value!); break;
+                case 3: onFailure4Action((TFailure4)_value!); break;
+                default: onSuccessAction((TSuccess)_value!); break;
+            }
         }
     }
 
@@ -289,6 +331,19 @@ namespace GenericDataStructures
                 4 => onFailure5Func((TFailure5)_value!),
                 _ => onSuccessFunc((TSuccess)_value!)
             };
+        }
+
+        public void Match(Action<TSuccess> onSuccessAction, Action<TFailure1> onFailure1Action, Action<TFailure2> onFailure2Action, Action<TFailure3> onFailure3Action, Action<TFailure4> onFailure4Action, Action<TFailure5> onFailure5Action)
+        {
+            switch (_failureTypeIndex)
+            {
+                case 0: onFailure1Action((TFailure1)_value!); break;
+                case 1: onFailure2Action((TFailure2)_value!); break;
+                case 2: onFailure3Action((TFailure3)_value!); break;
+                case 3: onFailure4Action((TFailure4)_value!); break;
+                case 4: onFailure5Action((TFailure5)_value!); break;
+                default: onSuccessAction((TSuccess)_value!); break;
+            }
         }
     }
 
@@ -374,6 +429,20 @@ namespace GenericDataStructures
                 5 => onFailure6Func((TFailure6)_value!),
                 _ => onSuccessFunc((TSuccess)_value!)
             };
+        }
+
+        public void Match(Action<TSuccess> onSuccessAction, Action<TFailure1> onFailure1Action, Action<TFailure2> onFailure2Action, Action<TFailure3> onFailure3Action, Action<TFailure4> onFailure4Action, Action<TFailure5> onFailure5Action, Action<TFailure6> onFailure6Action)
+        {
+            switch (_failureTypeIndex)
+            {
+                case 0: onFailure1Action((TFailure1)_value!); break;
+                case 1: onFailure2Action((TFailure2)_value!); break;
+                case 2: onFailure3Action((TFailure3)_value!); break;
+                case 3: onFailure4Action((TFailure4)_value!); break;
+                case 4: onFailure5Action((TFailure5)_value!); break;
+                case 5: onFailure6Action((TFailure6)_value!); break;
+                default: onSuccessAction((TSuccess)_value!); break;
+            }
         }
     }
 
@@ -468,6 +537,21 @@ namespace GenericDataStructures
                 6 => onFailure7Func((TFailure7)_value!),
                 _ => onSuccessFunc((TSuccess)_value!)
             };
+        }
+
+        public void Match(Action<TSuccess> onSuccessAction, Action<TFailure1> onFailure1Action, Action<TFailure2> onFailure2Action, Action<TFailure3> onFailure3Action, Action<TFailure4> onFailure4Action, Action<TFailure5> onFailure5Action, Action<TFailure6> onFailure6Action, Action<TFailure7> onFailure7Action)
+        {
+            switch (_failureTypeIndex)
+            {
+                case 0: onFailure1Action((TFailure1)_value!); break;
+                case 1: onFailure2Action((TFailure2)_value!); break;
+                case 2: onFailure3Action((TFailure3)_value!); break;
+                case 3: onFailure4Action((TFailure4)_value!); break;
+                case 4: onFailure5Action((TFailure5)_value!); break;
+                case 5: onFailure6Action((TFailure6)_value!); break;
+                case 6: onFailure7Action((TFailure7)_value!); break;
+                default: onSuccessAction((TSuccess)_value!); break;
+            }
         }
     }
 
@@ -571,6 +655,22 @@ namespace GenericDataStructures
                 7 => onFailure8Func((TFailure8)_value!),
                 _ => onSuccessFunc((TSuccess)_value!)
             };
+        }
+
+        public void Match(Action<TSuccess> onSuccessAction, Action<TFailure1> onFailure1Action, Action<TFailure2> onFailure2Action, Action<TFailure3> onFailure3Action, Action<TFailure4> onFailure4Action, Action<TFailure5> onFailure5Action, Action<TFailure6> onFailure6Action, Action<TFailure7> onFailure7Action, Action<TFailure8> onFailure8Action)
+        {
+            switch (_failureTypeIndex)
+            {
+                case 0: onFailure1Action((TFailure1)_value!); break;
+                case 1: onFailure2Action((TFailure2)_value!); break;
+                case 2: onFailure3Action((TFailure3)_value!); break;
+                case 3: onFailure4Action((TFailure4)_value!); break;
+                case 4: onFailure5Action((TFailure5)_value!); break;
+                case 5: onFailure6Action((TFailure6)_value!); break;
+                case 6: onFailure7Action((TFailure7)_value!); break;
+                case 7: onFailure8Action((TFailure8)_value!); break;
+                default: onSuccessAction((TSuccess)_value!); break;
+            }
         }
     }
 }
