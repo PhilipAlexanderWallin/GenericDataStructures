@@ -8,7 +8,9 @@ namespace GenericDataStructures.Tests
     {
         private readonly Dictionary<Type, int> _delegateTypeCalls = new Dictionary<Type, int>();
 
-        public int TotalCalls => _delegateTypeCalls.Values.Sum();
+        private int _untypedCalls = 0;
+
+        public int TotalCalls => _delegateTypeCalls.Values.Sum() + _untypedCalls;
 
         public int GetCalls(Type type)
         {
@@ -22,15 +24,31 @@ namespace GenericDataStructures.Tests
             }
         }
 
-        public string? ConvertToString<T>(T @object)
+        public int GetCalls()
+        {
+            return _untypedCalls;
+        }
+
+        public string? CreateString<T>(T @object)
         {
             AddTypeCall<T>();
             return @object?.ToString();
         }
 
+        public string? CreateString()
+        {
+            _untypedCalls++;
+            return "void";
+        }
+
         public void NoOperation<T>(T @object)
         {
             AddTypeCall<T>();
+        }
+
+        public void NoOperation()
+        {
+            _untypedCalls++;
         }
 
         private void AddTypeCall<T>()

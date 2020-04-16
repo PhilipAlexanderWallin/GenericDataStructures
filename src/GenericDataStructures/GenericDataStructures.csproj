@@ -6,14 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="Result.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Result.tt</DependentUpon>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -21,6 +13,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="VoidResult.tt">
+      <LastGenOutput>VoidResult.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
     <None Update="Result.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Result.cs</LastGenOutput>
@@ -36,6 +32,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Result.tt</DependentUpon>
+    </Compile>
+    <Compile Update="VoidResult.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>VoidResult.tt</DependentUpon>
     </Compile>
   </ItemGroup>
 
