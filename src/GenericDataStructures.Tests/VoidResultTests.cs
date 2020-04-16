@@ -49,28 +49,20 @@ namespace GenericDataStructures.Tests
 
                 var failureCreateStringDelegates = GetFailureTypes(voidResultType)
                     .Select(genericType =>
-                    {
-                        var delegateType = typeof(Func<,>).MakeGenericType(genericType, typeof(string));
-                        var genericCreateStringMethod = typeof(DelegateMonitor).GetMethods()
-                            .Single(method => method.Name == nameof(DelegateMonitor.CreateString) && method.IsGenericMethod);
-                        if (genericCreateStringMethod == null)
-                        {
-                            throw new InvalidOperationException("Create string method not found");
-                        }
+                        DelegateCreator.CreateDelegate(
+                            delegateMonitor,
+                            nameof(DelegateMonitor.CreateString),
+                            true,
+                            typeof(Func<,>),
+                            genericType,
+                            typeof(string)));
 
-                        var typedCreateStringMethod = genericCreateStringMethod.MakeGenericMethod(genericType);
-                        return Delegate.CreateDelegate(delegateType, delegateMonitor, typedCreateStringMethod);
-                    });
-
-                var successDelegateType = typeof(Func<>).MakeGenericType(typeof(string));
-                var createStringMethod = typeof(DelegateMonitor).GetMethods()
-                    .Single(method => method.Name == nameof(DelegateMonitor.CreateString) && !method.IsGenericMethod);
-                if (createStringMethod == null)
-                {
-                    throw new InvalidOperationException("Create string method not found");
-                }
-
-                var successCreateStringDelegate = Delegate.CreateDelegate(successDelegateType, delegateMonitor, createStringMethod);
+                var successCreateStringDelegate = DelegateCreator.CreateDelegate(
+                    delegateMonitor,
+                    nameof(DelegateMonitor.CreateString),
+                    false,
+                    typeof(Func<>),
+                    typeof(string));
 
                 var createStringDelegates = failureCreateStringDelegates
                     .Prepend(successCreateStringDelegate)
@@ -106,29 +98,18 @@ namespace GenericDataStructures.Tests
                 var delegateMonitor = new DelegateMonitor();
 
                 var failureVoidDelegates = GetFailureTypes(voidResultType)
-                    .Select(genericType =>
-                    {
-                        var delegateType = typeof(Action<>).MakeGenericType(genericType);
-                        var genericNoOperationMethod = typeof(DelegateMonitor).GetMethods()
-                            .Single(method => method.Name == nameof(DelegateMonitor.NoOperation) && method.IsGenericMethod);
-                        if (genericNoOperationMethod == null)
-                        {
-                            throw new InvalidOperationException("No operation method not found");
-                        }
+                    .Select(genericType => DelegateCreator.CreateDelegate(
+                        delegateMonitor,
+                        nameof(DelegateMonitor.NoOperation),
+                        true,
+                        typeof(Action<>),
+                        genericType));
 
-                        var typedNoOperationMethod = genericNoOperationMethod.MakeGenericMethod(genericType);
-                        return Delegate.CreateDelegate(delegateType, delegateMonitor, typedNoOperationMethod);
-                    });
-
-                var successDelegateType = typeof(Action);
-                var noOperationMethod = typeof(DelegateMonitor).GetMethods()
-                    .Single(method => method.Name == nameof(DelegateMonitor.NoOperation) && !method.IsGenericMethod);
-                if (noOperationMethod == null)
-                {
-                    throw new InvalidOperationException("No operation method not found");
-                }
-
-                var successNoOperationDelegate = Delegate.CreateDelegate(successDelegateType, delegateMonitor, noOperationMethod);
+                var successNoOperationDelegate = DelegateCreator.CreateDelegate(
+                    delegateMonitor,
+                    nameof(DelegateMonitor.NoOperation),
+                    false,
+                    typeof(Action));
 
                 var voidDelegates = failureVoidDelegates
                     .Prepend(successNoOperationDelegate)

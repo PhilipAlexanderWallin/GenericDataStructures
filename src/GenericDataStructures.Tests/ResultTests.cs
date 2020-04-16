@@ -43,17 +43,13 @@ namespace GenericDataStructures.Tests
                         throw new MissingMethodException("OnSuccess method is expected to be implemented");
                     }
 
-                    var delegateType = typeof(Action<>).MakeGenericType(successType);
-                    var genericExtractValueMethod = typeof(ActionValueReader).GetMethods()
-                        .Single(method => method.Name == nameof(ActionValueReader.ExtractValue) && method.IsGenericMethod);
-                    if (genericExtractValueMethod == null)
-                    {
-                        throw new InvalidOperationException("Extract value method not found");
-                    }
-
-                    var typedExtractValueMethod = genericExtractValueMethod.MakeGenericMethod(successType);
-
-                    var extractValueDelegate = Delegate.CreateDelegate(delegateType, actionValueReader, typedExtractValueMethod);
+                    var extractValueDelegate =
+                        DelegateCreator.CreateDelegate(
+                            actionValueReader,
+                            nameof(ActionValueReader.ExtractValue),
+                            true,
+                            typeof(Action<>),
+                            successType);
 
                     onSuccessMethod.Invoke(result, new object[] { extractValueDelegate });
 
@@ -90,18 +86,13 @@ namespace GenericDataStructures.Tests
                 var delegateMonitor = new DelegateMonitor();
 
                 var createStringDelegates = GetAllTypes(resultType)
-                    .Select(genericType =>
-                    {
-                        var delegateType = typeof(Func<,>).MakeGenericType(genericType, typeof(string));
-                        var genericCreateStringMethod = typeof(DelegateMonitor).GetMethods().Single(method => method.Name == nameof(DelegateMonitor.CreateString) && method.IsGenericMethod);
-                        if (genericCreateStringMethod == null)
-                        {
-                            throw new InvalidOperationException("Create string method not found");
-                        }
-
-                        var createStringMethod = genericCreateStringMethod.MakeGenericMethod(genericType);
-                        return Delegate.CreateDelegate(delegateType, delegateMonitor, createStringMethod);
-                    })
+                    .Select(genericType => DelegateCreator.CreateDelegate(
+                        delegateMonitor,
+                        nameof(DelegateMonitor.CreateString),
+                        true,
+                        typeof(Func<,>),
+                        genericType,
+                        typeof(string)))
                     .Cast<object>()
                     .ToArray();
 
@@ -134,18 +125,12 @@ namespace GenericDataStructures.Tests
                 var delegateMonitor = new DelegateMonitor();
 
                 var voidDelegates = GetAllTypes(resultType)
-                    .Select(genericType =>
-                    {
-                        var delegateType = typeof(Action<>).MakeGenericType(genericType);
-                        var genericNoOperationMethod = typeof(DelegateMonitor).GetMethods().Single(method => method.Name == nameof(DelegateMonitor.NoOperation) && method.IsGenericMethod);
-                        if (genericNoOperationMethod == null)
-                        {
-                            throw new InvalidOperationException("No operation method not found");
-                        }
-
-                        var noOperationMethod = genericNoOperationMethod.MakeGenericMethod(genericType);
-                        return Delegate.CreateDelegate(delegateType, delegateMonitor, noOperationMethod);
-                    })
+                    .Select(genericType => DelegateCreator.CreateDelegate(
+                        delegateMonitor,
+                        nameof(DelegateMonitor.NoOperation),
+                        true,
+                        typeof(Action<>),
+                        genericType))
                     .Cast<object>()
                     .ToArray();
 
