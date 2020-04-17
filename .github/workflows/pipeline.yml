@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 
 jobs:
-  create_package:
+  create_and_publish_package:
 
     runs-on: windows-latest
     
@@ -27,4 +27,5 @@ jobs:
       run: dotnet pack src -c Release -o temp --no-restore --no-build
       
     - name: Publish
-      run: dotnet nuget publish tmp/*.nupkg
+      run: dotnet nuget push tmp/*.nupkg -s https://api.nuget.org/v3/index.json -k ${{ secrets.nuget_api_key }
+      
