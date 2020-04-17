@@ -2,6 +2,17 @@
 
   <PropertyGroup>
     <TargetFrameworks>net40;net403;net45;net451;net452;net46;net461;net462;net47;net471;net472;net48;netstandard1.0;netstandard1.1;netstandard1.2;netstandard1.3;netstandard1.4;netstandard1.5;netstandard1.6;netstandard2.0;netstandard2.1</TargetFrameworks>
+    <Authors>Philip Wallin</Authors>
+    <Company>PAW Productions</Company>
+    <Description>Generic discriminating union types to be used as results when you want to make sure every return type is handled explicitly.</Description>
+    <Product>Generic data structures</Product>
+    <PackageTags>discriminated unions, result types, generic return data</PackageTags>
+    <Copyright>Philip Wallin</Copyright>
+    <PackageProjectUrl>https://github.com/PhilipAlexanderWallin/GenericDataStructures</PackageProjectUrl>
+    <PackageLicenseExpression>Unlicense</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/PhilipAlexanderWallin/GenericDataStructures</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageIcon>GenericDataStructures.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,6 +34,10 @@
     <None Update="Result.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Result.cs</LastGenOutput>
+    </None>
+    <None Include="..\..\assets\GenericDataStructures.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
     </None>
   </ItemGroup>
 
