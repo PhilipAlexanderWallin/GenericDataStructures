@@ -23,7 +23,7 @@ namespace GenericDataStructures
 #>
     public class <#= GetClassName(failureTypes) #>
     {
-        private readonly object? _value;
+        private readonly object _value;
         private readonly byte? _failureTypeIndex;
 
 <#
@@ -58,18 +58,18 @@ namespace GenericDataStructures
 #>
         public TOutput Match<TOutput>(Func<TOutput> onSuccessFunc, <# Write(string.Join(", ", Enumerable.Range(1, failureTypes).Select(failureNumber => $"Func<TFailure{failureNumber}, TOutput> onFailure{failureNumber}Func"))); #>)
         {
-            return _failureTypeIndex switch
+            switch (_failureTypeIndex)
             {
 <#
     for(int failureIndex = 0; failureIndex < failureTypes; failureIndex++)
     {
 #>
-                <#= failureIndex #> => onFailure<#= failureIndex + 1 #>Func((TFailure<#= failureIndex + 1 #>)_value!),
+                case <#= failureIndex #>: return onFailure<#= failureIndex + 1 #>Func((TFailure<#= failureIndex + 1 #>)_value);
 <#
     }
 #>
-                _ => onSuccessFunc()
-            };
+                default: return onSuccessFunc();
+            }
         }
 
         public void Match(Action onSuccessAction, <# Write(string.Join(", ", Enumerable.Range(1, failureTypes).Select(failureNumber => $"Action<TFailure{failureNumber}> onFailure{failureNumber}Action"))); #>)
@@ -80,7 +80,7 @@ namespace GenericDataStructures
     for(int failureIndex = 0; failureIndex < failureTypes; failureIndex++)
     {
 #>
-                case <#= failureIndex #>: onFailure<#= failureIndex + 1 #>Action((TFailure<#= failureIndex + 1 #>)_value!); break;
+                case <#= failureIndex #>: onFailure<#= failureIndex + 1 #>Action((TFailure<#= failureIndex + 1 #>)_value); break;
 <#
     }
 #>

@@ -14,7 +14,7 @@ namespace GenericDataStructures
 #>
     public class <#= GetClassName(types) #>
     {
-        private readonly object? _value;
+        private readonly object _value;
         private readonly byte? _typeIndex;
 
 <#
@@ -40,18 +40,18 @@ namespace GenericDataStructures
 #>
         public TOutput Match<TOutput>(<# Write(string.Join(", ", Enumerable.Range(1, types).Select(number => $"Func<T{number}, TOutput> onT{number}Func"))); #>)
         {
-            return _typeIndex switch
+            switch (_typeIndex)
             {
 <#
     for(int index = 0; index < types; index++)
     {
 #>
-                <#= index #> => onT<#= index + 1 #>Func((T<#= index + 1 #>)_value!),
+                case <#= index #>: return onT<#= index + 1 #>Func((T<#= index + 1 #>)_value);
 <#
     }
 #>
-                _ => throw new InvalidOperationException()
-            };
+                default: throw new InvalidOperationException();
+            }
         }
 
         public void Match(<# Write(string.Join(", ", Enumerable.Range(1, types).Select(number => $"Action<T{number}> onT{number}Action"))); #>)
@@ -62,7 +62,7 @@ namespace GenericDataStructures
     for(int index = 0; index < types; index++)
     {
 #>
-                case <#= index #>: onT<#= index + 1 #>Action((T<#= index + 1 #>)_value!); break;
+                case <#= index #>: onT<#= index + 1 #>Action((T<#= index + 1 #>)_value); break;
 <#
     }
 #>

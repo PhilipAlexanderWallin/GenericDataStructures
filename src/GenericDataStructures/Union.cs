@@ -4,7 +4,7 @@ namespace GenericDataStructures
 {
     public class Union<T1>
     {
-        private readonly object? _value;
+        private readonly object _value;
         private readonly byte? _typeIndex;
 
         public Union(T1 value)
@@ -17,18 +17,18 @@ namespace GenericDataStructures
 
         public TOutput Match<TOutput>(Func<T1, TOutput> onT1Func)
         {
-            return _typeIndex switch
+            switch (_typeIndex)
             {
-                0 => onT1Func((T1)_value!),
-                _ => throw new InvalidOperationException()
-            };
+                case 0: return onT1Func((T1)_value);
+                default: throw new InvalidOperationException();
+            }
         }
 
         public void Match(Action<T1> onT1Action)
         {
             switch (_typeIndex)
             {
-                case 0: onT1Action((T1)_value!); break;
+                case 0: onT1Action((T1)_value); break;
                 default: throw new InvalidOperationException();
             }
         }
@@ -36,7 +36,7 @@ namespace GenericDataStructures
 
     public class Union<T1, T2>
     {
-        private readonly object? _value;
+        private readonly object _value;
         private readonly byte? _typeIndex;
 
         public Union(T1 value)
@@ -57,20 +57,20 @@ namespace GenericDataStructures
 
         public TOutput Match<TOutput>(Func<T1, TOutput> onT1Func, Func<T2, TOutput> onT2Func)
         {
-            return _typeIndex switch
+            switch (_typeIndex)
             {
-                0 => onT1Func((T1)_value!),
-                1 => onT2Func((T2)_value!),
-                _ => throw new InvalidOperationException()
-            };
+                case 0: return onT1Func((T1)_value);
+                case 1: return onT2Func((T2)_value);
+                default: throw new InvalidOperationException();
+            }
         }
 
         public void Match(Action<T1> onT1Action, Action<T2> onT2Action)
         {
             switch (_typeIndex)
             {
-                case 0: onT1Action((T1)_value!); break;
-                case 1: onT2Action((T2)_value!); break;
+                case 0: onT1Action((T1)_value); break;
+                case 1: onT2Action((T2)_value); break;
                 default: throw new InvalidOperationException();
             }
         }
@@ -78,7 +78,7 @@ namespace GenericDataStructures
 
     public class Union<T1, T2, T3>
     {
-        private readonly object? _value;
+        private readonly object _value;
         private readonly byte? _typeIndex;
 
         public Union(T1 value)
@@ -107,22 +107,22 @@ namespace GenericDataStructures
 
         public TOutput Match<TOutput>(Func<T1, TOutput> onT1Func, Func<T2, TOutput> onT2Func, Func<T3, TOutput> onT3Func)
         {
-            return _typeIndex switch
+            switch (_typeIndex)
             {
-                0 => onT1Func((T1)_value!),
-                1 => onT2Func((T2)_value!),
-                2 => onT3Func((T3)_value!),
-                _ => throw new InvalidOperationException()
-            };
+                case 0: return onT1Func((T1)_value);
+                case 1: return onT2Func((T2)_value);
+                case 2: return onT3Func((T3)_value);
+                default: throw new InvalidOperationException();
+            }
         }
 
         public void Match(Action<T1> onT1Action, Action<T2> onT2Action, Action<T3> onT3Action)
         {
             switch (_typeIndex)
             {
-                case 0: onT1Action((T1)_value!); break;
-                case 1: onT2Action((T2)_value!); break;
-                case 2: onT3Action((T3)_value!); break;
+                case 0: onT1Action((T1)_value); break;
+                case 1: onT2Action((T2)_value); break;
+                case 2: onT3Action((T3)_value); break;
                 default: throw new InvalidOperationException();
             }
         }
@@ -130,7 +130,7 @@ namespace GenericDataStructures
 
     public class Union<T1, T2, T3, T4>
     {
-        private readonly object? _value;
+        private readonly object _value;
         private readonly byte? _typeIndex;
 
         public Union(T1 value)
@@ -167,24 +167,24 @@ namespace GenericDataStructures
 
         public TOutput Match<TOutput>(Func<T1, TOutput> onT1Func, Func<T2, TOutput> onT2Func, Func<T3, TOutput> onT3Func, Func<T4, TOutput> onT4Func)
         {
-            return _typeIndex switch
+            switch (_typeIndex)
             {
-                0 => onT1Func((T1)_value!),
-                1 => onT2Func((T2)_value!),
-                2 => onT3Func((T3)_value!),
-                3 => onT4Func((T4)_value!),
-                _ => throw new InvalidOperationException()
-            };
+                case 0: return onT1Func((T1)_value);
+                case 1: return onT2Func((T2)_value);
+                case 2: return onT3Func((T3)_value);
+                case 3: return onT4Func((T4)_value);
+                default: throw new InvalidOperationException();
+            }
         }
 
         public void Match(Action<T1> onT1Action, Action<T2> onT2Action, Action<T3> onT3Action, Action<T4> onT4Action)
         {
             switch (_typeIndex)
             {
-                case 0: onT1Action((T1)_value!); break;
-                case 1: onT2Action((T2)_value!); break;
-                case 2: onT3Action((T3)_value!); break;
-                case 3: onT4Action((T4)_value!); break;
+                case 0: onT1Action((T1)_value); break;
+                case 1: onT2Action((T2)_value); break;
+                case 2: onT3Action((T3)_value); break;
+                case 3: onT4Action((T4)_value); break;
                 default: throw new InvalidOperationException();
             }
         }
@@ -192,7 +192,7 @@ namespace GenericDataStructures
 
     public class Union<T1, T2, T3, T4, T5>
     {
-        private readonly object? _value;
+        private readonly object _value;
         private readonly byte? _typeIndex;
 
         public Union(T1 value)
@@ -237,26 +237,26 @@ namespace GenericDataStructures
 
         public TOutput Match<TOutput>(Func<T1, TOutput> onT1Func, Func<T2, TOutput> onT2Func, Func<T3, TOutput> onT3Func, Func<T4, TOutput> onT4Func, Func<T5, TOutput> onT5Func)
         {
-            return _typeIndex switch
+            switch (_typeIndex)
             {
-                0 => onT1Func((T1)_value!),
-                1 => onT2Func((T2)_value!),
-                2 => onT3Func((T3)_value!),
-                3 => onT4Func((T4)_value!),
-                4 => onT5Func((T5)_value!),
-                _ => throw new InvalidOperationException()
-            };
+                case 0: return onT1Func((T1)_value);
+                case 1: return onT2Func((T2)_value);
+                case 2: return onT3Func((T3)_value);
+                case 3: return onT4Func((T4)_value);
+                case 4: return onT5Func((T5)_value);
+                default: throw new InvalidOperationException();
+            }
         }
 
         public void Match(Action<T1> onT1Action, Action<T2> onT2Action, Action<T3> onT3Action, Action<T4> onT4Action, Action<T5> onT5Action)
         {
             switch (_typeIndex)
             {
-                case 0: onT1Action((T1)_value!); break;
-                case 1: onT2Action((T2)_value!); break;
-                case 2: onT3Action((T3)_value!); break;
-                case 3: onT4Action((T4)_value!); break;
-                case 4: onT5Action((T5)_value!); break;
+                case 0: onT1Action((T1)_value); break;
+                case 1: onT2Action((T2)_value); break;
+                case 2: onT3Action((T3)_value); break;
+                case 3: onT4Action((T4)_value); break;
+                case 4: onT5Action((T5)_value); break;
                 default: throw new InvalidOperationException();
             }
         }
@@ -264,7 +264,7 @@ namespace GenericDataStructures
 
     public class Union<T1, T2, T3, T4, T5, T6>
     {
-        private readonly object? _value;
+        private readonly object _value;
         private readonly byte? _typeIndex;
 
         public Union(T1 value)
@@ -317,28 +317,28 @@ namespace GenericDataStructures
 
         public TOutput Match<TOutput>(Func<T1, TOutput> onT1Func, Func<T2, TOutput> onT2Func, Func<T3, TOutput> onT3Func, Func<T4, TOutput> onT4Func, Func<T5, TOutput> onT5Func, Func<T6, TOutput> onT6Func)
         {
-            return _typeIndex switch
+            switch (_typeIndex)
             {
-                0 => onT1Func((T1)_value!),
-                1 => onT2Func((T2)_value!),
-                2 => onT3Func((T3)_value!),
-                3 => onT4Func((T4)_value!),
-                4 => onT5Func((T5)_value!),
-                5 => onT6Func((T6)_value!),
-                _ => throw new InvalidOperationException()
-            };
+                case 0: return onT1Func((T1)_value);
+                case 1: return onT2Func((T2)_value);
+                case 2: return onT3Func((T3)_value);
+                case 3: return onT4Func((T4)_value);
+                case 4: return onT5Func((T5)_value);
+                case 5: return onT6Func((T6)_value);
+                default: throw new InvalidOperationException();
+            }
         }
 
         public void Match(Action<T1> onT1Action, Action<T2> onT2Action, Action<T3> onT3Action, Action<T4> onT4Action, Action<T5> onT5Action, Action<T6> onT6Action)
         {
             switch (_typeIndex)
             {
-                case 0: onT1Action((T1)_value!); break;
-                case 1: onT2Action((T2)_value!); break;
-                case 2: onT3Action((T3)_value!); break;
-                case 3: onT4Action((T4)_value!); break;
-                case 4: onT5Action((T5)_value!); break;
-                case 5: onT6Action((T6)_value!); break;
+                case 0: onT1Action((T1)_value); break;
+                case 1: onT2Action((T2)_value); break;
+                case 2: onT3Action((T3)_value); break;
+                case 3: onT4Action((T4)_value); break;
+                case 4: onT5Action((T5)_value); break;
+                case 5: onT6Action((T6)_value); break;
                 default: throw new InvalidOperationException();
             }
         }
@@ -346,7 +346,7 @@ namespace GenericDataStructures
 
     public class Union<T1, T2, T3, T4, T5, T6, T7>
     {
-        private readonly object? _value;
+        private readonly object _value;
         private readonly byte? _typeIndex;
 
         public Union(T1 value)
@@ -407,30 +407,30 @@ namespace GenericDataStructures
 
         public TOutput Match<TOutput>(Func<T1, TOutput> onT1Func, Func<T2, TOutput> onT2Func, Func<T3, TOutput> onT3Func, Func<T4, TOutput> onT4Func, Func<T5, TOutput> onT5Func, Func<T6, TOutput> onT6Func, Func<T7, TOutput> onT7Func)
         {
-            return _typeIndex switch
+            switch (_typeIndex)
             {
-                0 => onT1Func((T1)_value!),
-                1 => onT2Func((T2)_value!),
-                2 => onT3Func((T3)_value!),
-                3 => onT4Func((T4)_value!),
-                4 => onT5Func((T5)_value!),
-                5 => onT6Func((T6)_value!),
-                6 => onT7Func((T7)_value!),
-                _ => throw new InvalidOperationException()
-            };
+                case 0: return onT1Func((T1)_value);
+                case 1: return onT2Func((T2)_value);
+                case 2: return onT3Func((T3)_value);
+                case 3: return onT4Func((T4)_value);
+                case 4: return onT5Func((T5)_value);
+                case 5: return onT6Func((T6)_value);
+                case 6: return onT7Func((T7)_value);
+                default: throw new InvalidOperationException();
+            }
         }
 
         public void Match(Action<T1> onT1Action, Action<T2> onT2Action, Action<T3> onT3Action, Action<T4> onT4Action, Action<T5> onT5Action, Action<T6> onT6Action, Action<T7> onT7Action)
         {
             switch (_typeIndex)
             {
-                case 0: onT1Action((T1)_value!); break;
-                case 1: onT2Action((T2)_value!); break;
-                case 2: onT3Action((T3)_value!); break;
-                case 3: onT4Action((T4)_value!); break;
-                case 4: onT5Action((T5)_value!); break;
-                case 5: onT6Action((T6)_value!); break;
-                case 6: onT7Action((T7)_value!); break;
+                case 0: onT1Action((T1)_value); break;
+                case 1: onT2Action((T2)_value); break;
+                case 2: onT3Action((T3)_value); break;
+                case 3: onT4Action((T4)_value); break;
+                case 4: onT5Action((T5)_value); break;
+                case 5: onT6Action((T6)_value); break;
+                case 6: onT7Action((T7)_value); break;
                 default: throw new InvalidOperationException();
             }
         }
@@ -438,7 +438,7 @@ namespace GenericDataStructures
 
     public class Union<T1, T2, T3, T4, T5, T6, T7, T8>
     {
-        private readonly object? _value;
+        private readonly object _value;
         private readonly byte? _typeIndex;
 
         public Union(T1 value)
@@ -507,32 +507,32 @@ namespace GenericDataStructures
 
         public TOutput Match<TOutput>(Func<T1, TOutput> onT1Func, Func<T2, TOutput> onT2Func, Func<T3, TOutput> onT3Func, Func<T4, TOutput> onT4Func, Func<T5, TOutput> onT5Func, Func<T6, TOutput> onT6Func, Func<T7, TOutput> onT7Func, Func<T8, TOutput> onT8Func)
         {
-            return _typeIndex switch
+            switch (_typeIndex)
             {
-                0 => onT1Func((T1)_value!),
-                1 => onT2Func((T2)_value!),
-                2 => onT3Func((T3)_value!),
-                3 => onT4Func((T4)_value!),
-                4 => onT5Func((T5)_value!),
-                5 => onT6Func((T6)_value!),
-                6 => onT7Func((T7)_value!),
-                7 => onT8Func((T8)_value!),
-                _ => throw new InvalidOperationException()
-            };
+                case 0: return onT1Func((T1)_value);
+                case 1: return onT2Func((T2)_value);
+                case 2: return onT3Func((T3)_value);
+                case 3: return onT4Func((T4)_value);
+                case 4: return onT5Func((T5)_value);
+                case 5: return onT6Func((T6)_value);
+                case 6: return onT7Func((T7)_value);
+                case 7: return onT8Func((T8)_value);
+                default: throw new InvalidOperationException();
+            }
         }
 
         public void Match(Action<T1> onT1Action, Action<T2> onT2Action, Action<T3> onT3Action, Action<T4> onT4Action, Action<T5> onT5Action, Action<T6> onT6Action, Action<T7> onT7Action, Action<T8> onT8Action)
         {
             switch (_typeIndex)
             {
-                case 0: onT1Action((T1)_value!); break;
-                case 1: onT2Action((T2)_value!); break;
-                case 2: onT3Action((T3)_value!); break;
-                case 3: onT4Action((T4)_value!); break;
-                case 4: onT5Action((T5)_value!); break;
-                case 5: onT6Action((T6)_value!); break;
-                case 6: onT7Action((T7)_value!); break;
-                case 7: onT8Action((T8)_value!); break;
+                case 0: onT1Action((T1)_value); break;
+                case 1: onT2Action((T2)_value); break;
+                case 2: onT3Action((T3)_value); break;
+                case 3: onT4Action((T4)_value); break;
+                case 4: onT5Action((T5)_value); break;
+                case 5: onT6Action((T6)_value); break;
+                case 6: onT7Action((T7)_value); break;
+                case 7: onT8Action((T8)_value); break;
                 default: throw new InvalidOperationException();
             }
         }
