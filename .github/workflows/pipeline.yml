@@ -14,20 +14,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       
-    - name: Setup .net core 2
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 2.1.500
-
     - name: Setup .net core 3
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.201
 
-    - name: .net SxS
-      run: |
-        rsync -a ${DOTNET_ROOT/3.1.201/2.1.500}/* $DOTNET_ROOT/
-      
     - name: Install dependencies
       run: dotnet restore src
       
