@@ -27,5 +27,5 @@ jobs:
       run: dotnet pack src -c Release -o temp --no-restore --no-build
       
     - name: Publish
-      run: dotnet nuget push tmp/*.nupkg -s https://api.nuget.org/v3/index.json -k ${{ secrets.nuget_api_key }
+      run: dotnet nuget push tmp/*.nupkg -s https://api.nuget.org/v3/index.json -k ${{ secrets.nuget_api_key }}
       
