@@ -1,4 +1,4 @@
-name: Test
+name: Create NuGet package
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 
 jobs:
-  test:
+  create_package:
 
     runs-on: windows-latest
     
@@ -18,7 +18,13 @@ jobs:
       run: dotnet restore src
       
     - name: Build
-      run: dotnet build src --configuration Release --no-restore
+      run: dotnet build src -c Release --no-restore
       
     - name: Test
       run: dotnet test src --no-restore --verbosity normal
+      
+    - name: Pack
+      run: dotnet pack src -c Release -o temp --no-restore --no-build
+      
+    - name: Publish
+      run: dotnet nuget publish tmp/*.nupkg
