@@ -5,6 +5,9 @@
 <#@ import namespace="System.Collections.Generic" #>
 <#@ output extension=".cs" #>
 using System;
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+using System.Diagnostics.CodeAnalysis;
+#endif
 
 namespace GenericDataStructures
 {
@@ -48,7 +51,11 @@ namespace GenericDataStructures
 <#
     }
 #>
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        public bool TryGetSuccessValue([MaybeNullWhen(false)] out TSuccess successValue)
+#else
         public bool TryGetSuccessValue(out TSuccess successValue)
+#endif
         {
             if (IsSuccess)
             {
@@ -60,7 +67,11 @@ namespace GenericDataStructures
             return false;
         }
 
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, [MaybeNullWhen(false)] out TOutput mappedValue)
+#else
         public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
+#endif
         {
             if (IsSuccess)
             {

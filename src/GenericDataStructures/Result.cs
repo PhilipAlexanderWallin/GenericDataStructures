@@ -1,4 +1,7 @@
 ﻿using System;
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+using System.Diagnostics.CodeAnalysis;
+#endif
 
 namespace GenericDataStructures
 {
@@ -24,7 +27,11 @@ namespace GenericDataStructures
 
         public static implicit operator Result<TSuccess, TFailure1>(TFailure1 value) => new Result<TSuccess, TFailure1>(value);
 
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        public bool TryGetSuccessValue([MaybeNullWhen(false)] out TSuccess successValue)
+#else
         public bool TryGetSuccessValue(out TSuccess successValue)
+#endif
         {
             if (IsSuccess)
             {
@@ -36,7 +43,11 @@ namespace GenericDataStructures
             return false;
         }
 
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, [MaybeNullWhen(false)] out TOutput mappedValue)
+#else
         public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
+#endif
         {
             if (IsSuccess)
             {
@@ -97,7 +108,11 @@ namespace GenericDataStructures
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2>(TFailure2 value) => new Result<TSuccess, TFailure1, TFailure2>(value);
 
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        public bool TryGetSuccessValue([MaybeNullWhen(false)] out TSuccess successValue)
+#else
         public bool TryGetSuccessValue(out TSuccess successValue)
+#endif
         {
             if (IsSuccess)
             {
@@ -109,7 +124,11 @@ namespace GenericDataStructures
             return false;
         }
 
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, [MaybeNullWhen(false)] out TOutput mappedValue)
+#else
         public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
+#endif
         {
             if (IsSuccess)
             {
@@ -180,7 +199,11 @@ namespace GenericDataStructures
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3>(TFailure3 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3>(value);
 
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        public bool TryGetSuccessValue([MaybeNullWhen(false)] out TSuccess successValue)
+#else
         public bool TryGetSuccessValue(out TSuccess successValue)
+#endif
         {
             if (IsSuccess)
             {
@@ -192,7 +215,11 @@ namespace GenericDataStructures
             return false;
         }
 
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, [MaybeNullWhen(false)] out TOutput mappedValue)
+#else
         public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
+#endif
         {
             if (IsSuccess)
             {
@@ -273,7 +300,11 @@ namespace GenericDataStructures
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4>(TFailure4 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4>(value);
 
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        public bool TryGetSuccessValue([MaybeNullWhen(false)] out TSuccess successValue)
+#else
         public bool TryGetSuccessValue(out TSuccess successValue)
+#endif
         {
             if (IsSuccess)
             {
@@ -285,7 +316,11 @@ namespace GenericDataStructures
             return false;
         }
 
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, [MaybeNullWhen(false)] out TOutput mappedValue)
+#else
         public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
+#endif
         {
             if (IsSuccess)
             {
@@ -376,7 +411,11 @@ namespace GenericDataStructures
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>(TFailure5 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>(value);
 
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        public bool TryGetSuccessValue([MaybeNullWhen(false)] out TSuccess successValue)
+#else
         public bool TryGetSuccessValue(out TSuccess successValue)
+#endif
         {
             if (IsSuccess)
             {
@@ -388,7 +427,11 @@ namespace GenericDataStructures
             return false;
         }
 
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, [MaybeNullWhen(false)] out TOutput mappedValue)
+#else
         public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
+#endif
         {
             if (IsSuccess)
             {
@@ -489,7 +532,11 @@ namespace GenericDataStructures
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>(TFailure6 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>(value);
 
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        public bool TryGetSuccessValue([MaybeNullWhen(false)] out TSuccess successValue)
+#else
         public bool TryGetSuccessValue(out TSuccess successValue)
+#endif
         {
             if (IsSuccess)
             {
@@ -501,7 +548,11 @@ namespace GenericDataStructures
             return false;
         }
 
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, [MaybeNullWhen(false)] out TOutput mappedValue)
+#else
         public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
+#endif
         {
             if (IsSuccess)
             {
@@ -612,7 +663,11 @@ namespace GenericDataStructures
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>(TFailure7 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>(value);
 
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        public bool TryGetSuccessValue([MaybeNullWhen(false)] out TSuccess successValue)
+#else
         public bool TryGetSuccessValue(out TSuccess successValue)
+#endif
         {
             if (IsSuccess)
             {
@@ -624,7 +679,11 @@ namespace GenericDataStructures
             return false;
         }
 
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, [MaybeNullWhen(false)] out TOutput mappedValue)
+#else
         public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
+#endif
         {
             if (IsSuccess)
             {
@@ -745,7 +804,11 @@ namespace GenericDataStructures
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>(TFailure8 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>(value);
 
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        public bool TryGetSuccessValue([MaybeNullWhen(false)] out TSuccess successValue)
+#else
         public bool TryGetSuccessValue(out TSuccess successValue)
+#endif
         {
             if (IsSuccess)
             {
@@ -757,7 +820,11 @@ namespace GenericDataStructures
             return false;
         }
 
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, [MaybeNullWhen(false)] out TOutput mappedValue)
+#else
         public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
+#endif
         {
             if (IsSuccess)
             {
