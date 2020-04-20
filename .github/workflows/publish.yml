@@ -3,6 +3,8 @@ name: Publish NuGet package
 on:
   push:
     branches: [ master ]
+    paths:
+    - 'src/GenericDataStructures/**'
 
 jobs:
   create_and_publish_package:
