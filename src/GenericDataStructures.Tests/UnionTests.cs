@@ -10,7 +10,7 @@ namespace GenericDataStructures.Tests
         private const int NumberOfTypesToTestWith = 8;
 
         [Test]
-        public void OnlyFuncForTheSameIndexedParameterTypeIsCalledOnMatch()
+        public void OnlyFuncForTheSameIndexedParameterTypeIsCalledOnMap()
         {
             foreach (var (union, value, valueType) in AllUnionsToTest())
             {
@@ -29,18 +29,18 @@ namespace GenericDataStructures.Tests
                     .Cast<object>()
                     .ToArray();
 
-                var genericMatchMethod = unionType.GetMethods().Single(method => method.Name == "Match" && method.IsGenericMethod);
+                var genericMapMethod = unionType.GetMethods().Single(method => method.Name == "Map" && method.IsGenericMethod);
 
-                if (genericMatchMethod == null)
+                if (genericMapMethod == null)
                 {
-                    throw new InvalidOperationException("Match method not found");
+                    throw new InvalidOperationException("Map method not found");
                 }
 
-                var matchMethod = genericMatchMethod.MakeGenericMethod(typeof(string));
+                var mapMethod = genericMapMethod.MakeGenericMethod(typeof(string));
 
-                var matchResult = matchMethod.Invoke(union, createStringDelegates);
+                var mapResult = mapMethod.Invoke(union, createStringDelegates);
 
-                Assert.AreEqual(matchResult, value?.ToString());
+                Assert.AreEqual(mapResult, value?.ToString());
 
                 Assert.AreEqual(1, delegateMonitor.TotalCalls);
 
@@ -49,7 +49,7 @@ namespace GenericDataStructures.Tests
         }
 
         [Test]
-        public void OnlyActionForTheSameIndexedParameterTypeIsCalledOnMatch()
+        public void OnlyActionForTheSameIndexedParameterTypeIsCalledOnSwitch()
         {
             foreach (var (union, value, valueType) in AllUnionsToTest())
             {
@@ -67,14 +67,14 @@ namespace GenericDataStructures.Tests
                     .Cast<object>()
                     .ToArray();
 
-                var matchMethod = resultType.GetMethods().Single(method => method.Name == "Match" && !method.IsGenericMethod);
+                var mapMethod = resultType.GetMethods().Single(method => method.Name == "Switch" && !method.IsGenericMethod);
 
-                if (matchMethod == null)
+                if (mapMethod == null)
                 {
-                    throw new InvalidOperationException("Match method not found");
+                    throw new InvalidOperationException("Map method not found");
                 }
 
-                matchMethod.Invoke(union, voidDelegates);
+                mapMethod.Invoke(union, voidDelegates);
 
                 Assert.AreEqual(1, delegateMonitor.TotalCalls);
 
