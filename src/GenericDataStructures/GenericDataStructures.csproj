@@ -13,6 +13,7 @@
     <RepositoryUrl>https://github.com/PhilipAlexanderWallin/GenericDataStructures</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageIcon>GenericDataStructures.png</PackageIcon>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.1' ">
