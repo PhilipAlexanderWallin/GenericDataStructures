@@ -32,7 +32,7 @@ namespace GenericDataStructures
 
         public static implicit operator VoidResult<TFailure1>(TFailure1 value) => new VoidResult<TFailure1>(value);
 
-        public TOutput Match<TOutput>(Func<TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func)
+        public TOutput Map<TOutput>(Func<TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func)
         {
             switch (_failureTypeIndex)
             {
@@ -41,7 +41,7 @@ namespace GenericDataStructures
             }
         }
 
-        public void Match(Action onSuccessAction, Action<TFailure1> onFailure1Action)
+        public void Switch(Action onSuccessAction, Action<TFailure1> onFailure1Action)
         {
             switch (_failureTypeIndex)
             {
@@ -80,7 +80,7 @@ namespace GenericDataStructures
 
         public static implicit operator VoidResult<TFailure1, TFailure2>(TFailure2 value) => new VoidResult<TFailure1, TFailure2>(value);
 
-        public TOutput Match<TOutput>(Func<TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func, Func<TFailure2, TOutput> onFailure2Func)
+        public TOutput Map<TOutput>(Func<TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func, Func<TFailure2, TOutput> onFailure2Func)
         {
             switch (_failureTypeIndex)
             {
@@ -90,7 +90,7 @@ namespace GenericDataStructures
             }
         }
 
-        public void Match(Action onSuccessAction, Action<TFailure1> onFailure1Action, Action<TFailure2> onFailure2Action)
+        public void Switch(Action onSuccessAction, Action<TFailure1> onFailure1Action, Action<TFailure2> onFailure2Action)
         {
             switch (_failureTypeIndex)
             {
@@ -138,7 +138,7 @@ namespace GenericDataStructures
 
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3>(TFailure3 value) => new VoidResult<TFailure1, TFailure2, TFailure3>(value);
 
-        public TOutput Match<TOutput>(Func<TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func, Func<TFailure2, TOutput> onFailure2Func, Func<TFailure3, TOutput> onFailure3Func)
+        public TOutput Map<TOutput>(Func<TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func, Func<TFailure2, TOutput> onFailure2Func, Func<TFailure3, TOutput> onFailure3Func)
         {
             switch (_failureTypeIndex)
             {
@@ -149,7 +149,7 @@ namespace GenericDataStructures
             }
         }
 
-        public void Match(Action onSuccessAction, Action<TFailure1> onFailure1Action, Action<TFailure2> onFailure2Action, Action<TFailure3> onFailure3Action)
+        public void Switch(Action onSuccessAction, Action<TFailure1> onFailure1Action, Action<TFailure2> onFailure2Action, Action<TFailure3> onFailure3Action)
         {
             switch (_failureTypeIndex)
             {
@@ -206,7 +206,7 @@ namespace GenericDataStructures
 
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4>(TFailure4 value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4>(value);
 
-        public TOutput Match<TOutput>(Func<TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func, Func<TFailure2, TOutput> onFailure2Func, Func<TFailure3, TOutput> onFailure3Func, Func<TFailure4, TOutput> onFailure4Func)
+        public TOutput Map<TOutput>(Func<TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func, Func<TFailure2, TOutput> onFailure2Func, Func<TFailure3, TOutput> onFailure3Func, Func<TFailure4, TOutput> onFailure4Func)
         {
             switch (_failureTypeIndex)
             {
@@ -218,7 +218,7 @@ namespace GenericDataStructures
             }
         }
 
-        public void Match(Action onSuccessAction, Action<TFailure1> onFailure1Action, Action<TFailure2> onFailure2Action, Action<TFailure3> onFailure3Action, Action<TFailure4> onFailure4Action)
+        public void Switch(Action onSuccessAction, Action<TFailure1> onFailure1Action, Action<TFailure2> onFailure2Action, Action<TFailure3> onFailure3Action, Action<TFailure4> onFailure4Action)
         {
             switch (_failureTypeIndex)
             {
@@ -284,7 +284,7 @@ namespace GenericDataStructures
 
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>(TFailure5 value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>(value);
 
-        public TOutput Match<TOutput>(Func<TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func, Func<TFailure2, TOutput> onFailure2Func, Func<TFailure3, TOutput> onFailure3Func, Func<TFailure4, TOutput> onFailure4Func, Func<TFailure5, TOutput> onFailure5Func)
+        public TOutput Map<TOutput>(Func<TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func, Func<TFailure2, TOutput> onFailure2Func, Func<TFailure3, TOutput> onFailure3Func, Func<TFailure4, TOutput> onFailure4Func, Func<TFailure5, TOutput> onFailure5Func)
         {
             switch (_failureTypeIndex)
             {
@@ -297,7 +297,7 @@ namespace GenericDataStructures
             }
         }
 
-        public void Match(Action onSuccessAction, Action<TFailure1> onFailure1Action, Action<TFailure2> onFailure2Action, Action<TFailure3> onFailure3Action, Action<TFailure4> onFailure4Action, Action<TFailure5> onFailure5Action)
+        public void Switch(Action onSuccessAction, Action<TFailure1> onFailure1Action, Action<TFailure2> onFailure2Action, Action<TFailure3> onFailure3Action, Action<TFailure4> onFailure4Action, Action<TFailure5> onFailure5Action)
         {
             switch (_failureTypeIndex)
             {
@@ -372,7 +372,7 @@ namespace GenericDataStructures
 
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>(TFailure6 value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>(value);
 
-        public TOutput Match<TOutput>(Func<TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func, Func<TFailure2, TOutput> onFailure2Func, Func<TFailure3, TOutput> onFailure3Func, Func<TFailure4, TOutput> onFailure4Func, Func<TFailure5, TOutput> onFailure5Func, Func<TFailure6, TOutput> onFailure6Func)
+        public TOutput Map<TOutput>(Func<TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func, Func<TFailure2, TOutput> onFailure2Func, Func<TFailure3, TOutput> onFailure3Func, Func<TFailure4, TOutput> onFailure4Func, Func<TFailure5, TOutput> onFailure5Func, Func<TFailure6, TOutput> onFailure6Func)
         {
             switch (_failureTypeIndex)
             {
@@ -386,7 +386,7 @@ namespace GenericDataStructures
             }
         }
 
-        public void Match(Action onSuccessAction, Action<TFailure1> onFailure1Action, Action<TFailure2> onFailure2Action, Action<TFailure3> onFailure3Action, Action<TFailure4> onFailure4Action, Action<TFailure5> onFailure5Action, Action<TFailure6> onFailure6Action)
+        public void Switch(Action onSuccessAction, Action<TFailure1> onFailure1Action, Action<TFailure2> onFailure2Action, Action<TFailure3> onFailure3Action, Action<TFailure4> onFailure4Action, Action<TFailure5> onFailure5Action, Action<TFailure6> onFailure6Action)
         {
             switch (_failureTypeIndex)
             {
@@ -470,7 +470,7 @@ namespace GenericDataStructures
 
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>(TFailure7 value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>(value);
 
-        public TOutput Match<TOutput>(Func<TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func, Func<TFailure2, TOutput> onFailure2Func, Func<TFailure3, TOutput> onFailure3Func, Func<TFailure4, TOutput> onFailure4Func, Func<TFailure5, TOutput> onFailure5Func, Func<TFailure6, TOutput> onFailure6Func, Func<TFailure7, TOutput> onFailure7Func)
+        public TOutput Map<TOutput>(Func<TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func, Func<TFailure2, TOutput> onFailure2Func, Func<TFailure3, TOutput> onFailure3Func, Func<TFailure4, TOutput> onFailure4Func, Func<TFailure5, TOutput> onFailure5Func, Func<TFailure6, TOutput> onFailure6Func, Func<TFailure7, TOutput> onFailure7Func)
         {
             switch (_failureTypeIndex)
             {
@@ -485,7 +485,7 @@ namespace GenericDataStructures
             }
         }
 
-        public void Match(Action onSuccessAction, Action<TFailure1> onFailure1Action, Action<TFailure2> onFailure2Action, Action<TFailure3> onFailure3Action, Action<TFailure4> onFailure4Action, Action<TFailure5> onFailure5Action, Action<TFailure6> onFailure6Action, Action<TFailure7> onFailure7Action)
+        public void Switch(Action onSuccessAction, Action<TFailure1> onFailure1Action, Action<TFailure2> onFailure2Action, Action<TFailure3> onFailure3Action, Action<TFailure4> onFailure4Action, Action<TFailure5> onFailure5Action, Action<TFailure6> onFailure6Action, Action<TFailure7> onFailure7Action)
         {
             switch (_failureTypeIndex)
             {
@@ -578,7 +578,7 @@ namespace GenericDataStructures
 
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>(TFailure8 value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>(value);
 
-        public TOutput Match<TOutput>(Func<TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func, Func<TFailure2, TOutput> onFailure2Func, Func<TFailure3, TOutput> onFailure3Func, Func<TFailure4, TOutput> onFailure4Func, Func<TFailure5, TOutput> onFailure5Func, Func<TFailure6, TOutput> onFailure6Func, Func<TFailure7, TOutput> onFailure7Func, Func<TFailure8, TOutput> onFailure8Func)
+        public TOutput Map<TOutput>(Func<TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func, Func<TFailure2, TOutput> onFailure2Func, Func<TFailure3, TOutput> onFailure3Func, Func<TFailure4, TOutput> onFailure4Func, Func<TFailure5, TOutput> onFailure5Func, Func<TFailure6, TOutput> onFailure6Func, Func<TFailure7, TOutput> onFailure7Func, Func<TFailure8, TOutput> onFailure8Func)
         {
             switch (_failureTypeIndex)
             {
@@ -594,7 +594,7 @@ namespace GenericDataStructures
             }
         }
 
-        public void Match(Action onSuccessAction, Action<TFailure1> onFailure1Action, Action<TFailure2> onFailure2Action, Action<TFailure3> onFailure3Action, Action<TFailure4> onFailure4Action, Action<TFailure5> onFailure5Action, Action<TFailure6> onFailure6Action, Action<TFailure7> onFailure7Action, Action<TFailure8> onFailure8Action)
+        public void Switch(Action onSuccessAction, Action<TFailure1> onFailure1Action, Action<TFailure2> onFailure2Action, Action<TFailure3> onFailure3Action, Action<TFailure4> onFailure4Action, Action<TFailure5> onFailure5Action, Action<TFailure6> onFailure6Action, Action<TFailure7> onFailure7Action, Action<TFailure8> onFailure8Action)
         {
             switch (_failureTypeIndex)
             {

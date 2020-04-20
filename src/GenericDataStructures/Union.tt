@@ -38,7 +38,7 @@ namespace GenericDataStructures
 <#
     }
 #>
-        public TOutput Match<TOutput>(<# Write(string.Join(", ", Enumerable.Range(1, types).Select(number => $"Func<T{number}, TOutput> onT{number}Func"))); #>)
+        public TOutput Map<TOutput>(<# Write(string.Join(", ", Enumerable.Range(1, types).Select(number => $"Func<T{number}, TOutput> onT{number}Func"))); #>)
         {
             switch (_typeIndex)
             {
@@ -54,7 +54,7 @@ namespace GenericDataStructures
             }
         }
 
-        public void Match(<# Write(string.Join(", ", Enumerable.Range(1, types).Select(number => $"Action<T{number}> onT{number}Action"))); #>)
+        public void Switch(<# Write(string.Join(", ", Enumerable.Range(1, types).Select(number => $"Action<T{number}> onT{number}Action"))); #>)
         {
             switch (_typeIndex)
             {

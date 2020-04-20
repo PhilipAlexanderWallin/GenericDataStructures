@@ -1,4 +1,7 @@
 ﻿using System;
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+using System.Diagnostics.CodeAnalysis;
+#endif
 
 namespace GenericDataStructures
 {
@@ -24,15 +27,39 @@ namespace GenericDataStructures
 
         public static implicit operator Result<TSuccess, TFailure1>(TFailure1 value) => new Result<TSuccess, TFailure1>(value);
 
-        public void OnSuccess(Action<TSuccess> action)
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        public bool TryGetSuccessValue([MaybeNullWhen(false)] out TSuccess successValue)
+#else
+        public bool TryGetSuccessValue(out TSuccess successValue)
+#endif
         {
             if (IsSuccess)
             {
-                action((TSuccess)_value);
+                successValue = (TSuccess)_value;
+                return true;
             }
+
+            successValue = default(TSuccess);
+            return false;
         }
 
-        public TOutput Match<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func)
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, [MaybeNullWhen(false)] out TOutput mappedValue)
+#else
+        public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
+#endif
+        {
+            if (IsSuccess)
+            {
+                mappedValue = onSuccessFunc((TSuccess)_value);
+                return true;
+            }
+
+            mappedValue = default(TOutput);
+            return false;
+        }
+
+        public TOutput Map<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func)
         {
             switch (_failureTypeIndex)
             {
@@ -41,7 +68,7 @@ namespace GenericDataStructures
             }
         }
 
-        public void Match(Action<TSuccess> onSuccessAction, Action<TFailure1> onFailure1Action)
+        public void Switch(Action<TSuccess> onSuccessAction, Action<TFailure1> onFailure1Action)
         {
             switch (_failureTypeIndex)
             {
@@ -81,15 +108,39 @@ namespace GenericDataStructures
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2>(TFailure2 value) => new Result<TSuccess, TFailure1, TFailure2>(value);
 
-        public void OnSuccess(Action<TSuccess> action)
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        public bool TryGetSuccessValue([MaybeNullWhen(false)] out TSuccess successValue)
+#else
+        public bool TryGetSuccessValue(out TSuccess successValue)
+#endif
         {
             if (IsSuccess)
             {
-                action((TSuccess)_value);
+                successValue = (TSuccess)_value;
+                return true;
             }
+
+            successValue = default(TSuccess);
+            return false;
         }
 
-        public TOutput Match<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func, Func<TFailure2, TOutput> onFailure2Func)
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, [MaybeNullWhen(false)] out TOutput mappedValue)
+#else
+        public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
+#endif
+        {
+            if (IsSuccess)
+            {
+                mappedValue = onSuccessFunc((TSuccess)_value);
+                return true;
+            }
+
+            mappedValue = default(TOutput);
+            return false;
+        }
+
+        public TOutput Map<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func, Func<TFailure2, TOutput> onFailure2Func)
         {
             switch (_failureTypeIndex)
             {
@@ -99,7 +150,7 @@ namespace GenericDataStructures
             }
         }
 
-        public void Match(Action<TSuccess> onSuccessAction, Action<TFailure1> onFailure1Action, Action<TFailure2> onFailure2Action)
+        public void Switch(Action<TSuccess> onSuccessAction, Action<TFailure1> onFailure1Action, Action<TFailure2> onFailure2Action)
         {
             switch (_failureTypeIndex)
             {
@@ -148,15 +199,39 @@ namespace GenericDataStructures
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3>(TFailure3 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3>(value);
 
-        public void OnSuccess(Action<TSuccess> action)
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        public bool TryGetSuccessValue([MaybeNullWhen(false)] out TSuccess successValue)
+#else
+        public bool TryGetSuccessValue(out TSuccess successValue)
+#endif
         {
             if (IsSuccess)
             {
-                action((TSuccess)_value);
+                successValue = (TSuccess)_value;
+                return true;
             }
+
+            successValue = default(TSuccess);
+            return false;
         }
 
-        public TOutput Match<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func, Func<TFailure2, TOutput> onFailure2Func, Func<TFailure3, TOutput> onFailure3Func)
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, [MaybeNullWhen(false)] out TOutput mappedValue)
+#else
+        public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
+#endif
+        {
+            if (IsSuccess)
+            {
+                mappedValue = onSuccessFunc((TSuccess)_value);
+                return true;
+            }
+
+            mappedValue = default(TOutput);
+            return false;
+        }
+
+        public TOutput Map<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func, Func<TFailure2, TOutput> onFailure2Func, Func<TFailure3, TOutput> onFailure3Func)
         {
             switch (_failureTypeIndex)
             {
@@ -167,7 +242,7 @@ namespace GenericDataStructures
             }
         }
 
-        public void Match(Action<TSuccess> onSuccessAction, Action<TFailure1> onFailure1Action, Action<TFailure2> onFailure2Action, Action<TFailure3> onFailure3Action)
+        public void Switch(Action<TSuccess> onSuccessAction, Action<TFailure1> onFailure1Action, Action<TFailure2> onFailure2Action, Action<TFailure3> onFailure3Action)
         {
             switch (_failureTypeIndex)
             {
@@ -225,15 +300,39 @@ namespace GenericDataStructures
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4>(TFailure4 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4>(value);
 
-        public void OnSuccess(Action<TSuccess> action)
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        public bool TryGetSuccessValue([MaybeNullWhen(false)] out TSuccess successValue)
+#else
+        public bool TryGetSuccessValue(out TSuccess successValue)
+#endif
         {
             if (IsSuccess)
             {
-                action((TSuccess)_value);
+                successValue = (TSuccess)_value;
+                return true;
             }
+
+            successValue = default(TSuccess);
+            return false;
         }
 
-        public TOutput Match<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func, Func<TFailure2, TOutput> onFailure2Func, Func<TFailure3, TOutput> onFailure3Func, Func<TFailure4, TOutput> onFailure4Func)
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, [MaybeNullWhen(false)] out TOutput mappedValue)
+#else
+        public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
+#endif
+        {
+            if (IsSuccess)
+            {
+                mappedValue = onSuccessFunc((TSuccess)_value);
+                return true;
+            }
+
+            mappedValue = default(TOutput);
+            return false;
+        }
+
+        public TOutput Map<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func, Func<TFailure2, TOutput> onFailure2Func, Func<TFailure3, TOutput> onFailure3Func, Func<TFailure4, TOutput> onFailure4Func)
         {
             switch (_failureTypeIndex)
             {
@@ -245,7 +344,7 @@ namespace GenericDataStructures
             }
         }
 
-        public void Match(Action<TSuccess> onSuccessAction, Action<TFailure1> onFailure1Action, Action<TFailure2> onFailure2Action, Action<TFailure3> onFailure3Action, Action<TFailure4> onFailure4Action)
+        public void Switch(Action<TSuccess> onSuccessAction, Action<TFailure1> onFailure1Action, Action<TFailure2> onFailure2Action, Action<TFailure3> onFailure3Action, Action<TFailure4> onFailure4Action)
         {
             switch (_failureTypeIndex)
             {
@@ -312,15 +411,39 @@ namespace GenericDataStructures
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>(TFailure5 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>(value);
 
-        public void OnSuccess(Action<TSuccess> action)
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        public bool TryGetSuccessValue([MaybeNullWhen(false)] out TSuccess successValue)
+#else
+        public bool TryGetSuccessValue(out TSuccess successValue)
+#endif
         {
             if (IsSuccess)
             {
-                action((TSuccess)_value);
+                successValue = (TSuccess)_value;
+                return true;
             }
+
+            successValue = default(TSuccess);
+            return false;
         }
 
-        public TOutput Match<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func, Func<TFailure2, TOutput> onFailure2Func, Func<TFailure3, TOutput> onFailure3Func, Func<TFailure4, TOutput> onFailure4Func, Func<TFailure5, TOutput> onFailure5Func)
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, [MaybeNullWhen(false)] out TOutput mappedValue)
+#else
+        public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
+#endif
+        {
+            if (IsSuccess)
+            {
+                mappedValue = onSuccessFunc((TSuccess)_value);
+                return true;
+            }
+
+            mappedValue = default(TOutput);
+            return false;
+        }
+
+        public TOutput Map<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func, Func<TFailure2, TOutput> onFailure2Func, Func<TFailure3, TOutput> onFailure3Func, Func<TFailure4, TOutput> onFailure4Func, Func<TFailure5, TOutput> onFailure5Func)
         {
             switch (_failureTypeIndex)
             {
@@ -333,7 +456,7 @@ namespace GenericDataStructures
             }
         }
 
-        public void Match(Action<TSuccess> onSuccessAction, Action<TFailure1> onFailure1Action, Action<TFailure2> onFailure2Action, Action<TFailure3> onFailure3Action, Action<TFailure4> onFailure4Action, Action<TFailure5> onFailure5Action)
+        public void Switch(Action<TSuccess> onSuccessAction, Action<TFailure1> onFailure1Action, Action<TFailure2> onFailure2Action, Action<TFailure3> onFailure3Action, Action<TFailure4> onFailure4Action, Action<TFailure5> onFailure5Action)
         {
             switch (_failureTypeIndex)
             {
@@ -409,15 +532,39 @@ namespace GenericDataStructures
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>(TFailure6 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>(value);
 
-        public void OnSuccess(Action<TSuccess> action)
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        public bool TryGetSuccessValue([MaybeNullWhen(false)] out TSuccess successValue)
+#else
+        public bool TryGetSuccessValue(out TSuccess successValue)
+#endif
         {
             if (IsSuccess)
             {
-                action((TSuccess)_value);
+                successValue = (TSuccess)_value;
+                return true;
             }
+
+            successValue = default(TSuccess);
+            return false;
         }
 
-        public TOutput Match<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func, Func<TFailure2, TOutput> onFailure2Func, Func<TFailure3, TOutput> onFailure3Func, Func<TFailure4, TOutput> onFailure4Func, Func<TFailure5, TOutput> onFailure5Func, Func<TFailure6, TOutput> onFailure6Func)
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, [MaybeNullWhen(false)] out TOutput mappedValue)
+#else
+        public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
+#endif
+        {
+            if (IsSuccess)
+            {
+                mappedValue = onSuccessFunc((TSuccess)_value);
+                return true;
+            }
+
+            mappedValue = default(TOutput);
+            return false;
+        }
+
+        public TOutput Map<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func, Func<TFailure2, TOutput> onFailure2Func, Func<TFailure3, TOutput> onFailure3Func, Func<TFailure4, TOutput> onFailure4Func, Func<TFailure5, TOutput> onFailure5Func, Func<TFailure6, TOutput> onFailure6Func)
         {
             switch (_failureTypeIndex)
             {
@@ -431,7 +578,7 @@ namespace GenericDataStructures
             }
         }
 
-        public void Match(Action<TSuccess> onSuccessAction, Action<TFailure1> onFailure1Action, Action<TFailure2> onFailure2Action, Action<TFailure3> onFailure3Action, Action<TFailure4> onFailure4Action, Action<TFailure5> onFailure5Action, Action<TFailure6> onFailure6Action)
+        public void Switch(Action<TSuccess> onSuccessAction, Action<TFailure1> onFailure1Action, Action<TFailure2> onFailure2Action, Action<TFailure3> onFailure3Action, Action<TFailure4> onFailure4Action, Action<TFailure5> onFailure5Action, Action<TFailure6> onFailure6Action)
         {
             switch (_failureTypeIndex)
             {
@@ -516,15 +663,39 @@ namespace GenericDataStructures
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>(TFailure7 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>(value);
 
-        public void OnSuccess(Action<TSuccess> action)
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        public bool TryGetSuccessValue([MaybeNullWhen(false)] out TSuccess successValue)
+#else
+        public bool TryGetSuccessValue(out TSuccess successValue)
+#endif
         {
             if (IsSuccess)
             {
-                action((TSuccess)_value);
+                successValue = (TSuccess)_value;
+                return true;
             }
+
+            successValue = default(TSuccess);
+            return false;
         }
 
-        public TOutput Match<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func, Func<TFailure2, TOutput> onFailure2Func, Func<TFailure3, TOutput> onFailure3Func, Func<TFailure4, TOutput> onFailure4Func, Func<TFailure5, TOutput> onFailure5Func, Func<TFailure6, TOutput> onFailure6Func, Func<TFailure7, TOutput> onFailure7Func)
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, [MaybeNullWhen(false)] out TOutput mappedValue)
+#else
+        public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
+#endif
+        {
+            if (IsSuccess)
+            {
+                mappedValue = onSuccessFunc((TSuccess)_value);
+                return true;
+            }
+
+            mappedValue = default(TOutput);
+            return false;
+        }
+
+        public TOutput Map<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func, Func<TFailure2, TOutput> onFailure2Func, Func<TFailure3, TOutput> onFailure3Func, Func<TFailure4, TOutput> onFailure4Func, Func<TFailure5, TOutput> onFailure5Func, Func<TFailure6, TOutput> onFailure6Func, Func<TFailure7, TOutput> onFailure7Func)
         {
             switch (_failureTypeIndex)
             {
@@ -539,7 +710,7 @@ namespace GenericDataStructures
             }
         }
 
-        public void Match(Action<TSuccess> onSuccessAction, Action<TFailure1> onFailure1Action, Action<TFailure2> onFailure2Action, Action<TFailure3> onFailure3Action, Action<TFailure4> onFailure4Action, Action<TFailure5> onFailure5Action, Action<TFailure6> onFailure6Action, Action<TFailure7> onFailure7Action)
+        public void Switch(Action<TSuccess> onSuccessAction, Action<TFailure1> onFailure1Action, Action<TFailure2> onFailure2Action, Action<TFailure3> onFailure3Action, Action<TFailure4> onFailure4Action, Action<TFailure5> onFailure5Action, Action<TFailure6> onFailure6Action, Action<TFailure7> onFailure7Action)
         {
             switch (_failureTypeIndex)
             {
@@ -633,15 +804,39 @@ namespace GenericDataStructures
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>(TFailure8 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>(value);
 
-        public void OnSuccess(Action<TSuccess> action)
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        public bool TryGetSuccessValue([MaybeNullWhen(false)] out TSuccess successValue)
+#else
+        public bool TryGetSuccessValue(out TSuccess successValue)
+#endif
         {
             if (IsSuccess)
             {
-                action((TSuccess)_value);
+                successValue = (TSuccess)_value;
+                return true;
             }
+
+            successValue = default(TSuccess);
+            return false;
         }
 
-        public TOutput Match<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func, Func<TFailure2, TOutput> onFailure2Func, Func<TFailure3, TOutput> onFailure3Func, Func<TFailure4, TOutput> onFailure4Func, Func<TFailure5, TOutput> onFailure5Func, Func<TFailure6, TOutput> onFailure6Func, Func<TFailure7, TOutput> onFailure7Func, Func<TFailure8, TOutput> onFailure8Func)
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, [MaybeNullWhen(false)] out TOutput mappedValue)
+#else
+        public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
+#endif
+        {
+            if (IsSuccess)
+            {
+                mappedValue = onSuccessFunc((TSuccess)_value);
+                return true;
+            }
+
+            mappedValue = default(TOutput);
+            return false;
+        }
+
+        public TOutput Map<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func, Func<TFailure2, TOutput> onFailure2Func, Func<TFailure3, TOutput> onFailure3Func, Func<TFailure4, TOutput> onFailure4Func, Func<TFailure5, TOutput> onFailure5Func, Func<TFailure6, TOutput> onFailure6Func, Func<TFailure7, TOutput> onFailure7Func, Func<TFailure8, TOutput> onFailure8Func)
         {
             switch (_failureTypeIndex)
             {
@@ -657,7 +852,7 @@ namespace GenericDataStructures
             }
         }
 
-        public void Match(Action<TSuccess> onSuccessAction, Action<TFailure1> onFailure1Action, Action<TFailure2> onFailure2Action, Action<TFailure3> onFailure3Action, Action<TFailure4> onFailure4Action, Action<TFailure5> onFailure5Action, Action<TFailure6> onFailure6Action, Action<TFailure7> onFailure7Action, Action<TFailure8> onFailure8Action)
+        public void Switch(Action<TSuccess> onSuccessAction, Action<TFailure1> onFailure1Action, Action<TFailure2> onFailure2Action, Action<TFailure3> onFailure3Action, Action<TFailure4> onFailure4Action, Action<TFailure5> onFailure5Action, Action<TFailure6> onFailure6Action, Action<TFailure7> onFailure7Action, Action<TFailure8> onFailure8Action)
         {
             switch (_failureTypeIndex)
             {

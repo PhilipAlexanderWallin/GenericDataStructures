@@ -56,7 +56,7 @@ namespace GenericDataStructures
 <#
     }
 #>
-        public TOutput Match<TOutput>(Func<TOutput> onSuccessFunc, <# Write(string.Join(", ", Enumerable.Range(1, failureTypes).Select(failureNumber => $"Func<TFailure{failureNumber}, TOutput> onFailure{failureNumber}Func"))); #>)
+        public TOutput Map<TOutput>(Func<TOutput> onSuccessFunc, <# Write(string.Join(", ", Enumerable.Range(1, failureTypes).Select(failureNumber => $"Func<TFailure{failureNumber}, TOutput> onFailure{failureNumber}Func"))); #>)
         {
             switch (_failureTypeIndex)
             {
@@ -72,7 +72,7 @@ namespace GenericDataStructures
             }
         }
 
-        public void Match(Action onSuccessAction, <# Write(string.Join(", ", Enumerable.Range(1, failureTypes).Select(failureNumber => $"Action<TFailure{failureNumber}> onFailure{failureNumber}Action"))); #>)
+        public void Switch(Action onSuccessAction, <# Write(string.Join(", ", Enumerable.Range(1, failureTypes).Select(failureNumber => $"Action<TFailure{failureNumber}> onFailure{failureNumber}Action"))); #>)
         {
             switch (_failureTypeIndex)
             {

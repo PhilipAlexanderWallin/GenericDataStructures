@@ -5,6 +5,9 @@
 <#@ import namespace="System.Collections.Generic" #>
 <#@ output extension=".cs" #>
 using System;
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+using System.Diagnostics.CodeAnalysis;
+#endif
 
 namespace GenericDataStructures
 {
@@ -48,15 +51,39 @@ namespace GenericDataStructures
 <#
     }
 #>
-        public void OnSuccess(Action<TSuccess> action)
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        public bool TryGetSuccessValue([MaybeNullWhen(false)] out TSuccess successValue)
+#else
+        public bool TryGetSuccessValue(out TSuccess successValue)
+#endif
         {
             if (IsSuccess)
             {
-                action((TSuccess)_value);
+                successValue = (TSuccess)_value;
+                return true;
             }
+
+            successValue = default(TSuccess);
+            return false;
         }
 
-        public TOutput Match<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, <# Write(string.Join(", ", Enumerable.Range(1, failureTypes).Select(failureNumber => $"Func<TFailure{failureNumber}, TOutput> onFailure{failureNumber}Func"))); #>)
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, [MaybeNullWhen(false)] out TOutput mappedValue)
+#else
+        public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
+#endif
+        {
+            if (IsSuccess)
+            {
+                mappedValue = onSuccessFunc((TSuccess)_value);
+                return true;
+            }
+
+            mappedValue = default(TOutput);
+            return false;
+        }
+
+        public TOutput Map<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, <# Write(string.Join(", ", Enumerable.Range(1, failureTypes).Select(failureNumber => $"Func<TFailure{failureNumber}, TOutput> onFailure{failureNumber}Func"))); #>)
         {
             switch (_failureTypeIndex)
             {
@@ -72,7 +99,7 @@ namespace GenericDataStructures
             }
         }
 
-        public void Match(Action<TSuccess> onSuccessAction, <# Write(string.Join(", ", Enumerable.Range(1, failureTypes).Select(failureNumber => $"Action<TFailure{failureNumber}> onFailure{failureNumber}Action"))); #>)
+        public void Switch(Action<TSuccess> onSuccessAction, <# Write(string.Join(", ", Enumerable.Range(1, failureTypes).Select(failureNumber => $"Action<TFailure{failureNumber}> onFailure{failureNumber}Action"))); #>)
         {
             switch (_failureTypeIndex)
             {
