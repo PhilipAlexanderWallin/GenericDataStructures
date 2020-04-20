@@ -13,7 +13,9 @@
     <RepositoryUrl>https://github.com/PhilipAlexanderWallin/GenericDataStructures</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageIcon>GenericDataStructures.png</PackageIcon>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.1' ">
