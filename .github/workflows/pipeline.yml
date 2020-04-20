@@ -1,13 +1,11 @@
-name: Create NuGet package
+name: Build and test
 
 on:
-  push:
-    branches: [ master ]
   pull_request:
-    branches: [ master ]
+    branches: [ master, development ]
 
 jobs:
-  create_and_publish_package:
+  build_and_test:
 
     runs-on: windows-latest
     
@@ -22,9 +20,24 @@ jobs:
       
     - name: Test
       run: dotnet test src --no-restore --verbosity normal
-      
+
+
+name: Publish NuGet package
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  create_and_publish_package:
+
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+
     - name: Pack
-      run: dotnet pack src -c Release -o tmp --no-restore --no-build
+      run: dotnet pack src -c Release -o tmp
       
     - name: Publish
       run: dotnet nuget push tmp/**/*.nupkg -s https://api.nuget.org/v3/index.json -k ${{ secrets.nuget_api_key }}
