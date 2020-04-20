@@ -84,7 +84,6 @@ namespace GenericDataStructures
 <#
     }
 #>
-                default: onSuccessAction(); break;
             }
         }
     }

@@ -46,7 +46,6 @@ namespace GenericDataStructures
             switch (_failureTypeIndex)
             {
                 case 0: onFailure1Action((TFailure1)_value); break;
-                default: onSuccessAction(); break;
             }
         }
     }
@@ -96,7 +95,6 @@ namespace GenericDataStructures
             {
                 case 0: onFailure1Action((TFailure1)_value); break;
                 case 1: onFailure2Action((TFailure2)_value); break;
-                default: onSuccessAction(); break;
             }
         }
     }
@@ -156,7 +154,6 @@ namespace GenericDataStructures
                 case 0: onFailure1Action((TFailure1)_value); break;
                 case 1: onFailure2Action((TFailure2)_value); break;
                 case 2: onFailure3Action((TFailure3)_value); break;
-                default: onSuccessAction(); break;
             }
         }
     }
@@ -226,7 +223,6 @@ namespace GenericDataStructures
                 case 1: onFailure2Action((TFailure2)_value); break;
                 case 2: onFailure3Action((TFailure3)_value); break;
                 case 3: onFailure4Action((TFailure4)_value); break;
-                default: onSuccessAction(); break;
             }
         }
     }
@@ -306,7 +302,6 @@ namespace GenericDataStructures
                 case 2: onFailure3Action((TFailure3)_value); break;
                 case 3: onFailure4Action((TFailure4)_value); break;
                 case 4: onFailure5Action((TFailure5)_value); break;
-                default: onSuccessAction(); break;
             }
         }
     }
@@ -396,7 +391,6 @@ namespace GenericDataStructures
                 case 3: onFailure4Action((TFailure4)_value); break;
                 case 4: onFailure5Action((TFailure5)_value); break;
                 case 5: onFailure6Action((TFailure6)_value); break;
-                default: onSuccessAction(); break;
             }
         }
     }
@@ -496,7 +490,6 @@ namespace GenericDataStructures
                 case 4: onFailure5Action((TFailure5)_value); break;
                 case 5: onFailure6Action((TFailure6)_value); break;
                 case 6: onFailure7Action((TFailure7)_value); break;
-                default: onSuccessAction(); break;
             }
         }
     }
@@ -606,7 +599,6 @@ namespace GenericDataStructures
                 case 5: onFailure6Action((TFailure6)_value); break;
                 case 6: onFailure7Action((TFailure7)_value); break;
                 case 7: onFailure8Action((TFailure8)_value); break;
-                default: onSuccessAction(); break;
             }
         }
     }
