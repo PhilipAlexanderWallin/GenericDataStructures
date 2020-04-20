@@ -40,7 +40,7 @@ namespace GenericDataStructures.Tests
 
                 var mapResult = mapMethod.Invoke(union, createStringDelegates);
 
-                Assert.AreEqual(mapResult, value?.ToString());
+                Assert.AreEqual(value?.ToString(), mapResult);
 
                 Assert.AreEqual(1, delegateMonitor.TotalCalls);
 

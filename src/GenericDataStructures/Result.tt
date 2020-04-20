@@ -48,12 +48,28 @@ namespace GenericDataStructures
 <#
     }
 #>
-        public void OnSuccess(Action<TSuccess> action)
+        public bool TryGetSuccessValue(out TSuccess successValue)
         {
             if (IsSuccess)
             {
-                action((TSuccess)_value);
+                successValue = (TSuccess)_value;
+                return true;
             }
+
+            successValue = default(TSuccess);
+            return false;
+        }
+
+        public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
+        {
+            if (IsSuccess)
+            {
+                mappedValue = onSuccessFunc((TSuccess)_value);
+                return true;
+            }
+
+            mappedValue = default(TOutput);
+            return false;
         }
 
         public TOutput Map<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, <# Write(string.Join(", ", Enumerable.Range(1, failureTypes).Select(failureNumber => $"Func<TFailure{failureNumber}, TOutput> onFailure{failureNumber}Func"))); #>)

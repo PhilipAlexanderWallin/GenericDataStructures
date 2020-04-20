@@ -80,7 +80,7 @@ namespace GenericDataStructures.Tests
 
                 var mapResult = mapMethod.Invoke(voidResult, createStringDelegates);
 
-                Assert.AreEqual(mapResult, isSuccess ? "void" : value?.ToString());
+                Assert.AreEqual(isSuccess ? "void" : value?.ToString(), mapResult);
 
                 Assert.AreEqual(1, delegateMonitor.TotalCalls);
 

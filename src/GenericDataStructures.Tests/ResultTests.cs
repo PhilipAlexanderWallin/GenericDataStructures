@@ -25,7 +25,7 @@ namespace GenericDataStructures.Tests
         }
 
         [Test]
-        public void WhenConstructedWithSuccessTypeOnSuccessProvidesTheValue()
+        public void WhenConstructedWithSuccessTypeTryGetSuccessValueProvidesTheValue()
         {
             foreach (var resultType in AllResultTypesToTest())
             {
@@ -34,26 +34,165 @@ namespace GenericDataStructures.Tests
                 {
                     var result = CreateResult(resultType, successType, value);
 
-                    var actionValueReader = new ActionValueReader();
+                    var tryGetSuccessValueMethod = resultType.GetMethod("TryGetSuccessValue");
 
-                    var onSuccessMethod = resultType.GetMethod("OnSuccess");
-
-                    if (onSuccessMethod == null)
+                    if (tryGetSuccessValueMethod == null)
                     {
-                        throw new MissingMethodException("OnSuccess method is expected to be implemented");
+                        throw new MissingMethodException("TryGetSuccessValue method is expected to be implemented");
                     }
 
-                    var extractValueDelegate =
+                    var parameters = new object?[] { null };
+                    var isSuccessful = tryGetSuccessValueMethod.Invoke(result, parameters);
+
+                    if (isSuccessful == null)
+                    {
+                        throw new InvalidOperationException("TryGetSuccessValue should only return true or false");
+                    }
+
+                    Assert.IsTrue((bool)isSuccessful);
+
+                    var outResult = parameters.Single();
+                    Assert.AreEqual(value, outResult);
+                }
+            }
+        }
+
+        [Test]
+        public void WhenConstructedWithFailureTypeTryGetSuccessValueReturnsFalseAndProvidesDefaultValue()
+        {
+            foreach (var resultType in AllResultTypesToTest())
+            {
+                var successType = GetSuccessType(resultType);
+                foreach (var failureType in GetFailureTypes(resultType))
+                {
+                    foreach (var value in TestData.GetPossibleValues(failureType))
+                    {
+                        var result = CreateResult(resultType, failureType, value);
+
+                        var tryGetSuccessValueMethod = resultType.GetMethod("TryGetSuccessValue");
+
+                        if (tryGetSuccessValueMethod == null)
+                        {
+                            throw new MissingMethodException("TryGetSuccessValue method is expected to be implemented");
+                        }
+
+                        var parameters = new object?[] { null };
+                        var isSuccessful = tryGetSuccessValueMethod.Invoke(result, parameters);
+
+                        if (isSuccessful == null)
+                        {
+                            throw new InvalidOperationException("TryGetSuccessValue should only return true or false");
+                        }
+
+                        Assert.IsFalse((bool)isSuccessful);
+
+                        var outResult = parameters.Single();
+                        var expectedValue = GetDefaultValue(successType);
+                        Assert.AreEqual(expectedValue, outResult);
+                    }
+                }
+            }
+        }
+
+        [Test]
+        public void WhenConstructedWithSuccessTypeTryMapWillMapTheValue()
+        {
+            foreach (var resultType in AllResultTypesToTest())
+            {
+                var successType = GetSuccessType(resultType);
+                foreach (var value in TestData.GetPossibleValues(successType))
+                {
+                    var result = CreateResult(resultType, successType, value);
+
+                    var delegateMonitor = new DelegateMonitor();
+
+                    var genericTryMapMethod = resultType.GetMethod("TryMap");
+
+                    if (genericTryMapMethod == null)
+                    {
+                        throw new MissingMethodException("TryMap method is expected to be implemented");
+                    }
+
+                    var tryMapMethod = genericTryMapMethod.MakeGenericMethod(typeof(string));
+
+                    var createStringDelegate =
                         DelegateCreator.CreateDelegate(
-                            actionValueReader,
-                            nameof(ActionValueReader.ExtractValue),
+                            delegateMonitor,
+                            nameof(DelegateMonitor.CreateString),
                             true,
-                            typeof(Action<>),
-                            successType);
+                            typeof(Func<,>),
+                            successType,
+                            typeof(string));
 
-                    onSuccessMethod.Invoke(result, new object[] { extractValueDelegate });
+                    var parameters = new object?[] { createStringDelegate, null };
+                    var isSuccessful = tryMapMethod.Invoke(result, parameters);
 
-                    Assert.AreEqual(value, actionValueReader.ExtractedValue);
+                    if (isSuccessful == null)
+                    {
+                        throw new InvalidOperationException("TryMap should only return true or false");
+                    }
+
+                    Assert.IsTrue((bool)isSuccessful);
+
+                    var mapResult = parameters[1];
+
+                    Assert.AreEqual(value?.ToString(), mapResult);
+
+                    Assert.AreEqual(1, delegateMonitor.TotalCalls);
+
+                    Assert.AreEqual(1, delegateMonitor.GetCalls(successType));
+                }
+            }
+        }
+
+        [Test]
+        public void WhenConstructedWithFailureTypeTryMapWillReturnFalseAndProvideDefaultValue()
+        {
+            foreach (var resultType in AllResultTypesToTest())
+            {
+                var successType = GetSuccessType(resultType);
+                foreach (var failureType in GetFailureTypes(resultType))
+                {
+                    foreach (var value in TestData.GetPossibleValues(failureType))
+                    {
+                        var result = CreateResult(resultType, failureType, value);
+
+                        var delegateMonitor = new DelegateMonitor();
+
+                        var genericTryMapMethod = resultType.GetMethod("TryMap");
+
+                        if (genericTryMapMethod == null)
+                        {
+                            throw new MissingMethodException("TryMap method is expected to be implemented");
+                        }
+
+                        var tryMapMethod = genericTryMapMethod.MakeGenericMethod(typeof(string));
+
+                        var createStringDelegate =
+                            DelegateCreator.CreateDelegate(
+                                delegateMonitor,
+                                nameof(DelegateMonitor.CreateString),
+                                true,
+                                typeof(Func<,>),
+                                successType,
+                                typeof(string));
+
+                        var parameters = new object?[] { createStringDelegate, null };
+                        var isSuccessful = tryMapMethod.Invoke(result, parameters);
+
+                        if (isSuccessful == null)
+                        {
+                            throw new InvalidOperationException("TryMap should only return true or false");
+                        }
+
+                        Assert.IsFalse((bool)isSuccessful);
+
+                        var mapResult = parameters[1];
+
+                        Assert.IsNull(mapResult);
+
+                        Assert.AreEqual(0, delegateMonitor.TotalCalls);
+                    }
                 }
             }
         }
@@ -107,7 +246,7 @@ namespace GenericDataStructures.Tests
 
                 var mapResult = mapMethod.Invoke(result, createStringDelegates);
 
-                Assert.AreEqual(mapResult, value?.ToString());
+                Assert.AreEqual(value?.ToString(), mapResult);
 
                 Assert.AreEqual(1, delegateMonitor.TotalCalls);
 
@@ -147,6 +286,11 @@ namespace GenericDataStructures.Tests
 
                 Assert.AreEqual(1, delegateMonitor.GetCalls(valueType));
             }
+        }
+
+        private static object? GetDefaultValue(Type type)
+        {
+            return type.IsValueType ? Activator.CreateInstance(type) : null;
         }
 
         private static IEnumerable<(object Result, object Value, Type ValueType)> AllResultsToTest()

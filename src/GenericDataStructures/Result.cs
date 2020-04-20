@@ -24,12 +24,28 @@ namespace GenericDataStructures
 
         public static implicit operator Result<TSuccess, TFailure1>(TFailure1 value) => new Result<TSuccess, TFailure1>(value);
 
-        public void OnSuccess(Action<TSuccess> action)
+        public bool TryGetSuccessValue(out TSuccess successValue)
         {
             if (IsSuccess)
             {
-                action((TSuccess)_value);
+                successValue = (TSuccess)_value;
+                return true;
             }
+
+            successValue = default(TSuccess);
+            return false;
+        }
+
+        public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
+        {
+            if (IsSuccess)
+            {
+                mappedValue = onSuccessFunc((TSuccess)_value);
+                return true;
+            }
+
+            mappedValue = default(TOutput);
+            return false;
         }
 
         public TOutput Map<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func)
@@ -81,12 +97,28 @@ namespace GenericDataStructures
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2>(TFailure2 value) => new Result<TSuccess, TFailure1, TFailure2>(value);
 
-        public void OnSuccess(Action<TSuccess> action)
+        public bool TryGetSuccessValue(out TSuccess successValue)
         {
             if (IsSuccess)
             {
-                action((TSuccess)_value);
+                successValue = (TSuccess)_value;
+                return true;
             }
+
+            successValue = default(TSuccess);
+            return false;
+        }
+
+        public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
+        {
+            if (IsSuccess)
+            {
+                mappedValue = onSuccessFunc((TSuccess)_value);
+                return true;
+            }
+
+            mappedValue = default(TOutput);
+            return false;
         }
 
         public TOutput Map<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func, Func<TFailure2, TOutput> onFailure2Func)
@@ -148,12 +180,28 @@ namespace GenericDataStructures
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3>(TFailure3 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3>(value);
 
-        public void OnSuccess(Action<TSuccess> action)
+        public bool TryGetSuccessValue(out TSuccess successValue)
         {
             if (IsSuccess)
             {
-                action((TSuccess)_value);
+                successValue = (TSuccess)_value;
+                return true;
             }
+
+            successValue = default(TSuccess);
+            return false;
+        }
+
+        public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
+        {
+            if (IsSuccess)
+            {
+                mappedValue = onSuccessFunc((TSuccess)_value);
+                return true;
+            }
+
+            mappedValue = default(TOutput);
+            return false;
         }
 
         public TOutput Map<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func, Func<TFailure2, TOutput> onFailure2Func, Func<TFailure3, TOutput> onFailure3Func)
@@ -225,12 +273,28 @@ namespace GenericDataStructures
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4>(TFailure4 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4>(value);
 
-        public void OnSuccess(Action<TSuccess> action)
+        public bool TryGetSuccessValue(out TSuccess successValue)
         {
             if (IsSuccess)
             {
-                action((TSuccess)_value);
+                successValue = (TSuccess)_value;
+                return true;
             }
+
+            successValue = default(TSuccess);
+            return false;
+        }
+
+        public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
+        {
+            if (IsSuccess)
+            {
+                mappedValue = onSuccessFunc((TSuccess)_value);
+                return true;
+            }
+
+            mappedValue = default(TOutput);
+            return false;
         }
 
         public TOutput Map<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func, Func<TFailure2, TOutput> onFailure2Func, Func<TFailure3, TOutput> onFailure3Func, Func<TFailure4, TOutput> onFailure4Func)
@@ -312,12 +376,28 @@ namespace GenericDataStructures
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>(TFailure5 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>(value);
 
-        public void OnSuccess(Action<TSuccess> action)
+        public bool TryGetSuccessValue(out TSuccess successValue)
         {
             if (IsSuccess)
             {
-                action((TSuccess)_value);
+                successValue = (TSuccess)_value;
+                return true;
             }
+
+            successValue = default(TSuccess);
+            return false;
+        }
+
+        public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
+        {
+            if (IsSuccess)
+            {
+                mappedValue = onSuccessFunc((TSuccess)_value);
+                return true;
+            }
+
+            mappedValue = default(TOutput);
+            return false;
         }
 
         public TOutput Map<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func, Func<TFailure2, TOutput> onFailure2Func, Func<TFailure3, TOutput> onFailure3Func, Func<TFailure4, TOutput> onFailure4Func, Func<TFailure5, TOutput> onFailure5Func)
@@ -409,12 +489,28 @@ namespace GenericDataStructures
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>(TFailure6 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>(value);
 
-        public void OnSuccess(Action<TSuccess> action)
+        public bool TryGetSuccessValue(out TSuccess successValue)
         {
             if (IsSuccess)
             {
-                action((TSuccess)_value);
+                successValue = (TSuccess)_value;
+                return true;
             }
+
+            successValue = default(TSuccess);
+            return false;
+        }
+
+        public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
+        {
+            if (IsSuccess)
+            {
+                mappedValue = onSuccessFunc((TSuccess)_value);
+                return true;
+            }
+
+            mappedValue = default(TOutput);
+            return false;
         }
 
         public TOutput Map<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func, Func<TFailure2, TOutput> onFailure2Func, Func<TFailure3, TOutput> onFailure3Func, Func<TFailure4, TOutput> onFailure4Func, Func<TFailure5, TOutput> onFailure5Func, Func<TFailure6, TOutput> onFailure6Func)
@@ -516,12 +612,28 @@ namespace GenericDataStructures
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>(TFailure7 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>(value);
 
-        public void OnSuccess(Action<TSuccess> action)
+        public bool TryGetSuccessValue(out TSuccess successValue)
         {
             if (IsSuccess)
             {
-                action((TSuccess)_value);
+                successValue = (TSuccess)_value;
+                return true;
             }
+
+            successValue = default(TSuccess);
+            return false;
+        }
+
+        public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
+        {
+            if (IsSuccess)
+            {
+                mappedValue = onSuccessFunc((TSuccess)_value);
+                return true;
+            }
+
+            mappedValue = default(TOutput);
+            return false;
         }
 
         public TOutput Map<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func, Func<TFailure2, TOutput> onFailure2Func, Func<TFailure3, TOutput> onFailure3Func, Func<TFailure4, TOutput> onFailure4Func, Func<TFailure5, TOutput> onFailure5Func, Func<TFailure6, TOutput> onFailure6Func, Func<TFailure7, TOutput> onFailure7Func)
@@ -633,12 +745,28 @@ namespace GenericDataStructures
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>(TFailure8 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>(value);
 
-        public void OnSuccess(Action<TSuccess> action)
+        public bool TryGetSuccessValue(out TSuccess successValue)
         {
             if (IsSuccess)
             {
-                action((TSuccess)_value);
+                successValue = (TSuccess)_value;
+                return true;
             }
+
+            successValue = default(TSuccess);
+            return false;
+        }
+
+        public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
+        {
+            if (IsSuccess)
+            {
+                mappedValue = onSuccessFunc((TSuccess)_value);
+                return true;
+            }
+
+            mappedValue = default(TOutput);
+            return false;
         }
 
         public TOutput Map<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, Func<TFailure1, TOutput> onFailure1Func, Func<TFailure2, TOutput> onFailure2Func, Func<TFailure3, TOutput> onFailure3Func, Func<TFailure4, TOutput> onFailure4Func, Func<TFailure5, TOutput> onFailure5Func, Func<TFailure6, TOutput> onFailure6Func, Func<TFailure7, TOutput> onFailure7Func, Func<TFailure8, TOutput> onFailure8Func)
