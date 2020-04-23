@@ -1,5 +1,9 @@
-﻿using System;
+﻿#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+#nullable disable warnings
+#endif
+using System;
 using JetBrains.Annotations;
+using NotNullAttribute = JetBrains.Annotations.NotNullAttribute;
 
 namespace GenericDataStructures
 {
@@ -16,7 +20,7 @@ namespace GenericDataStructures
 
         public static implicit operator Union<T1>(T1 value) => new Union<T1>(value);
 
-        public TOutput Map<TOutput>([InstantHandle]Func<T1, TOutput> onT1Func)
+        public TOutput Map<TOutput>([InstantHandle][NotNull]Func<T1, TOutput> onT1Func)
         {
             switch (_typeIndex)
             {
@@ -25,7 +29,7 @@ namespace GenericDataStructures
             }
         }
 
-        public void Switch([InstantHandle]Action<T1> onT1Action)
+        public void Switch([InstantHandle][NotNull]Action<T1> onT1Action)
         {
             switch (_typeIndex)
             {
@@ -74,7 +78,7 @@ namespace GenericDataStructures
 
         public static implicit operator Union<T1, T2>(T2 value) => new Union<T1, T2>(value);
 
-        public TOutput Map<TOutput>([InstantHandle]Func<T1, TOutput> onT1Func, [InstantHandle]Func<T2, TOutput> onT2Func)
+        public TOutput Map<TOutput>([InstantHandle][NotNull]Func<T1, TOutput> onT1Func, [InstantHandle][NotNull]Func<T2, TOutput> onT2Func)
         {
             switch (_typeIndex)
             {
@@ -84,7 +88,7 @@ namespace GenericDataStructures
             }
         }
 
-        public void Switch([InstantHandle]Action<T1> onT1Action, [InstantHandle]Action<T2> onT2Action)
+        public void Switch([InstantHandle][NotNull]Action<T1> onT1Action, [InstantHandle][NotNull]Action<T2> onT2Action)
         {
             switch (_typeIndex)
             {
@@ -142,7 +146,7 @@ namespace GenericDataStructures
 
         public static implicit operator Union<T1, T2, T3>(T3 value) => new Union<T1, T2, T3>(value);
 
-        public TOutput Map<TOutput>([InstantHandle]Func<T1, TOutput> onT1Func, [InstantHandle]Func<T2, TOutput> onT2Func, [InstantHandle]Func<T3, TOutput> onT3Func)
+        public TOutput Map<TOutput>([InstantHandle][NotNull]Func<T1, TOutput> onT1Func, [InstantHandle][NotNull]Func<T2, TOutput> onT2Func, [InstantHandle][NotNull]Func<T3, TOutput> onT3Func)
         {
             switch (_typeIndex)
             {
@@ -153,7 +157,7 @@ namespace GenericDataStructures
             }
         }
 
-        public void Switch([InstantHandle]Action<T1> onT1Action, [InstantHandle]Action<T2> onT2Action, [InstantHandle]Action<T3> onT3Action)
+        public void Switch([InstantHandle][NotNull]Action<T1> onT1Action, [InstantHandle][NotNull]Action<T2> onT2Action, [InstantHandle][NotNull]Action<T3> onT3Action)
         {
             switch (_typeIndex)
             {
@@ -220,7 +224,7 @@ namespace GenericDataStructures
 
         public static implicit operator Union<T1, T2, T3, T4>(T4 value) => new Union<T1, T2, T3, T4>(value);
 
-        public TOutput Map<TOutput>([InstantHandle]Func<T1, TOutput> onT1Func, [InstantHandle]Func<T2, TOutput> onT2Func, [InstantHandle]Func<T3, TOutput> onT3Func, [InstantHandle]Func<T4, TOutput> onT4Func)
+        public TOutput Map<TOutput>([InstantHandle][NotNull]Func<T1, TOutput> onT1Func, [InstantHandle][NotNull]Func<T2, TOutput> onT2Func, [InstantHandle][NotNull]Func<T3, TOutput> onT3Func, [InstantHandle][NotNull]Func<T4, TOutput> onT4Func)
         {
             switch (_typeIndex)
             {
@@ -232,7 +236,7 @@ namespace GenericDataStructures
             }
         }
 
-        public void Switch([InstantHandle]Action<T1> onT1Action, [InstantHandle]Action<T2> onT2Action, [InstantHandle]Action<T3> onT3Action, [InstantHandle]Action<T4> onT4Action)
+        public void Switch([InstantHandle][NotNull]Action<T1> onT1Action, [InstantHandle][NotNull]Action<T2> onT2Action, [InstantHandle][NotNull]Action<T3> onT3Action, [InstantHandle][NotNull]Action<T4> onT4Action)
         {
             switch (_typeIndex)
             {
@@ -308,7 +312,7 @@ namespace GenericDataStructures
 
         public static implicit operator Union<T1, T2, T3, T4, T5>(T5 value) => new Union<T1, T2, T3, T4, T5>(value);
 
-        public TOutput Map<TOutput>([InstantHandle]Func<T1, TOutput> onT1Func, [InstantHandle]Func<T2, TOutput> onT2Func, [InstantHandle]Func<T3, TOutput> onT3Func, [InstantHandle]Func<T4, TOutput> onT4Func, [InstantHandle]Func<T5, TOutput> onT5Func)
+        public TOutput Map<TOutput>([InstantHandle][NotNull]Func<T1, TOutput> onT1Func, [InstantHandle][NotNull]Func<T2, TOutput> onT2Func, [InstantHandle][NotNull]Func<T3, TOutput> onT3Func, [InstantHandle][NotNull]Func<T4, TOutput> onT4Func, [InstantHandle][NotNull]Func<T5, TOutput> onT5Func)
         {
             switch (_typeIndex)
             {
@@ -321,7 +325,7 @@ namespace GenericDataStructures
             }
         }
 
-        public void Switch([InstantHandle]Action<T1> onT1Action, [InstantHandle]Action<T2> onT2Action, [InstantHandle]Action<T3> onT3Action, [InstantHandle]Action<T4> onT4Action, [InstantHandle]Action<T5> onT5Action)
+        public void Switch([InstantHandle][NotNull]Action<T1> onT1Action, [InstantHandle][NotNull]Action<T2> onT2Action, [InstantHandle][NotNull]Action<T3> onT3Action, [InstantHandle][NotNull]Action<T4> onT4Action, [InstantHandle][NotNull]Action<T5> onT5Action)
         {
             switch (_typeIndex)
             {
@@ -406,7 +410,7 @@ namespace GenericDataStructures
 
         public static implicit operator Union<T1, T2, T3, T4, T5, T6>(T6 value) => new Union<T1, T2, T3, T4, T5, T6>(value);
 
-        public TOutput Map<TOutput>([InstantHandle]Func<T1, TOutput> onT1Func, [InstantHandle]Func<T2, TOutput> onT2Func, [InstantHandle]Func<T3, TOutput> onT3Func, [InstantHandle]Func<T4, TOutput> onT4Func, [InstantHandle]Func<T5, TOutput> onT5Func, [InstantHandle]Func<T6, TOutput> onT6Func)
+        public TOutput Map<TOutput>([InstantHandle][NotNull]Func<T1, TOutput> onT1Func, [InstantHandle][NotNull]Func<T2, TOutput> onT2Func, [InstantHandle][NotNull]Func<T3, TOutput> onT3Func, [InstantHandle][NotNull]Func<T4, TOutput> onT4Func, [InstantHandle][NotNull]Func<T5, TOutput> onT5Func, [InstantHandle][NotNull]Func<T6, TOutput> onT6Func)
         {
             switch (_typeIndex)
             {
@@ -420,7 +424,7 @@ namespace GenericDataStructures
             }
         }
 
-        public void Switch([InstantHandle]Action<T1> onT1Action, [InstantHandle]Action<T2> onT2Action, [InstantHandle]Action<T3> onT3Action, [InstantHandle]Action<T4> onT4Action, [InstantHandle]Action<T5> onT5Action, [InstantHandle]Action<T6> onT6Action)
+        public void Switch([InstantHandle][NotNull]Action<T1> onT1Action, [InstantHandle][NotNull]Action<T2> onT2Action, [InstantHandle][NotNull]Action<T3> onT3Action, [InstantHandle][NotNull]Action<T4> onT4Action, [InstantHandle][NotNull]Action<T5> onT5Action, [InstantHandle][NotNull]Action<T6> onT6Action)
         {
             switch (_typeIndex)
             {
@@ -514,7 +518,7 @@ namespace GenericDataStructures
 
         public static implicit operator Union<T1, T2, T3, T4, T5, T6, T7>(T7 value) => new Union<T1, T2, T3, T4, T5, T6, T7>(value);
 
-        public TOutput Map<TOutput>([InstantHandle]Func<T1, TOutput> onT1Func, [InstantHandle]Func<T2, TOutput> onT2Func, [InstantHandle]Func<T3, TOutput> onT3Func, [InstantHandle]Func<T4, TOutput> onT4Func, [InstantHandle]Func<T5, TOutput> onT5Func, [InstantHandle]Func<T6, TOutput> onT6Func, [InstantHandle]Func<T7, TOutput> onT7Func)
+        public TOutput Map<TOutput>([InstantHandle][NotNull]Func<T1, TOutput> onT1Func, [InstantHandle][NotNull]Func<T2, TOutput> onT2Func, [InstantHandle][NotNull]Func<T3, TOutput> onT3Func, [InstantHandle][NotNull]Func<T4, TOutput> onT4Func, [InstantHandle][NotNull]Func<T5, TOutput> onT5Func, [InstantHandle][NotNull]Func<T6, TOutput> onT6Func, [InstantHandle][NotNull]Func<T7, TOutput> onT7Func)
         {
             switch (_typeIndex)
             {
@@ -529,7 +533,7 @@ namespace GenericDataStructures
             }
         }
 
-        public void Switch([InstantHandle]Action<T1> onT1Action, [InstantHandle]Action<T2> onT2Action, [InstantHandle]Action<T3> onT3Action, [InstantHandle]Action<T4> onT4Action, [InstantHandle]Action<T5> onT5Action, [InstantHandle]Action<T6> onT6Action, [InstantHandle]Action<T7> onT7Action)
+        public void Switch([InstantHandle][NotNull]Action<T1> onT1Action, [InstantHandle][NotNull]Action<T2> onT2Action, [InstantHandle][NotNull]Action<T3> onT3Action, [InstantHandle][NotNull]Action<T4> onT4Action, [InstantHandle][NotNull]Action<T5> onT5Action, [InstantHandle][NotNull]Action<T6> onT6Action, [InstantHandle][NotNull]Action<T7> onT7Action)
         {
             switch (_typeIndex)
             {
@@ -632,7 +636,7 @@ namespace GenericDataStructures
 
         public static implicit operator Union<T1, T2, T3, T4, T5, T6, T7, T8>(T8 value) => new Union<T1, T2, T3, T4, T5, T6, T7, T8>(value);
 
-        public TOutput Map<TOutput>([InstantHandle]Func<T1, TOutput> onT1Func, [InstantHandle]Func<T2, TOutput> onT2Func, [InstantHandle]Func<T3, TOutput> onT3Func, [InstantHandle]Func<T4, TOutput> onT4Func, [InstantHandle]Func<T5, TOutput> onT5Func, [InstantHandle]Func<T6, TOutput> onT6Func, [InstantHandle]Func<T7, TOutput> onT7Func, [InstantHandle]Func<T8, TOutput> onT8Func)
+        public TOutput Map<TOutput>([InstantHandle][NotNull]Func<T1, TOutput> onT1Func, [InstantHandle][NotNull]Func<T2, TOutput> onT2Func, [InstantHandle][NotNull]Func<T3, TOutput> onT3Func, [InstantHandle][NotNull]Func<T4, TOutput> onT4Func, [InstantHandle][NotNull]Func<T5, TOutput> onT5Func, [InstantHandle][NotNull]Func<T6, TOutput> onT6Func, [InstantHandle][NotNull]Func<T7, TOutput> onT7Func, [InstantHandle][NotNull]Func<T8, TOutput> onT8Func)
         {
             switch (_typeIndex)
             {
@@ -648,7 +652,7 @@ namespace GenericDataStructures
             }
         }
 
-        public void Switch([InstantHandle]Action<T1> onT1Action, [InstantHandle]Action<T2> onT2Action, [InstantHandle]Action<T3> onT3Action, [InstantHandle]Action<T4> onT4Action, [InstantHandle]Action<T5> onT5Action, [InstantHandle]Action<T6> onT6Action, [InstantHandle]Action<T7> onT7Action, [InstantHandle]Action<T8> onT8Action)
+        public void Switch([InstantHandle][NotNull]Action<T1> onT1Action, [InstantHandle][NotNull]Action<T2> onT2Action, [InstantHandle][NotNull]Action<T3> onT3Action, [InstantHandle][NotNull]Action<T4> onT4Action, [InstantHandle][NotNull]Action<T5> onT5Action, [InstantHandle][NotNull]Action<T6> onT6Action, [InstantHandle][NotNull]Action<T7> onT7Action, [InstantHandle][NotNull]Action<T8> onT8Action)
         {
             switch (_typeIndex)
             {

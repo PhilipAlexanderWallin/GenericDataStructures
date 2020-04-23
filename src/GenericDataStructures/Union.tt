@@ -4,8 +4,12 @@
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
 <#@ output extension=".cs" #>
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+#nullable disable warnings
+#endif
 using System;
 using JetBrains.Annotations;
+using NotNullAttribute = JetBrains.Annotations.NotNullAttribute;
 
 namespace GenericDataStructures
 {
@@ -39,7 +43,7 @@ namespace GenericDataStructures
 <#
     }
 #>
-        public TOutput Map<TOutput>(<# Write(string.Join(", ", Enumerable.Range(1, types).Select(number => $"[InstantHandle]Func<T{number}, TOutput> onT{number}Func"))); #>)
+        public TOutput Map<TOutput>(<# Write(string.Join(", ", Enumerable.Range(1, types).Select(number => $"[InstantHandle][NotNull]Func<T{number}, TOutput> onT{number}Func"))); #>)
         {
             switch (_typeIndex)
             {
@@ -55,7 +59,7 @@ namespace GenericDataStructures
             }
         }
 
-        public void Switch(<# Write(string.Join(", ", Enumerable.Range(1, types).Select(number => $"[InstantHandle]Action<T{number}> onT{number}Action"))); #>)
+        public void Switch(<# Write(string.Join(", ", Enumerable.Range(1, types).Select(number => $"[InstantHandle][NotNull]Action<T{number}> onT{number}Action"))); #>)
         {
             switch (_typeIndex)
             {

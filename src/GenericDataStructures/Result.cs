@@ -1,8 +1,12 @@
-﻿using System;
+﻿#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+#nullable disable warnings
+#endif
+using System;
 #if NULLABLE_REFERENCE_TYPES_SUPPORTED
 using System.Diagnostics.CodeAnalysis;
 #endif
 using JetBrains.Annotations;
+using NotNullAttribute = JetBrains.Annotations.NotNullAttribute;
 
 namespace GenericDataStructures
 {
@@ -45,9 +49,9 @@ namespace GenericDataStructures
         }
 
 #if NULLABLE_REFERENCE_TYPES_SUPPORTED
-        public bool TryMap<TOutput>([InstantHandle]Func<TSuccess, TOutput> onSuccessFunc, [MaybeNullWhen(false)] out TOutput mappedValue)
+        public bool TryMap<TOutput>([InstantHandle][NotNull]Func<TSuccess, TOutput> onSuccessFunc, [MaybeNullWhen(false)] out TOutput mappedValue)
 #else
-        public bool TryMap<TOutput>([InstantHandle]Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
+        public bool TryMap<TOutput>([InstantHandle][NotNull]Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
 #endif
         {
             if (IsSuccess)
@@ -60,7 +64,7 @@ namespace GenericDataStructures
             return false;
         }
 
-        public TOutput Map<TOutput>([InstantHandle]Func<TSuccess, TOutput> onSuccessFunc, [InstantHandle]Func<TFailure1, TOutput> onFailure1Func)
+        public TOutput Map<TOutput>([InstantHandle][NotNull]Func<TSuccess, TOutput> onSuccessFunc, [InstantHandle][NotNull]Func<TFailure1, TOutput> onFailure1Func)
         {
             switch (_failureTypeIndex)
             {
@@ -69,7 +73,7 @@ namespace GenericDataStructures
             }
         }
 
-        public void Switch([InstantHandle]Action<TSuccess> onSuccessAction, [InstantHandle]Action<TFailure1> onFailure1Action)
+        public void Switch([InstantHandle][NotNull]Action<TSuccess> onSuccessAction, [InstantHandle][NotNull]Action<TFailure1> onFailure1Action)
         {
             switch (_failureTypeIndex)
             {
@@ -144,9 +148,9 @@ namespace GenericDataStructures
         }
 
 #if NULLABLE_REFERENCE_TYPES_SUPPORTED
-        public bool TryMap<TOutput>([InstantHandle]Func<TSuccess, TOutput> onSuccessFunc, [MaybeNullWhen(false)] out TOutput mappedValue)
+        public bool TryMap<TOutput>([InstantHandle][NotNull]Func<TSuccess, TOutput> onSuccessFunc, [MaybeNullWhen(false)] out TOutput mappedValue)
 #else
-        public bool TryMap<TOutput>([InstantHandle]Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
+        public bool TryMap<TOutput>([InstantHandle][NotNull]Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
 #endif
         {
             if (IsSuccess)
@@ -159,7 +163,7 @@ namespace GenericDataStructures
             return false;
         }
 
-        public TOutput Map<TOutput>([InstantHandle]Func<TSuccess, TOutput> onSuccessFunc, [InstantHandle]Func<TFailure1, TOutput> onFailure1Func, [InstantHandle]Func<TFailure2, TOutput> onFailure2Func)
+        public TOutput Map<TOutput>([InstantHandle][NotNull]Func<TSuccess, TOutput> onSuccessFunc, [InstantHandle][NotNull]Func<TFailure1, TOutput> onFailure1Func, [InstantHandle][NotNull]Func<TFailure2, TOutput> onFailure2Func)
         {
             switch (_failureTypeIndex)
             {
@@ -169,7 +173,7 @@ namespace GenericDataStructures
             }
         }
 
-        public void Switch([InstantHandle]Action<TSuccess> onSuccessAction, [InstantHandle]Action<TFailure1> onFailure1Action, [InstantHandle]Action<TFailure2> onFailure2Action)
+        public void Switch([InstantHandle][NotNull]Action<TSuccess> onSuccessAction, [InstantHandle][NotNull]Action<TFailure1> onFailure1Action, [InstantHandle][NotNull]Action<TFailure2> onFailure2Action)
         {
             switch (_failureTypeIndex)
             {
@@ -253,9 +257,9 @@ namespace GenericDataStructures
         }
 
 #if NULLABLE_REFERENCE_TYPES_SUPPORTED
-        public bool TryMap<TOutput>([InstantHandle]Func<TSuccess, TOutput> onSuccessFunc, [MaybeNullWhen(false)] out TOutput mappedValue)
+        public bool TryMap<TOutput>([InstantHandle][NotNull]Func<TSuccess, TOutput> onSuccessFunc, [MaybeNullWhen(false)] out TOutput mappedValue)
 #else
-        public bool TryMap<TOutput>([InstantHandle]Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
+        public bool TryMap<TOutput>([InstantHandle][NotNull]Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
 #endif
         {
             if (IsSuccess)
@@ -268,7 +272,7 @@ namespace GenericDataStructures
             return false;
         }
 
-        public TOutput Map<TOutput>([InstantHandle]Func<TSuccess, TOutput> onSuccessFunc, [InstantHandle]Func<TFailure1, TOutput> onFailure1Func, [InstantHandle]Func<TFailure2, TOutput> onFailure2Func, [InstantHandle]Func<TFailure3, TOutput> onFailure3Func)
+        public TOutput Map<TOutput>([InstantHandle][NotNull]Func<TSuccess, TOutput> onSuccessFunc, [InstantHandle][NotNull]Func<TFailure1, TOutput> onFailure1Func, [InstantHandle][NotNull]Func<TFailure2, TOutput> onFailure2Func, [InstantHandle][NotNull]Func<TFailure3, TOutput> onFailure3Func)
         {
             switch (_failureTypeIndex)
             {
@@ -279,7 +283,7 @@ namespace GenericDataStructures
             }
         }
 
-        public void Switch([InstantHandle]Action<TSuccess> onSuccessAction, [InstantHandle]Action<TFailure1> onFailure1Action, [InstantHandle]Action<TFailure2> onFailure2Action, [InstantHandle]Action<TFailure3> onFailure3Action)
+        public void Switch([InstantHandle][NotNull]Action<TSuccess> onSuccessAction, [InstantHandle][NotNull]Action<TFailure1> onFailure1Action, [InstantHandle][NotNull]Action<TFailure2> onFailure2Action, [InstantHandle][NotNull]Action<TFailure3> onFailure3Action)
         {
             switch (_failureTypeIndex)
             {
@@ -372,9 +376,9 @@ namespace GenericDataStructures
         }
 
 #if NULLABLE_REFERENCE_TYPES_SUPPORTED
-        public bool TryMap<TOutput>([InstantHandle]Func<TSuccess, TOutput> onSuccessFunc, [MaybeNullWhen(false)] out TOutput mappedValue)
+        public bool TryMap<TOutput>([InstantHandle][NotNull]Func<TSuccess, TOutput> onSuccessFunc, [MaybeNullWhen(false)] out TOutput mappedValue)
 #else
-        public bool TryMap<TOutput>([InstantHandle]Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
+        public bool TryMap<TOutput>([InstantHandle][NotNull]Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
 #endif
         {
             if (IsSuccess)
@@ -387,7 +391,7 @@ namespace GenericDataStructures
             return false;
         }
 
-        public TOutput Map<TOutput>([InstantHandle]Func<TSuccess, TOutput> onSuccessFunc, [InstantHandle]Func<TFailure1, TOutput> onFailure1Func, [InstantHandle]Func<TFailure2, TOutput> onFailure2Func, [InstantHandle]Func<TFailure3, TOutput> onFailure3Func, [InstantHandle]Func<TFailure4, TOutput> onFailure4Func)
+        public TOutput Map<TOutput>([InstantHandle][NotNull]Func<TSuccess, TOutput> onSuccessFunc, [InstantHandle][NotNull]Func<TFailure1, TOutput> onFailure1Func, [InstantHandle][NotNull]Func<TFailure2, TOutput> onFailure2Func, [InstantHandle][NotNull]Func<TFailure3, TOutput> onFailure3Func, [InstantHandle][NotNull]Func<TFailure4, TOutput> onFailure4Func)
         {
             switch (_failureTypeIndex)
             {
@@ -399,7 +403,7 @@ namespace GenericDataStructures
             }
         }
 
-        public void Switch([InstantHandle]Action<TSuccess> onSuccessAction, [InstantHandle]Action<TFailure1> onFailure1Action, [InstantHandle]Action<TFailure2> onFailure2Action, [InstantHandle]Action<TFailure3> onFailure3Action, [InstantHandle]Action<TFailure4> onFailure4Action)
+        public void Switch([InstantHandle][NotNull]Action<TSuccess> onSuccessAction, [InstantHandle][NotNull]Action<TFailure1> onFailure1Action, [InstantHandle][NotNull]Action<TFailure2> onFailure2Action, [InstantHandle][NotNull]Action<TFailure3> onFailure3Action, [InstantHandle][NotNull]Action<TFailure4> onFailure4Action)
         {
             switch (_failureTypeIndex)
             {
@@ -501,9 +505,9 @@ namespace GenericDataStructures
         }
 
 #if NULLABLE_REFERENCE_TYPES_SUPPORTED
-        public bool TryMap<TOutput>([InstantHandle]Func<TSuccess, TOutput> onSuccessFunc, [MaybeNullWhen(false)] out TOutput mappedValue)
+        public bool TryMap<TOutput>([InstantHandle][NotNull]Func<TSuccess, TOutput> onSuccessFunc, [MaybeNullWhen(false)] out TOutput mappedValue)
 #else
-        public bool TryMap<TOutput>([InstantHandle]Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
+        public bool TryMap<TOutput>([InstantHandle][NotNull]Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
 #endif
         {
             if (IsSuccess)
@@ -516,7 +520,7 @@ namespace GenericDataStructures
             return false;
         }
 
-        public TOutput Map<TOutput>([InstantHandle]Func<TSuccess, TOutput> onSuccessFunc, [InstantHandle]Func<TFailure1, TOutput> onFailure1Func, [InstantHandle]Func<TFailure2, TOutput> onFailure2Func, [InstantHandle]Func<TFailure3, TOutput> onFailure3Func, [InstantHandle]Func<TFailure4, TOutput> onFailure4Func, [InstantHandle]Func<TFailure5, TOutput> onFailure5Func)
+        public TOutput Map<TOutput>([InstantHandle][NotNull]Func<TSuccess, TOutput> onSuccessFunc, [InstantHandle][NotNull]Func<TFailure1, TOutput> onFailure1Func, [InstantHandle][NotNull]Func<TFailure2, TOutput> onFailure2Func, [InstantHandle][NotNull]Func<TFailure3, TOutput> onFailure3Func, [InstantHandle][NotNull]Func<TFailure4, TOutput> onFailure4Func, [InstantHandle][NotNull]Func<TFailure5, TOutput> onFailure5Func)
         {
             switch (_failureTypeIndex)
             {
@@ -529,7 +533,7 @@ namespace GenericDataStructures
             }
         }
 
-        public void Switch([InstantHandle]Action<TSuccess> onSuccessAction, [InstantHandle]Action<TFailure1> onFailure1Action, [InstantHandle]Action<TFailure2> onFailure2Action, [InstantHandle]Action<TFailure3> onFailure3Action, [InstantHandle]Action<TFailure4> onFailure4Action, [InstantHandle]Action<TFailure5> onFailure5Action)
+        public void Switch([InstantHandle][NotNull]Action<TSuccess> onSuccessAction, [InstantHandle][NotNull]Action<TFailure1> onFailure1Action, [InstantHandle][NotNull]Action<TFailure2> onFailure2Action, [InstantHandle][NotNull]Action<TFailure3> onFailure3Action, [InstantHandle][NotNull]Action<TFailure4> onFailure4Action, [InstantHandle][NotNull]Action<TFailure5> onFailure5Action)
         {
             switch (_failureTypeIndex)
             {
@@ -640,9 +644,9 @@ namespace GenericDataStructures
         }
 
 #if NULLABLE_REFERENCE_TYPES_SUPPORTED
-        public bool TryMap<TOutput>([InstantHandle]Func<TSuccess, TOutput> onSuccessFunc, [MaybeNullWhen(false)] out TOutput mappedValue)
+        public bool TryMap<TOutput>([InstantHandle][NotNull]Func<TSuccess, TOutput> onSuccessFunc, [MaybeNullWhen(false)] out TOutput mappedValue)
 #else
-        public bool TryMap<TOutput>([InstantHandle]Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
+        public bool TryMap<TOutput>([InstantHandle][NotNull]Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
 #endif
         {
             if (IsSuccess)
@@ -655,7 +659,7 @@ namespace GenericDataStructures
             return false;
         }
 
-        public TOutput Map<TOutput>([InstantHandle]Func<TSuccess, TOutput> onSuccessFunc, [InstantHandle]Func<TFailure1, TOutput> onFailure1Func, [InstantHandle]Func<TFailure2, TOutput> onFailure2Func, [InstantHandle]Func<TFailure3, TOutput> onFailure3Func, [InstantHandle]Func<TFailure4, TOutput> onFailure4Func, [InstantHandle]Func<TFailure5, TOutput> onFailure5Func, [InstantHandle]Func<TFailure6, TOutput> onFailure6Func)
+        public TOutput Map<TOutput>([InstantHandle][NotNull]Func<TSuccess, TOutput> onSuccessFunc, [InstantHandle][NotNull]Func<TFailure1, TOutput> onFailure1Func, [InstantHandle][NotNull]Func<TFailure2, TOutput> onFailure2Func, [InstantHandle][NotNull]Func<TFailure3, TOutput> onFailure3Func, [InstantHandle][NotNull]Func<TFailure4, TOutput> onFailure4Func, [InstantHandle][NotNull]Func<TFailure5, TOutput> onFailure5Func, [InstantHandle][NotNull]Func<TFailure6, TOutput> onFailure6Func)
         {
             switch (_failureTypeIndex)
             {
@@ -669,7 +673,7 @@ namespace GenericDataStructures
             }
         }
 
-        public void Switch([InstantHandle]Action<TSuccess> onSuccessAction, [InstantHandle]Action<TFailure1> onFailure1Action, [InstantHandle]Action<TFailure2> onFailure2Action, [InstantHandle]Action<TFailure3> onFailure3Action, [InstantHandle]Action<TFailure4> onFailure4Action, [InstantHandle]Action<TFailure5> onFailure5Action, [InstantHandle]Action<TFailure6> onFailure6Action)
+        public void Switch([InstantHandle][NotNull]Action<TSuccess> onSuccessAction, [InstantHandle][NotNull]Action<TFailure1> onFailure1Action, [InstantHandle][NotNull]Action<TFailure2> onFailure2Action, [InstantHandle][NotNull]Action<TFailure3> onFailure3Action, [InstantHandle][NotNull]Action<TFailure4> onFailure4Action, [InstantHandle][NotNull]Action<TFailure5> onFailure5Action, [InstantHandle][NotNull]Action<TFailure6> onFailure6Action)
         {
             switch (_failureTypeIndex)
             {
@@ -789,9 +793,9 @@ namespace GenericDataStructures
         }
 
 #if NULLABLE_REFERENCE_TYPES_SUPPORTED
-        public bool TryMap<TOutput>([InstantHandle]Func<TSuccess, TOutput> onSuccessFunc, [MaybeNullWhen(false)] out TOutput mappedValue)
+        public bool TryMap<TOutput>([InstantHandle][NotNull]Func<TSuccess, TOutput> onSuccessFunc, [MaybeNullWhen(false)] out TOutput mappedValue)
 #else
-        public bool TryMap<TOutput>([InstantHandle]Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
+        public bool TryMap<TOutput>([InstantHandle][NotNull]Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
 #endif
         {
             if (IsSuccess)
@@ -804,7 +808,7 @@ namespace GenericDataStructures
             return false;
         }
 
-        public TOutput Map<TOutput>([InstantHandle]Func<TSuccess, TOutput> onSuccessFunc, [InstantHandle]Func<TFailure1, TOutput> onFailure1Func, [InstantHandle]Func<TFailure2, TOutput> onFailure2Func, [InstantHandle]Func<TFailure3, TOutput> onFailure3Func, [InstantHandle]Func<TFailure4, TOutput> onFailure4Func, [InstantHandle]Func<TFailure5, TOutput> onFailure5Func, [InstantHandle]Func<TFailure6, TOutput> onFailure6Func, [InstantHandle]Func<TFailure7, TOutput> onFailure7Func)
+        public TOutput Map<TOutput>([InstantHandle][NotNull]Func<TSuccess, TOutput> onSuccessFunc, [InstantHandle][NotNull]Func<TFailure1, TOutput> onFailure1Func, [InstantHandle][NotNull]Func<TFailure2, TOutput> onFailure2Func, [InstantHandle][NotNull]Func<TFailure3, TOutput> onFailure3Func, [InstantHandle][NotNull]Func<TFailure4, TOutput> onFailure4Func, [InstantHandle][NotNull]Func<TFailure5, TOutput> onFailure5Func, [InstantHandle][NotNull]Func<TFailure6, TOutput> onFailure6Func, [InstantHandle][NotNull]Func<TFailure7, TOutput> onFailure7Func)
         {
             switch (_failureTypeIndex)
             {
@@ -819,7 +823,7 @@ namespace GenericDataStructures
             }
         }
 
-        public void Switch([InstantHandle]Action<TSuccess> onSuccessAction, [InstantHandle]Action<TFailure1> onFailure1Action, [InstantHandle]Action<TFailure2> onFailure2Action, [InstantHandle]Action<TFailure3> onFailure3Action, [InstantHandle]Action<TFailure4> onFailure4Action, [InstantHandle]Action<TFailure5> onFailure5Action, [InstantHandle]Action<TFailure6> onFailure6Action, [InstantHandle]Action<TFailure7> onFailure7Action)
+        public void Switch([InstantHandle][NotNull]Action<TSuccess> onSuccessAction, [InstantHandle][NotNull]Action<TFailure1> onFailure1Action, [InstantHandle][NotNull]Action<TFailure2> onFailure2Action, [InstantHandle][NotNull]Action<TFailure3> onFailure3Action, [InstantHandle][NotNull]Action<TFailure4> onFailure4Action, [InstantHandle][NotNull]Action<TFailure5> onFailure5Action, [InstantHandle][NotNull]Action<TFailure6> onFailure6Action, [InstantHandle][NotNull]Action<TFailure7> onFailure7Action)
         {
             switch (_failureTypeIndex)
             {
@@ -948,9 +952,9 @@ namespace GenericDataStructures
         }
 
 #if NULLABLE_REFERENCE_TYPES_SUPPORTED
-        public bool TryMap<TOutput>([InstantHandle]Func<TSuccess, TOutput> onSuccessFunc, [MaybeNullWhen(false)] out TOutput mappedValue)
+        public bool TryMap<TOutput>([InstantHandle][NotNull]Func<TSuccess, TOutput> onSuccessFunc, [MaybeNullWhen(false)] out TOutput mappedValue)
 #else
-        public bool TryMap<TOutput>([InstantHandle]Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
+        public bool TryMap<TOutput>([InstantHandle][NotNull]Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
 #endif
         {
             if (IsSuccess)
@@ -963,7 +967,7 @@ namespace GenericDataStructures
             return false;
         }
 
-        public TOutput Map<TOutput>([InstantHandle]Func<TSuccess, TOutput> onSuccessFunc, [InstantHandle]Func<TFailure1, TOutput> onFailure1Func, [InstantHandle]Func<TFailure2, TOutput> onFailure2Func, [InstantHandle]Func<TFailure3, TOutput> onFailure3Func, [InstantHandle]Func<TFailure4, TOutput> onFailure4Func, [InstantHandle]Func<TFailure5, TOutput> onFailure5Func, [InstantHandle]Func<TFailure6, TOutput> onFailure6Func, [InstantHandle]Func<TFailure7, TOutput> onFailure7Func, [InstantHandle]Func<TFailure8, TOutput> onFailure8Func)
+        public TOutput Map<TOutput>([InstantHandle][NotNull]Func<TSuccess, TOutput> onSuccessFunc, [InstantHandle][NotNull]Func<TFailure1, TOutput> onFailure1Func, [InstantHandle][NotNull]Func<TFailure2, TOutput> onFailure2Func, [InstantHandle][NotNull]Func<TFailure3, TOutput> onFailure3Func, [InstantHandle][NotNull]Func<TFailure4, TOutput> onFailure4Func, [InstantHandle][NotNull]Func<TFailure5, TOutput> onFailure5Func, [InstantHandle][NotNull]Func<TFailure6, TOutput> onFailure6Func, [InstantHandle][NotNull]Func<TFailure7, TOutput> onFailure7Func, [InstantHandle][NotNull]Func<TFailure8, TOutput> onFailure8Func)
         {
             switch (_failureTypeIndex)
             {
@@ -979,7 +983,7 @@ namespace GenericDataStructures
             }
         }
 
-        public void Switch([InstantHandle]Action<TSuccess> onSuccessAction, [InstantHandle]Action<TFailure1> onFailure1Action, [InstantHandle]Action<TFailure2> onFailure2Action, [InstantHandle]Action<TFailure3> onFailure3Action, [InstantHandle]Action<TFailure4> onFailure4Action, [InstantHandle]Action<TFailure5> onFailure5Action, [InstantHandle]Action<TFailure6> onFailure6Action, [InstantHandle]Action<TFailure7> onFailure7Action, [InstantHandle]Action<TFailure8> onFailure8Action)
+        public void Switch([InstantHandle][NotNull]Action<TSuccess> onSuccessAction, [InstantHandle][NotNull]Action<TFailure1> onFailure1Action, [InstantHandle][NotNull]Action<TFailure2> onFailure2Action, [InstantHandle][NotNull]Action<TFailure3> onFailure3Action, [InstantHandle][NotNull]Action<TFailure4> onFailure4Action, [InstantHandle][NotNull]Action<TFailure5> onFailure5Action, [InstantHandle][NotNull]Action<TFailure6> onFailure6Action, [InstantHandle][NotNull]Action<TFailure7> onFailure7Action, [InstantHandle][NotNull]Action<TFailure8> onFailure8Action)
         {
             switch (_failureTypeIndex)
             {
