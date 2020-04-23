@@ -8,6 +8,7 @@ using System;
 #if NULLABLE_REFERENCE_TYPES_SUPPORTED
 using System.Diagnostics.CodeAnalysis;
 #endif
+using JetBrains.Annotations;
 
 namespace GenericDataStructures
 {
@@ -68,9 +69,9 @@ namespace GenericDataStructures
         }
 
 #if NULLABLE_REFERENCE_TYPES_SUPPORTED
-        public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, [MaybeNullWhen(false)] out TOutput mappedValue)
+        public bool TryMap<TOutput>([InstantHandle]Func<TSuccess, TOutput> onSuccessFunc, [MaybeNullWhen(false)] out TOutput mappedValue)
 #else
-        public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
+        public bool TryMap<TOutput>([InstantHandle]Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
 #endif
         {
             if (IsSuccess)
@@ -83,7 +84,7 @@ namespace GenericDataStructures
             return false;
         }
 
-        public TOutput Map<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, <# Write(string.Join(", ", Enumerable.Range(1, failureTypes).Select(failureNumber => $"Func<TFailure{failureNumber}, TOutput> onFailure{failureNumber}Func"))); #>)
+        public TOutput Map<TOutput>([InstantHandle]Func<TSuccess, TOutput> onSuccessFunc, <# Write(string.Join(", ", Enumerable.Range(1, failureTypes).Select(failureNumber => $"[InstantHandle]Func<TFailure{failureNumber}, TOutput> onFailure{failureNumber}Func"))); #>)
         {
             switch (_failureTypeIndex)
             {
@@ -99,7 +100,7 @@ namespace GenericDataStructures
             }
         }
 
-        public void Switch(Action<TSuccess> onSuccessAction, <# Write(string.Join(", ", Enumerable.Range(1, failureTypes).Select(failureNumber => $"Action<TFailure{failureNumber}> onFailure{failureNumber}Action"))); #>)
+        public void Switch([InstantHandle]Action<TSuccess> onSuccessAction, <# Write(string.Join(", ", Enumerable.Range(1, failureTypes).Select(failureNumber => $"[InstantHandle]Action<TFailure{failureNumber}> onFailure{failureNumber}Action"))); #>)
         {
             switch (_failureTypeIndex)
             {
