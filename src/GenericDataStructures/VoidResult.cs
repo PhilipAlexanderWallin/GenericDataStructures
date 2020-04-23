@@ -9,6 +9,11 @@ namespace GenericDataStructures
         private VoidResult()
         {
         }
+
+        public override string ToString()
+        {
+            return "GenericDataStructures.VoidResult.Success";
+        }
     }
 
     public class VoidResult<TFailure1>
@@ -61,6 +66,11 @@ namespace GenericDataStructures
             {
                 return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
             }
+        }
+
+        public override string ToString()
+        {
+            return _failureTypeIndex != null ? (_value != null ? _value.ToString() : string.Empty) : VoidResult.Success.ToString();
         }
     }
 
@@ -124,6 +134,11 @@ namespace GenericDataStructures
             {
                 return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
             }
+        }
+
+        public override string ToString()
+        {
+            return _failureTypeIndex != null ? (_value != null ? _value.ToString() : string.Empty) : VoidResult.Success.ToString();
         }
     }
 
@@ -197,6 +212,11 @@ namespace GenericDataStructures
             {
                 return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
             }
+        }
+
+        public override string ToString()
+        {
+            return _failureTypeIndex != null ? (_value != null ? _value.ToString() : string.Empty) : VoidResult.Success.ToString();
         }
     }
 
@@ -280,6 +300,11 @@ namespace GenericDataStructures
             {
                 return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
             }
+        }
+
+        public override string ToString()
+        {
+            return _failureTypeIndex != null ? (_value != null ? _value.ToString() : string.Empty) : VoidResult.Success.ToString();
         }
     }
 
@@ -373,6 +398,11 @@ namespace GenericDataStructures
             {
                 return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
             }
+        }
+
+        public override string ToString()
+        {
+            return _failureTypeIndex != null ? (_value != null ? _value.ToString() : string.Empty) : VoidResult.Success.ToString();
         }
     }
 
@@ -476,6 +506,11 @@ namespace GenericDataStructures
             {
                 return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
             }
+        }
+
+        public override string ToString()
+        {
+            return _failureTypeIndex != null ? (_value != null ? _value.ToString() : string.Empty) : VoidResult.Success.ToString();
         }
     }
 
@@ -589,6 +624,11 @@ namespace GenericDataStructures
             {
                 return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
             }
+        }
+
+        public override string ToString()
+        {
+            return _failureTypeIndex != null ? (_value != null ? _value.ToString() : string.Empty) : VoidResult.Success.ToString();
         }
     }
 
@@ -712,6 +752,11 @@ namespace GenericDataStructures
             {
                 return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
             }
+        }
+
+        public override string ToString()
+        {
+            return _failureTypeIndex != null ? (_value != null ? _value.ToString() : string.Empty) : VoidResult.Success.ToString();
         }
     }
 }

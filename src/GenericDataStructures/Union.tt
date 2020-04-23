@@ -82,6 +82,11 @@ namespace GenericDataStructures
                 return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _typeIndex.GetHashCode();
             }
         }
+
+        public override string ToString()
+        {
+            return _value != null ? _value.ToString() : string.Empty;
+        }
     }
 <#
     if (types != GetNumberOfTypes())

@@ -337,6 +337,15 @@ namespace GenericDataStructures.Tests
             }
         }
 
+        [Test]
+        public void ToStringUsesUnderlyingValuesToStringMethod()
+        {
+            foreach (var (result, value, _) in AllResultsToTest())
+            {
+                Assert.AreEqual(value?.ToString() ?? string.Empty, result.ToString());
+            }
+        }
+
         private static object? GetDefaultValue(Type type)
         {
             return type.IsValueType ? Activator.CreateInstance(type) : null;

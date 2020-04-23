@@ -231,6 +231,15 @@ namespace GenericDataStructures.Tests
             }
         }
 
+        [Test]
+        public void ToStringUsesUnderlyingValuesToStringMethod()
+        {
+            foreach (var (voidResult, _, value, _) in AllVoidResultsToTest())
+            {
+                Assert.AreEqual(value?.ToString() ?? string.Empty, voidResult.ToString());
+            }
+        }
+
         private static IEnumerable<(object VoidResult, bool IsSuccess, object? Value, Type? ValueType)> AllVoidResultsToTest()
         {
             foreach (var voidResultType in AllVoidResultTypeToTest())
@@ -245,7 +254,7 @@ namespace GenericDataStructures.Tests
                     }
                 }
 
-                yield return (CreateSuccessVoidResult(voidResultType), true, null, null);
+                yield return (CreateSuccessVoidResult(voidResultType), true, VoidResult.Success, typeof(VoidResult));
             }
         }
 

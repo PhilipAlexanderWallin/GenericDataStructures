@@ -131,6 +131,15 @@ namespace GenericDataStructures.Tests
             }
         }
 
+        [Test]
+        public void ToStringUsesUnderlyingValuesToStringMethod()
+        {
+            foreach (var (union, value, _) in AllUnionsToTest())
+            {
+                Assert.AreEqual(value?.ToString() ?? string.Empty, union.ToString());
+            }
+        }
+
         private static IEnumerable<(object Union, object Value, Type ValueType)> AllUnionsToTest()
         {
             return
