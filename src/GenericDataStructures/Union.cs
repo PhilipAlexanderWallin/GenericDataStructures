@@ -2,7 +2,7 @@
 
 namespace GenericDataStructures
 {
-    public class Union<T1>
+    public sealed class Union<T1>
     {
         private readonly object _value;
         private readonly byte? _typeIndex;
@@ -34,7 +34,7 @@ namespace GenericDataStructures
         }
     }
 
-    public class Union<T1, T2>
+    public sealed class Union<T1, T2>
     {
         private readonly object _value;
         private readonly byte? _typeIndex;
@@ -76,7 +76,7 @@ namespace GenericDataStructures
         }
     }
 
-    public class Union<T1, T2, T3>
+    public sealed class Union<T1, T2, T3>
     {
         private readonly object _value;
         private readonly byte? _typeIndex;
@@ -128,7 +128,7 @@ namespace GenericDataStructures
         }
     }
 
-    public class Union<T1, T2, T3, T4>
+    public sealed class Union<T1, T2, T3, T4>
     {
         private readonly object _value;
         private readonly byte? _typeIndex;
@@ -190,7 +190,7 @@ namespace GenericDataStructures
         }
     }
 
-    public class Union<T1, T2, T3, T4, T5>
+    public sealed class Union<T1, T2, T3, T4, T5>
     {
         private readonly object _value;
         private readonly byte? _typeIndex;
@@ -262,7 +262,7 @@ namespace GenericDataStructures
         }
     }
 
-    public class Union<T1, T2, T3, T4, T5, T6>
+    public sealed class Union<T1, T2, T3, T4, T5, T6>
     {
         private readonly object _value;
         private readonly byte? _typeIndex;
@@ -344,7 +344,7 @@ namespace GenericDataStructures
         }
     }
 
-    public class Union<T1, T2, T3, T4, T5, T6, T7>
+    public sealed class Union<T1, T2, T3, T4, T5, T6, T7>
     {
         private readonly object _value;
         private readonly byte? _typeIndex;
@@ -436,7 +436,7 @@ namespace GenericDataStructures
         }
     }
 
-    public class Union<T1, T2, T3, T4, T5, T6, T7, T8>
+    public sealed class Union<T1, T2, T3, T4, T5, T6, T7, T8>
     {
         private readonly object _value;
         private readonly byte? _typeIndex;

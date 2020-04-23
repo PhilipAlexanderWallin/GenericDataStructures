@@ -12,7 +12,7 @@ namespace GenericDataStructures
     for(int types = 1; types <= GetNumberOfTypes(); types++)
     {
 #>
-    public class <#= GetClassName(types) #>
+    public sealed class <#= GetClassName(types) #>
     {
         private readonly object _value;
         private readonly byte? _typeIndex;

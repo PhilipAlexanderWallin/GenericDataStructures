@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace GenericDataStructures
 {
-    public class Result<TSuccess, TFailure1>
+    public sealed class Result<TSuccess, TFailure1>
     {
         private readonly object _value;
         private readonly byte? _failureTypeIndex;
@@ -78,7 +78,7 @@ namespace GenericDataStructures
         }
     }
 
-    public class Result<TSuccess, TFailure1, TFailure2>
+    public sealed class Result<TSuccess, TFailure1, TFailure2>
     {
         private readonly object _value;
         private readonly byte? _failureTypeIndex;
@@ -161,7 +161,7 @@ namespace GenericDataStructures
         }
     }
 
-    public class Result<TSuccess, TFailure1, TFailure2, TFailure3>
+    public sealed class Result<TSuccess, TFailure1, TFailure2, TFailure3>
     {
         private readonly object _value;
         private readonly byte? _failureTypeIndex;
@@ -254,7 +254,7 @@ namespace GenericDataStructures
         }
     }
 
-    public class Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4>
+    public sealed class Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4>
     {
         private readonly object _value;
         private readonly byte? _failureTypeIndex;
@@ -357,7 +357,7 @@ namespace GenericDataStructures
         }
     }
 
-    public class Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>
+    public sealed class Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>
     {
         private readonly object _value;
         private readonly byte? _failureTypeIndex;
@@ -470,7 +470,7 @@ namespace GenericDataStructures
         }
     }
 
-    public class Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>
+    public sealed class Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>
     {
         private readonly object _value;
         private readonly byte? _failureTypeIndex;
@@ -593,7 +593,7 @@ namespace GenericDataStructures
         }
     }
 
-    public class Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>
+    public sealed class Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>
     {
         private readonly object _value;
         private readonly byte? _failureTypeIndex;
@@ -726,7 +726,7 @@ namespace GenericDataStructures
         }
     }
 
-    public class Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>
+    public sealed class Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>
     {
         private readonly object _value;
         private readonly byte? _failureTypeIndex;

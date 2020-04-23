@@ -15,7 +15,7 @@ namespace GenericDataStructures
     for(int failureTypes = 1; failureTypes <= GetNumberOfFailureTypes(); failureTypes++)
     {
 #>
-    public class <#= GetClassName(failureTypes) #>
+    public sealed class <#= GetClassName(failureTypes) #>
     {
         private readonly object _value;
         private readonly byte? _failureTypeIndex;

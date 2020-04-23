@@ -2,7 +2,7 @@
 
 namespace GenericDataStructures
 {
-    public class VoidResult
+    public sealed class VoidResult
     {
         public static readonly VoidResult Success = new VoidResult();
 
