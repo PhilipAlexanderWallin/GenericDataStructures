@@ -131,6 +131,106 @@ namespace GenericDataStructures.Tests
             }
         }
 
+        [Test]
+        public void SuccessVoidResultsAreEqualForSameType()
+        {
+            foreach (var voidResultType in AllVoidResultTypeToTest())
+            {
+                var firstVoidResult = CreateSuccessVoidResult(voidResultType);
+                var secondVoidResult = CreateSuccessVoidResult(voidResultType);
+
+                Assert.IsTrue(firstVoidResult.Equals(secondVoidResult));
+                Assert.IsTrue(secondVoidResult.Equals(firstVoidResult));
+            }
+        }
+
+        [Test]
+        public void SuccessVoidResultsAreNotEqualForDifferentTypes()
+        {
+            foreach (var firstVoidResultType in AllVoidResultTypeToTest())
+            {
+                var firstVoidResult = CreateSuccessVoidResult(firstVoidResultType);
+
+                foreach (var secondVoidResultType in AllVoidResultTypeToTest().Where(voidResultTypeCandidate => voidResultTypeCandidate != firstVoidResultType))
+                {
+                    var secondVoidResult = CreateSuccessVoidResult(secondVoidResultType);
+
+                    Assert.IsFalse(firstVoidResult.Equals(secondVoidResult));
+                    Assert.IsFalse(secondVoidResult.Equals(firstVoidResult));
+                }
+            }
+        }
+
+        [Test]
+        public void SuccessVoidResultsAreNotEqualFailureVoidResults()
+        {
+            foreach (var voidResultType in AllVoidResultTypeToTest())
+            {
+                var successVoidResult = CreateSuccessVoidResult(voidResultType);
+
+                foreach (var valueType in GetFailureTypes(voidResultType))
+                {
+                    foreach (var value in TestData.GetPossibleValues(valueType))
+                    {
+                        var failureVoidResult = CreateFailureVoidResult(voidResultType, valueType, value);
+
+                        Assert.IsFalse(successVoidResult.Equals(failureVoidResult));
+                        Assert.IsFalse(failureVoidResult.Equals(successVoidResult));
+                    }
+                }
+            }
+        }
+
+
+        [Test]
+        public void InstancesCreatedWithTheSameFailureInputAreEqual()
+        {
+            foreach (var voidResultType in AllVoidResultTypeToTest())
+            {
+                foreach (var valueType in GetFailureTypes(voidResultType))
+                {
+                    foreach (var value in TestData.GetPossibleValues(valueType))
+                    {
+                        var firstVoidResult = CreateFailureVoidResult(voidResultType, valueType, value);
+                        var secondVoidResult = CreateFailureVoidResult(voidResultType, valueType, value);
+
+                        Assert.IsTrue(firstVoidResult.Equals(secondVoidResult));
+                        Assert.IsTrue(secondVoidResult.Equals(firstVoidResult));
+                    }
+                }
+            }
+        }
+
+        [Test]
+        public void InstancesCreatedWithDifferentFailureInputAreNotEqual()
+        {
+            foreach (var voidResultType in AllVoidResultTypeToTest())
+            {
+                foreach (var firstValueType in GetFailureTypes(voidResultType))
+                {
+                    foreach (var firstValue in TestData.GetPossibleValues(firstValueType))
+                    {
+                        var firstVoidResult = CreateFailureVoidResult(voidResultType, firstValueType, firstValue);
+                        foreach (var secondValueType in GetFailureTypes(voidResultType))
+                        {
+                            foreach (var secondValue in TestData.GetPossibleValues(secondValueType))
+                            {
+                                if (firstValueType == secondValueType && Equals(firstValue, secondValue))
+                                {
+                                    continue;
+                                }
+
+                                var secondVoidResult = CreateFailureVoidResult(voidResultType, secondValueType, secondValue);
+
+                                Assert.IsFalse(firstVoidResult.Equals(secondVoidResult));
+                                Assert.IsFalse(secondVoidResult.Equals(firstVoidResult));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         private static IEnumerable<(object VoidResult, bool IsSuccess, object? Value, Type? ValueType)> AllVoidResultsToTest()
         {
             foreach (var voidResultType in AllVoidResultTypeToTest())

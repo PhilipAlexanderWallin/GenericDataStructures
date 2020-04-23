@@ -288,6 +288,55 @@ namespace GenericDataStructures.Tests
             }
         }
 
+        [Test]
+        public void InstancesCreatedWithTheSameInputAreEqual()
+        {
+            foreach (var resultType in AllResultTypesToTest())
+            {
+                foreach (var valueType in GetAllTypes(resultType))
+                {
+                    foreach (var value in TestData.GetPossibleValues(valueType))
+                    {
+                        var firstResult = CreateResult(resultType, valueType, value);
+                        var secondResult = CreateResult(resultType, valueType, value);
+
+                        Assert.IsTrue(firstResult.Equals(secondResult));
+                        Assert.IsTrue(secondResult.Equals(firstResult));
+                    }
+                }
+            }
+        }
+
+        [Test]
+        public void InstancesCreatedWithDifferentInputAreNotEqual()
+        {
+            foreach (var resultType in AllResultTypesToTest())
+            {
+                foreach (var firstValueType in GetAllTypes(resultType))
+                {
+                    foreach (var firstValue in TestData.GetPossibleValues(firstValueType))
+                    {
+                        var firstResult = CreateResult(resultType, firstValueType, firstValue);
+                        foreach (var secondValueType in GetAllTypes(resultType))
+                        {
+                            foreach (var secondValue in TestData.GetPossibleValues(secondValueType))
+                            {
+                                if (firstValueType == secondValueType && Equals(firstValue, secondValue))
+                                {
+                                    continue;
+                                }
+
+                                var secondResult = CreateResult(resultType, secondValueType, secondValue);
+
+                                Assert.IsFalse(firstResult.Equals(secondResult));
+                                Assert.IsFalse(secondResult.Equals(firstResult));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         private static object? GetDefaultValue(Type type)
         {
             return type.IsValueType ? Activator.CreateInstance(type) : null;

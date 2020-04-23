@@ -49,6 +49,19 @@ namespace GenericDataStructures
                 default: onSuccessAction(); break;
             }
         }
+
+        public override bool Equals(object obj)
+        {
+            return ReferenceEquals(this, obj) || (obj is VoidResult<TFailure1> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
+            }
+        }
     }
 
     public class VoidResult<TFailure1, TFailure2>
@@ -97,6 +110,19 @@ namespace GenericDataStructures
                 case 0: onFailure1Action((TFailure1)_value); break;
                 case 1: onFailure2Action((TFailure2)_value); break;
                 default: onSuccessAction(); break;
+            }
+        }
+
+        public override bool Equals(object obj)
+        {
+            return ReferenceEquals(this, obj) || (obj is VoidResult<TFailure1, TFailure2> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
             }
         }
     }
@@ -157,6 +183,19 @@ namespace GenericDataStructures
                 case 1: onFailure2Action((TFailure2)_value); break;
                 case 2: onFailure3Action((TFailure3)_value); break;
                 default: onSuccessAction(); break;
+            }
+        }
+
+        public override bool Equals(object obj)
+        {
+            return ReferenceEquals(this, obj) || (obj is VoidResult<TFailure1, TFailure2, TFailure3> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
             }
         }
     }
@@ -227,6 +266,19 @@ namespace GenericDataStructures
                 case 2: onFailure3Action((TFailure3)_value); break;
                 case 3: onFailure4Action((TFailure4)_value); break;
                 default: onSuccessAction(); break;
+            }
+        }
+
+        public override bool Equals(object obj)
+        {
+            return ReferenceEquals(this, obj) || (obj is VoidResult<TFailure1, TFailure2, TFailure3, TFailure4> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
             }
         }
     }
@@ -307,6 +359,19 @@ namespace GenericDataStructures
                 case 3: onFailure4Action((TFailure4)_value); break;
                 case 4: onFailure5Action((TFailure5)_value); break;
                 default: onSuccessAction(); break;
+            }
+        }
+
+        public override bool Equals(object obj)
+        {
+            return ReferenceEquals(this, obj) || (obj is VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
             }
         }
     }
@@ -397,6 +462,19 @@ namespace GenericDataStructures
                 case 4: onFailure5Action((TFailure5)_value); break;
                 case 5: onFailure6Action((TFailure6)_value); break;
                 default: onSuccessAction(); break;
+            }
+        }
+
+        public override bool Equals(object obj)
+        {
+            return ReferenceEquals(this, obj) || (obj is VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
             }
         }
     }
@@ -497,6 +575,19 @@ namespace GenericDataStructures
                 case 5: onFailure6Action((TFailure6)_value); break;
                 case 6: onFailure7Action((TFailure7)_value); break;
                 default: onSuccessAction(); break;
+            }
+        }
+
+        public override bool Equals(object obj)
+        {
+            return ReferenceEquals(this, obj) || (obj is VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
             }
         }
     }
@@ -607,6 +698,19 @@ namespace GenericDataStructures
                 case 6: onFailure7Action((TFailure7)_value); break;
                 case 7: onFailure8Action((TFailure8)_value); break;
                 default: onSuccessAction(); break;
+            }
+        }
+
+        public override bool Equals(object obj)
+        {
+            return ReferenceEquals(this, obj) || (obj is VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
             }
         }
     }

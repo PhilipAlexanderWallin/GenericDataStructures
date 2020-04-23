@@ -82,6 +82,55 @@ namespace GenericDataStructures.Tests
             }
         }
 
+        [Test]
+        public void InstancesCreatedWithTheSameInputAreEqual()
+        {
+            foreach (var unionType in AllUnionTypesToTest())
+            {
+                foreach (var valueType in GetAllTypes(unionType))
+                {
+                    foreach (var value in TestData.GetPossibleValues(valueType))
+                    {
+                        var firstUnion = CreateUnion(unionType, valueType, value);
+                        var secondUnion = CreateUnion(unionType, valueType, value);
+
+                        Assert.IsTrue(firstUnion.Equals(secondUnion));
+                        Assert.IsTrue(secondUnion.Equals(firstUnion));
+                    }
+                }
+            }
+        }
+
+        [Test]
+        public void InstancesCreatedWithDifferentInputAreNotEqual()
+        {
+            foreach (var unionType in AllUnionTypesToTest())
+            {
+                foreach (var firstValueType in GetAllTypes(unionType))
+                {
+                    foreach (var firstValue in TestData.GetPossibleValues(firstValueType))
+                    {
+                        var firstUnion = CreateUnion(unionType, firstValueType, firstValue);
+                        foreach (var secondValueType in GetAllTypes(unionType))
+                        {
+                            foreach (var secondValue in TestData.GetPossibleValues(secondValueType))
+                            {
+                                if (firstValueType == secondValueType && Equals(firstValue, secondValue))
+                                {
+                                    continue;
+                                }
+
+                                var secondUnion = CreateUnion(unionType, secondValueType, secondValue);
+
+                                Assert.IsFalse(firstUnion.Equals(secondUnion));
+                                Assert.IsFalse(secondUnion.Equals(firstUnion));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         private static IEnumerable<(object Union, object Value, Type ValueType)> AllUnionsToTest()
         {
             return

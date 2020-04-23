@@ -32,6 +32,19 @@ namespace GenericDataStructures
                 default: throw new InvalidOperationException();
             }
         }
+
+        public override bool Equals(object obj)
+        {
+            return ReferenceEquals(this, obj) || (obj is Union<T1> other && Equals(_value, other._value) && _typeIndex == other._typeIndex);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _typeIndex.GetHashCode();
+            }
+        }
     }
 
     public sealed class Union<T1, T2>
@@ -72,6 +85,19 @@ namespace GenericDataStructures
                 case 0: onT1Action((T1)_value); break;
                 case 1: onT2Action((T2)_value); break;
                 default: throw new InvalidOperationException();
+            }
+        }
+
+        public override bool Equals(object obj)
+        {
+            return ReferenceEquals(this, obj) || (obj is Union<T1, T2> other && Equals(_value, other._value) && _typeIndex == other._typeIndex);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _typeIndex.GetHashCode();
             }
         }
     }
@@ -124,6 +150,19 @@ namespace GenericDataStructures
                 case 1: onT2Action((T2)_value); break;
                 case 2: onT3Action((T3)_value); break;
                 default: throw new InvalidOperationException();
+            }
+        }
+
+        public override bool Equals(object obj)
+        {
+            return ReferenceEquals(this, obj) || (obj is Union<T1, T2, T3> other && Equals(_value, other._value) && _typeIndex == other._typeIndex);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _typeIndex.GetHashCode();
             }
         }
     }
@@ -186,6 +225,19 @@ namespace GenericDataStructures
                 case 2: onT3Action((T3)_value); break;
                 case 3: onT4Action((T4)_value); break;
                 default: throw new InvalidOperationException();
+            }
+        }
+
+        public override bool Equals(object obj)
+        {
+            return ReferenceEquals(this, obj) || (obj is Union<T1, T2, T3, T4> other && Equals(_value, other._value) && _typeIndex == other._typeIndex);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _typeIndex.GetHashCode();
             }
         }
     }
@@ -258,6 +310,19 @@ namespace GenericDataStructures
                 case 3: onT4Action((T4)_value); break;
                 case 4: onT5Action((T5)_value); break;
                 default: throw new InvalidOperationException();
+            }
+        }
+
+        public override bool Equals(object obj)
+        {
+            return ReferenceEquals(this, obj) || (obj is Union<T1, T2, T3, T4, T5> other && Equals(_value, other._value) && _typeIndex == other._typeIndex);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _typeIndex.GetHashCode();
             }
         }
     }
@@ -340,6 +405,19 @@ namespace GenericDataStructures
                 case 4: onT5Action((T5)_value); break;
                 case 5: onT6Action((T6)_value); break;
                 default: throw new InvalidOperationException();
+            }
+        }
+
+        public override bool Equals(object obj)
+        {
+            return ReferenceEquals(this, obj) || (obj is Union<T1, T2, T3, T4, T5, T6> other && Equals(_value, other._value) && _typeIndex == other._typeIndex);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _typeIndex.GetHashCode();
             }
         }
     }
@@ -432,6 +510,19 @@ namespace GenericDataStructures
                 case 5: onT6Action((T6)_value); break;
                 case 6: onT7Action((T7)_value); break;
                 default: throw new InvalidOperationException();
+            }
+        }
+
+        public override bool Equals(object obj)
+        {
+            return ReferenceEquals(this, obj) || (obj is Union<T1, T2, T3, T4, T5, T6, T7> other && Equals(_value, other._value) && _typeIndex == other._typeIndex);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _typeIndex.GetHashCode();
             }
         }
     }
@@ -534,6 +625,19 @@ namespace GenericDataStructures
                 case 6: onT7Action((T7)_value); break;
                 case 7: onT8Action((T8)_value); break;
                 default: throw new InvalidOperationException();
+            }
+        }
+
+        public override bool Equals(object obj)
+        {
+            return ReferenceEquals(this, obj) || (obj is Union<T1, T2, T3, T4, T5, T6, T7, T8> other && Equals(_value, other._value) && _typeIndex == other._typeIndex);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _typeIndex.GetHashCode();
             }
         }
     }
