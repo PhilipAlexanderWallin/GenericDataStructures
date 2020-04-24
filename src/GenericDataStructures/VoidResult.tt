@@ -4,24 +4,20 @@
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
 <#@ output extension=".cs" #>
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+#nullable disable warnings
+#endif
 using System;
+using JetBrains.Annotations;
+using NotNullAttribute = JetBrains.Annotations.NotNullAttribute;
 
 namespace GenericDataStructures
 {
-    public class VoidResult
-    {
-        public static readonly VoidResult Success = new VoidResult();
-
-        private VoidResult()
-        {
-        }
-    }
-
 <#
     for(int failureTypes = 1; failureTypes <= GetNumberOfFailureTypes(); failureTypes++)
     {
 #>
-    public class <#= GetClassName(failureTypes) #>
+    public struct <#= GetClassName(failureTypes) #>
     {
         private readonly object _value;
         private readonly byte? _failureTypeIndex;
@@ -39,13 +35,9 @@ namespace GenericDataStructures
 <#
     }
 #>
-        private VoidResult(VoidResult value)
-        {
-        }
-
         public bool IsSuccess => !_failureTypeIndex.HasValue;
 
-        public static implicit operator <#= GetClassName(failureTypes) #>(VoidResult value) => new <#= GetClassName(failureTypes) #>(value);
+        public static implicit operator <#= GetClassName(failureTypes) #>(VoidResult value) => default(<#= GetClassName(failureTypes) #>);
 
 <#
     for(int failureIndex = 0; failureIndex < failureTypes; failureIndex++)
@@ -56,7 +48,11 @@ namespace GenericDataStructures
 <#
     }
 #>
-        public TOutput Map<TOutput>(Func<TOutput> onSuccessFunc, <# Write(string.Join(", ", Enumerable.Range(1, failureTypes).Select(failureNumber => $"Func<TFailure{failureNumber}, TOutput> onFailure{failureNumber}Func"))); #>)
+        public static bool operator ==(<#= GetClassName(failureTypes) #> left, <#= GetClassName(failureTypes) #> right) => Equals(left, right);
+
+        public static bool operator !=(<#= GetClassName(failureTypes) #> left, <#= GetClassName(failureTypes) #> right) => !Equals(left, right);
+
+        public TOutput Map<TOutput>([InstantHandle][NotNull]Func<TOutput> onSuccessFunc, <# Write(string.Join(", ", Enumerable.Range(1, failureTypes).Select(failureNumber => $"[InstantHandle][NotNull]Func<TFailure{failureNumber}, TOutput> onFailure{failureNumber}Func"))); #>)
         {
             switch (_failureTypeIndex)
             {
@@ -64,15 +60,27 @@ namespace GenericDataStructures
     for(int failureIndex = 0; failureIndex < failureTypes; failureIndex++)
     {
 #>
-                case <#= failureIndex #>: return onFailure<#= failureIndex + 1 #>Func((TFailure<#= failureIndex + 1 #>)_value);
+                case <#= failureIndex #>:
+                    if (onFailure<#= failureIndex + 1 #>Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(TFailure<#= failureIndex + 1 #>).Name}");
+                    }
+
+                    return onFailure<#= failureIndex + 1 #>Func((TFailure<#= failureIndex + 1 #>)_value);
 <#
     }
 #>
-                default: return onSuccessFunc();
+                default:
+                    if (onSuccessFunc == null)
+                    {
+                        throw new ArgumentException($"No map function provided for success result");
+                    }
+
+                    return onSuccessFunc();
             }
         }
 
-        public void Switch(Action onSuccessAction, <# Write(string.Join(", ", Enumerable.Range(1, failureTypes).Select(failureNumber => $"Action<TFailure{failureNumber}> onFailure{failureNumber}Action"))); #>)
+        public void Switch([InstantHandle][NotNull]Action onSuccessAction, <# Write(string.Join(", ", Enumerable.Range(1, failureTypes).Select(failureNumber => $"[InstantHandle][NotNull]Action<TFailure{failureNumber}> onFailure{failureNumber}Action"))); #>)
         {
             switch (_failureTypeIndex)
             {
@@ -80,28 +88,68 @@ namespace GenericDataStructures
     for(int failureIndex = 0; failureIndex < failureTypes; failureIndex++)
     {
 #>
-                case <#= failureIndex #>: onFailure<#= failureIndex + 1 #>Action((TFailure<#= failureIndex + 1 #>)_value); break;
+                case <#= failureIndex #>:
+                    if (onFailure<#= failureIndex + 1 #>Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(TFailure<#= failureIndex + 1 #>).Name}");
+                    }
+
+                    onFailure<#= failureIndex + 1 #>Action((TFailure<#= failureIndex + 1 #>)_value);
+                    break;
 <#
     }
 #>
-                default: onSuccessAction(); break;
+                default:
+                    if (onSuccessAction == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for success result");
+                    }
+
+                    onSuccessAction();
+                    break;
             }
         }
+
+        public override bool Equals(object obj)
+        {
+            return obj is <#= GetClassName(failureTypes) #> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex;
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
+            }
+        }
+
+        public override string ToString()
+        {
+            return _failureTypeIndex != null ? (_value != null ? _value.ToString() : string.Empty) : VoidResult.Success.ToString();
+        }
     }
+
 <#
-    if (failureTypes != GetNumberOfFailureTypes())
+    }
+#>
+    public class VoidResult
     {
-        Write(Environment.NewLine);
-    }    
-#>
-<#
+        public static readonly VoidResult Success = new VoidResult();
+
+        private VoidResult()
+        {
+        }
+
+        public override string ToString()
+        {
+            return "GenericDataStructures.VoidResult.Success";
+        }
     }
-#>
 }
 <#+
 private int GetNumberOfFailureTypes()
 {
-    return 8;
+    return 16;
 }
 #>
 <#+

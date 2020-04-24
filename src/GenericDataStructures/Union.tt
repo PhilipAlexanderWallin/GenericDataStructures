@@ -4,7 +4,12 @@
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
 <#@ output extension=".cs" #>
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+#nullable disable warnings
+#endif
 using System;
+using JetBrains.Annotations;
+using NotNullAttribute = JetBrains.Annotations.NotNullAttribute;
 
 namespace GenericDataStructures
 {
@@ -12,10 +17,10 @@ namespace GenericDataStructures
     for(int types = 1; types <= GetNumberOfTypes(); types++)
     {
 #>
-    public class <#= GetClassName(types) #>
+    public struct <#= GetClassName(types) #>
     {
         private readonly object _value;
-        private readonly byte? _typeIndex;
+        private readonly byte _typeIndex;
 
 <#
     for(int index = 0; index < types; index++)
@@ -29,7 +34,28 @@ namespace GenericDataStructures
 
 <#
     }
+#>
+        private object Value
+        {
+            get
+            {
+                switch (_typeIndex)
+                {
+<#
+    for(int index = 0; index < types; index++)
+    {
+#>
+                    case <#= index #>:
+                        return _value ?? default(T<#= index + 1 #>);
+<#
+    }
+#>
+                    default: throw new InvalidOperationException();
+                }
+            }
+        }
 
+<#
     for(int index = 0; index < types; index++)
     {
 #>
@@ -38,7 +64,11 @@ namespace GenericDataStructures
 <#
     }
 #>
-        public TOutput Map<TOutput>(<# Write(string.Join(", ", Enumerable.Range(1, types).Select(number => $"Func<T{number}, TOutput> onT{number}Func"))); #>)
+        public static bool operator ==(<#= GetClassName(types) #> left, <#= GetClassName(types) #> right) => Equals(left, right);
+
+        public static bool operator !=(<#= GetClassName(types) #> left, <#= GetClassName(types) #> right) => !Equals(left, right);
+
+        public TOutput Map<TOutput>(<# Write(string.Join(", ", Enumerable.Range(1, types).Select(number => $"[InstantHandle][NotNull]Func<T{number}, TOutput> onT{number}Func"))); #>)
         {
             switch (_typeIndex)
             {
@@ -46,7 +76,13 @@ namespace GenericDataStructures
     for(int index = 0; index < types; index++)
     {
 #>
-                case <#= index #>: return onT<#= index + 1 #>Func((T<#= index + 1 #>)_value);
+                case <#= index #>:
+                    if (onT<#= index + 1 #>Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(T<#= index + 1 #>).Name}");
+                    }
+
+                    return onT<#= index + 1 #>Func((T<#= index + 1 #>)Value);
 <#
     }
 #>
@@ -54,7 +90,7 @@ namespace GenericDataStructures
             }
         }
 
-        public void Switch(<# Write(string.Join(", ", Enumerable.Range(1, types).Select(number => $"Action<T{number}> onT{number}Action"))); #>)
+        public void Switch(<# Write(string.Join(", ", Enumerable.Range(1, types).Select(number => $"[InstantHandle][NotNull]Action<T{number}> onT{number}Action"))); #>)
         {
             switch (_typeIndex)
             {
@@ -62,12 +98,37 @@ namespace GenericDataStructures
     for(int index = 0; index < types; index++)
     {
 #>
-                case <#= index #>: onT<#= index + 1 #>Action((T<#= index + 1 #>)_value); break;
+                case <#= index #>:
+                    if (onT<#= index + 1 #>Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(T<#= index + 1 #>).Name}");
+                    }
+
+                    onT<#= index + 1 #>Action((T<#= index + 1 #>)Value);
+                    break;
 <#
     }
 #>
                 default: throw new InvalidOperationException();
             }
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is <#= GetClassName(types) #> other && Equals(Value, other.Value) && _typeIndex == other._typeIndex;
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((Value != null ? Value.GetHashCode() : 0) * 397) ^ _typeIndex.GetHashCode();
+            }
+        }
+
+        public override string ToString()
+        {
+            return Value != null ? Value.ToString() : string.Empty;
         }
     }
 <#
@@ -83,7 +144,7 @@ namespace GenericDataStructures
 <#+
 private int GetNumberOfTypes()
 {
-    return 8;
+    return 16;
 }
 #>
 <#+

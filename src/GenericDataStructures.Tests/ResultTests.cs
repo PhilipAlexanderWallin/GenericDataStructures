@@ -7,7 +7,7 @@ namespace GenericDataStructures.Tests
 {
     public class ResultTests
     {
-        private const int NumberOfFailureTypesToTestWith = 8;
+        private const int NumberOfFailureTypesToTestWith = 15;
 
         [Test]
         public void WhenConstructedWithSuccessTypeResultIsSuccess()
@@ -285,6 +285,100 @@ namespace GenericDataStructures.Tests
                 Assert.AreEqual(1, delegateMonitor.TotalCalls);
 
                 Assert.AreEqual(1, delegateMonitor.GetCalls(valueType));
+            }
+        }
+
+        [Test]
+        public void InstancesCreatedWithTheSameInputAreEqual()
+        {
+            foreach (var resultType in AllResultTypesToTest())
+            {
+                foreach (var valueType in GetAllTypes(resultType))
+                {
+                    foreach (var value in TestData.GetPossibleValues(valueType))
+                    {
+                        var firstResult = CreateResult(resultType, valueType, value);
+                        var secondResult = CreateResult(resultType, valueType, value);
+
+                        Assert.IsTrue(firstResult.Equals(secondResult));
+                        Assert.IsTrue(secondResult.Equals(firstResult));
+                    }
+                }
+            }
+        }
+
+        [Test]
+        public void InstancesCreatedWithDifferentInputAreNotEqual()
+        {
+            foreach (var resultType in AllResultTypesToTest())
+            {
+                foreach (var firstValueType in GetAllTypes(resultType))
+                {
+                    foreach (var firstValue in TestData.GetPossibleValues(firstValueType))
+                    {
+                        var firstResult = CreateResult(resultType, firstValueType, firstValue);
+                        foreach (var secondValueType in GetAllTypes(resultType))
+                        {
+                            foreach (var secondValue in TestData.GetPossibleValues(secondValueType))
+                            {
+                                if (firstValueType == secondValueType && Equals(firstValue, secondValue))
+                                {
+                                    continue;
+                                }
+
+                                var secondResult = CreateResult(resultType, secondValueType, secondValue);
+
+                                Assert.IsFalse(firstResult.Equals(secondResult));
+                                Assert.IsFalse(secondResult.Equals(firstResult));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        [Test]
+        public void ToStringUsesUnderlyingValuesToStringMethod()
+        {
+            foreach (var (result, value, _) in AllResultsToTest())
+            {
+                Assert.AreEqual(value?.ToString() ?? string.Empty, result.ToString());
+            }
+        }
+
+        [Test]
+        public void DifferentValuesGiveDifferentHashCodes()
+        {
+            foreach (var resultType in AllResultTypesToTest())
+            {
+                foreach (var valueType in GetAllTypes(resultType))
+                {
+                    var usedHashCodes = TestData.GetPossibleValues(valueType)
+                        .Where(value => value != null)
+                        .Select(value => CreateResult(resultType, valueType, value))
+                        .Select(union => union.GetHashCode())
+                        .ToList();
+
+                    CollectionAssert.AllItemsAreUnique(usedHashCodes);
+                }
+            }
+        }
+
+        [Test]
+        public void SameValuesGiveSameHashCodes()
+        {
+            foreach (var resultType in AllResultTypesToTest())
+            {
+                foreach (var valueType in GetAllTypes(resultType))
+                {
+                    foreach (var value in TestData.GetPossibleValues(valueType))
+                    {
+                        var firstResult = CreateResult(resultType, valueType, value);
+                        var secondResult = CreateResult(resultType, valueType, value);
+
+                        Assert.AreEqual(firstResult.GetHashCode(), secondResult.GetHashCode());
+                    }
+                }
             }
         }
 

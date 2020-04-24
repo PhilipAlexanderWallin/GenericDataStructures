@@ -4,10 +4,15 @@
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
 <#@ output extension=".cs" #>
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+#nullable disable warnings
+#endif
 using System;
 #if NULLABLE_REFERENCE_TYPES_SUPPORTED
 using System.Diagnostics.CodeAnalysis;
 #endif
+using JetBrains.Annotations;
+using NotNullAttribute = JetBrains.Annotations.NotNullAttribute;
 
 namespace GenericDataStructures
 {
@@ -15,7 +20,7 @@ namespace GenericDataStructures
     for(int failureTypes = 1; failureTypes <= GetNumberOfFailureTypes(); failureTypes++)
     {
 #>
-    public class <#= GetClassName(failureTypes) #>
+    public struct <#= GetClassName(failureTypes) #>
     {
         private readonly object _value;
         private readonly byte? _failureTypeIndex;
@@ -23,6 +28,7 @@ namespace GenericDataStructures
         public Result(TSuccess value)
         {
             _value = value;
+            _failureTypeIndex = null;
         }
 
 <#
@@ -40,6 +46,10 @@ namespace GenericDataStructures
 #>
         public bool IsSuccess => !_failureTypeIndex.HasValue;
 
+        private TSuccess SuccessValue => _value != null ? (TSuccess)_value : default(TSuccess);
+
+        private object Value => IsSuccess ? SuccessValue : _value;
+
         public static implicit operator <#= GetClassName(failureTypes) #>(TSuccess value) => new <#= GetClassName(failureTypes) #>(value);
 
 <#
@@ -51,6 +61,10 @@ namespace GenericDataStructures
 <#
     }
 #>
+        public static bool operator ==(<#= GetClassName(failureTypes) #> left, <#= GetClassName(failureTypes) #> right) => Equals(left, right);
+
+        public static bool operator !=(<#= GetClassName(failureTypes) #> left, <#= GetClassName(failureTypes) #> right) => !Equals(left, right);
+
 #if NULLABLE_REFERENCE_TYPES_SUPPORTED
         public bool TryGetSuccessValue([MaybeNullWhen(false)] out TSuccess successValue)
 #else
@@ -59,7 +73,7 @@ namespace GenericDataStructures
         {
             if (IsSuccess)
             {
-                successValue = (TSuccess)_value;
+                successValue = SuccessValue;
                 return true;
             }
 
@@ -68,14 +82,19 @@ namespace GenericDataStructures
         }
 
 #if NULLABLE_REFERENCE_TYPES_SUPPORTED
-        public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, [MaybeNullWhen(false)] out TOutput mappedValue)
+        public bool TryMap<TOutput>([InstantHandle][NotNull]Func<TSuccess, TOutput> onSuccessFunc, [MaybeNullWhen(false)] out TOutput mappedValue)
 #else
-        public bool TryMap<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
+        public bool TryMap<TOutput>([InstantHandle][NotNull]Func<TSuccess, TOutput> onSuccessFunc, out TOutput mappedValue)
 #endif
         {
             if (IsSuccess)
             {
-                mappedValue = onSuccessFunc((TSuccess)_value);
+                if (onSuccessFunc == null)
+                {
+                    throw new ArgumentException($"No map function provided");
+                }
+
+                mappedValue = onSuccessFunc(SuccessValue);
                 return true;
             }
 
@@ -83,7 +102,7 @@ namespace GenericDataStructures
             return false;
         }
 
-        public TOutput Map<TOutput>(Func<TSuccess, TOutput> onSuccessFunc, <# Write(string.Join(", ", Enumerable.Range(1, failureTypes).Select(failureNumber => $"Func<TFailure{failureNumber}, TOutput> onFailure{failureNumber}Func"))); #>)
+        public TOutput Map<TOutput>([InstantHandle][NotNull]Func<TSuccess, TOutput> onSuccessFunc, <# Write(string.Join(", ", Enumerable.Range(1, failureTypes).Select(failureNumber => $"[InstantHandle][NotNull]Func<TFailure{failureNumber}, TOutput> onFailure{failureNumber}Func"))); #>)
         {
             switch (_failureTypeIndex)
             {
@@ -91,15 +110,27 @@ namespace GenericDataStructures
     for(int failureIndex = 0; failureIndex < failureTypes; failureIndex++)
     {
 #>
-                case <#= failureIndex #>: return onFailure<#= failureIndex + 1 #>Func((TFailure<#= failureIndex + 1 #>)_value);
+                case <#= failureIndex #>:
+                    if (onFailure<#= failureIndex + 1 #>Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(TFailure<#= failureIndex + 1 #>).Name}");
+                    }
+
+                    return onFailure<#= failureIndex + 1 #>Func((TFailure<#= failureIndex + 1 #>)_value);
 <#
     }
 #>
-                default: return onSuccessFunc((TSuccess)_value);
+                default:
+                    if (onSuccessFunc == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(TSuccess).Name}");
+                    }
+
+                    return onSuccessFunc(SuccessValue);
             }
         }
 
-        public void Switch(Action<TSuccess> onSuccessAction, <# Write(string.Join(", ", Enumerable.Range(1, failureTypes).Select(failureNumber => $"Action<TFailure{failureNumber}> onFailure{failureNumber}Action"))); #>)
+        public void Switch([InstantHandle][NotNull]Action<TSuccess> onSuccessAction, <# Write(string.Join(", ", Enumerable.Range(1, failureTypes).Select(failureNumber => $"[InstantHandle][NotNull]Action<TFailure{failureNumber}> onFailure{failureNumber}Action"))); #>)
         {
             switch (_failureTypeIndex)
             {
@@ -107,12 +138,44 @@ namespace GenericDataStructures
     for(int failureIndex = 0; failureIndex < failureTypes; failureIndex++)
     {
 #>
-                case <#= failureIndex #>: onFailure<#= failureIndex + 1 #>Action((TFailure<#= failureIndex + 1 #>)_value); break;
+                case <#= failureIndex #>:
+                    if (onFailure<#= failureIndex + 1 #>Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(TFailure<#= failureIndex + 1 #>).Name}");
+                    }
+
+                    onFailure<#= failureIndex + 1 #>Action((TFailure<#= failureIndex + 1 #>)_value);
+                    break;
 <#
     }
 #>
-                default: onSuccessAction((TSuccess)_value); break;
+                default:
+                    if (onSuccessAction == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(TSuccess).Name}");
+                    }
+
+                    onSuccessAction(SuccessValue);
+                    break;
             }
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is <#= GetClassName(failureTypes) #> other && Equals(Value, other.Value) && _failureTypeIndex == other._failureTypeIndex;
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((Value != null ? Value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
+            }
+        }
+
+        public override string ToString()
+        {
+            return Value != null ? Value.ToString() : string.Empty;
         }
     }
 <#
@@ -128,7 +191,7 @@ namespace GenericDataStructures
 <#+
 private int GetNumberOfFailureTypes()
 {
-    return 8;
+    return 15;
 }
 #>
 <#+

@@ -7,12 +7,12 @@ namespace GenericDataStructures.Tests
 {
     public class VoidResultTests
     {
-        private const int NumberOfFailureTypesToTestWith = 8;
+        private const int NumberOfFailureTypesToTestWith = 16;
 
         [Test]
         public void WhenConstructedWithSuccessVoidResultIsSuccess()
         {
-            foreach (var voidResultType in AllVoidResultTypeToTest())
+            foreach (var voidResultType in AllVoidResultTypesToTest())
             {
                 dynamic voidResult = CreateSuccessVoidResult(voidResultType);
 
@@ -23,7 +23,7 @@ namespace GenericDataStructures.Tests
         [Test]
         public void WhenConstructedWithFailureTypeResultIsNotSuccess()
         {
-            foreach (var voidResultType in AllVoidResultTypeToTest())
+            foreach (var voidResultType in AllVoidResultTypesToTest())
             {
                 var failureTypes = GetFailureTypes(voidResultType);
                 foreach (var failureType in failureTypes)
@@ -131,9 +131,155 @@ namespace GenericDataStructures.Tests
             }
         }
 
+        [Test]
+        public void SuccessVoidResultsAreEqualForSameType()
+        {
+            foreach (var voidResultType in AllVoidResultTypesToTest())
+            {
+                var firstVoidResult = CreateSuccessVoidResult(voidResultType);
+                var secondVoidResult = CreateSuccessVoidResult(voidResultType);
+
+                Assert.IsTrue(firstVoidResult.Equals(secondVoidResult));
+                Assert.IsTrue(secondVoidResult.Equals(firstVoidResult));
+            }
+        }
+
+        [Test]
+        public void SuccessVoidResultsAreNotEqualForDifferentTypes()
+        {
+            foreach (var firstVoidResultType in AllVoidResultTypesToTest())
+            {
+                var firstVoidResult = CreateSuccessVoidResult(firstVoidResultType);
+
+                foreach (var secondVoidResultType in AllVoidResultTypesToTest().Where(voidResultTypeCandidate => voidResultTypeCandidate != firstVoidResultType))
+                {
+                    var secondVoidResult = CreateSuccessVoidResult(secondVoidResultType);
+
+                    Assert.IsFalse(firstVoidResult.Equals(secondVoidResult));
+                    Assert.IsFalse(secondVoidResult.Equals(firstVoidResult));
+                }
+            }
+        }
+
+        [Test]
+        public void SuccessVoidResultsAreNotEqualFailureVoidResults()
+        {
+            foreach (var voidResultType in AllVoidResultTypesToTest())
+            {
+                var successVoidResult = CreateSuccessVoidResult(voidResultType);
+
+                foreach (var valueType in GetFailureTypes(voidResultType))
+                {
+                    foreach (var value in TestData.GetPossibleValues(valueType))
+                    {
+                        var failureVoidResult = CreateFailureVoidResult(voidResultType, valueType, value);
+
+                        Assert.IsFalse(successVoidResult.Equals(failureVoidResult));
+                        Assert.IsFalse(failureVoidResult.Equals(successVoidResult));
+                    }
+                }
+            }
+        }
+
+        [Test]
+        public void InstancesCreatedWithTheSameFailureInputAreEqual()
+        {
+            foreach (var voidResultType in AllVoidResultTypesToTest())
+            {
+                foreach (var valueType in GetFailureTypes(voidResultType))
+                {
+                    foreach (var value in TestData.GetPossibleValues(valueType))
+                    {
+                        var firstVoidResult = CreateFailureVoidResult(voidResultType, valueType, value);
+                        var secondVoidResult = CreateFailureVoidResult(voidResultType, valueType, value);
+
+                        Assert.IsTrue(firstVoidResult.Equals(secondVoidResult));
+                        Assert.IsTrue(secondVoidResult.Equals(firstVoidResult));
+                    }
+                }
+            }
+        }
+
+        [Test]
+        public void InstancesCreatedWithDifferentFailureInputAreNotEqual()
+        {
+            foreach (var voidResultType in AllVoidResultTypesToTest())
+            {
+                foreach (var firstValueType in GetFailureTypes(voidResultType))
+                {
+                    foreach (var firstValue in TestData.GetPossibleValues(firstValueType))
+                    {
+                        var firstVoidResult = CreateFailureVoidResult(voidResultType, firstValueType, firstValue);
+                        foreach (var secondValueType in GetFailureTypes(voidResultType))
+                        {
+                            foreach (var secondValue in TestData.GetPossibleValues(secondValueType))
+                            {
+                                if (firstValueType == secondValueType && Equals(firstValue, secondValue))
+                                {
+                                    continue;
+                                }
+
+                                var secondVoidResult = CreateFailureVoidResult(voidResultType, secondValueType, secondValue);
+
+                                Assert.IsFalse(firstVoidResult.Equals(secondVoidResult));
+                                Assert.IsFalse(secondVoidResult.Equals(firstVoidResult));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        [Test]
+        public void ToStringUsesUnderlyingValuesToStringMethod()
+        {
+            foreach (var (voidResult, _, value, _) in AllVoidResultsToTest())
+            {
+                Assert.AreEqual(value?.ToString() ?? string.Empty, voidResult.ToString());
+            }
+        }
+
+        [Test]
+        public void DifferentValuesGiveDifferentHashCodes()
+        {
+            foreach (var voidResultType in AllVoidResultTypesToTest())
+            {
+                foreach (var valueType in GetFailureTypes(voidResultType))
+                {
+                    var usedHashCodes = TestData.GetPossibleValues(valueType)
+                        .Where(value => value != null)
+                        .Select(value => CreateFailureVoidResult(voidResultType, valueType, value))
+                        .Select(union => union.GetHashCode())
+                        .ToList();
+
+                    CollectionAssert.AllItemsAreUnique(usedHashCodes);
+                }
+            }
+        }
+
+        [Test]
+        public void SameValuesGiveSameHashCodes()
+        {
+            foreach (var voidResultType in AllVoidResultTypesToTest())
+            {
+                foreach (var valueType in GetFailureTypes(voidResultType))
+                {
+                    foreach (var value in TestData.GetPossibleValues(valueType))
+                    {
+                        var firstVoidResult = CreateFailureVoidResult(voidResultType, valueType, value);
+                        var secondVoidResult = CreateFailureVoidResult(voidResultType, valueType, value);
+
+                        Assert.AreEqual(firstVoidResult.GetHashCode(), secondVoidResult.GetHashCode());
+                    }
+
+                    Assert.AreEqual(CreateSuccessVoidResult(voidResultType).GetHashCode(), CreateSuccessVoidResult(voidResultType).GetHashCode());
+                }
+            }
+        }
+
         private static IEnumerable<(object VoidResult, bool IsSuccess, object? Value, Type? ValueType)> AllVoidResultsToTest()
         {
-            foreach (var voidResultType in AllVoidResultTypeToTest())
+            foreach (var voidResultType in AllVoidResultTypesToTest())
             {
                 var failureTypes = GetFailureTypes(voidResultType);
 
@@ -145,11 +291,11 @@ namespace GenericDataStructures.Tests
                     }
                 }
 
-                yield return (CreateSuccessVoidResult(voidResultType), true, null, null);
+                yield return (CreateSuccessVoidResult(voidResultType), true, VoidResult.Success, typeof(VoidResult));
             }
         }
 
-        private static IEnumerable<Type> AllVoidResultTypeToTest()
+        private static IEnumerable<Type> AllVoidResultTypesToTest()
         {
             for (var numberOfFailureTypes = 1; numberOfFailureTypes <= NumberOfFailureTypesToTestWith; numberOfFailureTypes++)
             {

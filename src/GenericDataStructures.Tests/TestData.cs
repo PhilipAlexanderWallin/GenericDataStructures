@@ -42,6 +42,14 @@ namespace GenericDataStructures.Tests
                 }
             },
             {
+                typeof(double),
+                new object?[]
+                {
+                    -1.23d,
+                    1.23d,
+                }
+            },
+            {
                 typeof(SimpleClass),
                 new object?[]
                 {
@@ -87,6 +95,56 @@ namespace GenericDataStructures.Tests
                     123456789L,
                 }
             },
+            {
+                typeof(SimpleEnum),
+                new object?[]
+                {
+                    SimpleEnum.Value1,
+                    SimpleEnum.Value3,
+                }
+            },
+            {
+                typeof(Tuple<int, string>),
+                new object?[]
+                {
+                    Tuple.Create(1, "one"),
+                    Tuple.Create(3, "three"),
+                }
+            },
+            {
+                typeof(ValueTuple<string, int>),
+                new object?[]
+                {
+                    ("one", 1),
+                    ("three", 3),
+                }
+            },
+            {
+                typeof(ushort),
+                new object?[]
+                {
+                    (ushort)12345,
+                    (ushort)0,
+                }
+            },
+            {
+                typeof(bool?),
+                new object?[]
+                {
+                    true,
+                    false,
+                    null,
+                }
+            },
+            {
+                typeof(SimpleEnum?),
+                new object?[]
+                {
+                    SimpleEnum.Value2,
+                    SimpleEnum.Value3,
+                    null,
+                }
+            },
         };
 
         public static IEnumerable<object?> GetPossibleValues(Type testType)
@@ -126,6 +184,13 @@ namespace GenericDataStructures.Tests
             public int Number { get; set; }
 
             public SimpleClass? Child { get; set; }
+        }
+
+        public enum SimpleEnum
+        {
+            Value1 = 1,
+            Value2 = 2,
+            Value3 = 3,
         }
     }
 }
