@@ -24,7 +24,13 @@ namespace GenericDataStructures
         {
             switch (_typeIndex)
             {
-                case 0: return onT1Func((T1)_value);
+                case 0:
+                    if (onT1Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(T1).Name}");
+                    }
+
+                    return onT1Func((T1)_value);
                 default: throw new InvalidOperationException();
             }
         }
@@ -33,7 +39,14 @@ namespace GenericDataStructures
         {
             switch (_typeIndex)
             {
-                case 0: onT1Action((T1)_value); break;
+                case 0:
+                    if (onT1Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(T1).Name}");
+                    }
+
+                    onT1Action((T1)_value);
+                    break;
                 default: throw new InvalidOperationException();
             }
         }
@@ -82,8 +95,20 @@ namespace GenericDataStructures
         {
             switch (_typeIndex)
             {
-                case 0: return onT1Func((T1)_value);
-                case 1: return onT2Func((T2)_value);
+                case 0:
+                    if (onT1Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(T1).Name}");
+                    }
+
+                    return onT1Func((T1)_value);
+                case 1:
+                    if (onT2Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(T2).Name}");
+                    }
+
+                    return onT2Func((T2)_value);
                 default: throw new InvalidOperationException();
             }
         }
@@ -92,8 +117,22 @@ namespace GenericDataStructures
         {
             switch (_typeIndex)
             {
-                case 0: onT1Action((T1)_value); break;
-                case 1: onT2Action((T2)_value); break;
+                case 0:
+                    if (onT1Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(T1).Name}");
+                    }
+
+                    onT1Action((T1)_value);
+                    break;
+                case 1:
+                    if (onT2Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(T2).Name}");
+                    }
+
+                    onT2Action((T2)_value);
+                    break;
                 default: throw new InvalidOperationException();
             }
         }
@@ -150,9 +189,27 @@ namespace GenericDataStructures
         {
             switch (_typeIndex)
             {
-                case 0: return onT1Func((T1)_value);
-                case 1: return onT2Func((T2)_value);
-                case 2: return onT3Func((T3)_value);
+                case 0:
+                    if (onT1Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(T1).Name}");
+                    }
+
+                    return onT1Func((T1)_value);
+                case 1:
+                    if (onT2Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(T2).Name}");
+                    }
+
+                    return onT2Func((T2)_value);
+                case 2:
+                    if (onT3Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(T3).Name}");
+                    }
+
+                    return onT3Func((T3)_value);
                 default: throw new InvalidOperationException();
             }
         }
@@ -161,9 +218,30 @@ namespace GenericDataStructures
         {
             switch (_typeIndex)
             {
-                case 0: onT1Action((T1)_value); break;
-                case 1: onT2Action((T2)_value); break;
-                case 2: onT3Action((T3)_value); break;
+                case 0:
+                    if (onT1Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(T1).Name}");
+                    }
+
+                    onT1Action((T1)_value);
+                    break;
+                case 1:
+                    if (onT2Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(T2).Name}");
+                    }
+
+                    onT2Action((T2)_value);
+                    break;
+                case 2:
+                    if (onT3Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(T3).Name}");
+                    }
+
+                    onT3Action((T3)_value);
+                    break;
                 default: throw new InvalidOperationException();
             }
         }
@@ -228,10 +306,34 @@ namespace GenericDataStructures
         {
             switch (_typeIndex)
             {
-                case 0: return onT1Func((T1)_value);
-                case 1: return onT2Func((T2)_value);
-                case 2: return onT3Func((T3)_value);
-                case 3: return onT4Func((T4)_value);
+                case 0:
+                    if (onT1Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(T1).Name}");
+                    }
+
+                    return onT1Func((T1)_value);
+                case 1:
+                    if (onT2Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(T2).Name}");
+                    }
+
+                    return onT2Func((T2)_value);
+                case 2:
+                    if (onT3Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(T3).Name}");
+                    }
+
+                    return onT3Func((T3)_value);
+                case 3:
+                    if (onT4Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(T4).Name}");
+                    }
+
+                    return onT4Func((T4)_value);
                 default: throw new InvalidOperationException();
             }
         }
@@ -240,10 +342,38 @@ namespace GenericDataStructures
         {
             switch (_typeIndex)
             {
-                case 0: onT1Action((T1)_value); break;
-                case 1: onT2Action((T2)_value); break;
-                case 2: onT3Action((T3)_value); break;
-                case 3: onT4Action((T4)_value); break;
+                case 0:
+                    if (onT1Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(T1).Name}");
+                    }
+
+                    onT1Action((T1)_value);
+                    break;
+                case 1:
+                    if (onT2Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(T2).Name}");
+                    }
+
+                    onT2Action((T2)_value);
+                    break;
+                case 2:
+                    if (onT3Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(T3).Name}");
+                    }
+
+                    onT3Action((T3)_value);
+                    break;
+                case 3:
+                    if (onT4Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(T4).Name}");
+                    }
+
+                    onT4Action((T4)_value);
+                    break;
                 default: throw new InvalidOperationException();
             }
         }
@@ -316,11 +446,41 @@ namespace GenericDataStructures
         {
             switch (_typeIndex)
             {
-                case 0: return onT1Func((T1)_value);
-                case 1: return onT2Func((T2)_value);
-                case 2: return onT3Func((T3)_value);
-                case 3: return onT4Func((T4)_value);
-                case 4: return onT5Func((T5)_value);
+                case 0:
+                    if (onT1Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(T1).Name}");
+                    }
+
+                    return onT1Func((T1)_value);
+                case 1:
+                    if (onT2Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(T2).Name}");
+                    }
+
+                    return onT2Func((T2)_value);
+                case 2:
+                    if (onT3Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(T3).Name}");
+                    }
+
+                    return onT3Func((T3)_value);
+                case 3:
+                    if (onT4Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(T4).Name}");
+                    }
+
+                    return onT4Func((T4)_value);
+                case 4:
+                    if (onT5Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(T5).Name}");
+                    }
+
+                    return onT5Func((T5)_value);
                 default: throw new InvalidOperationException();
             }
         }
@@ -329,11 +489,46 @@ namespace GenericDataStructures
         {
             switch (_typeIndex)
             {
-                case 0: onT1Action((T1)_value); break;
-                case 1: onT2Action((T2)_value); break;
-                case 2: onT3Action((T3)_value); break;
-                case 3: onT4Action((T4)_value); break;
-                case 4: onT5Action((T5)_value); break;
+                case 0:
+                    if (onT1Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(T1).Name}");
+                    }
+
+                    onT1Action((T1)_value);
+                    break;
+                case 1:
+                    if (onT2Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(T2).Name}");
+                    }
+
+                    onT2Action((T2)_value);
+                    break;
+                case 2:
+                    if (onT3Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(T3).Name}");
+                    }
+
+                    onT3Action((T3)_value);
+                    break;
+                case 3:
+                    if (onT4Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(T4).Name}");
+                    }
+
+                    onT4Action((T4)_value);
+                    break;
+                case 4:
+                    if (onT5Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(T5).Name}");
+                    }
+
+                    onT5Action((T5)_value);
+                    break;
                 default: throw new InvalidOperationException();
             }
         }
@@ -414,12 +609,48 @@ namespace GenericDataStructures
         {
             switch (_typeIndex)
             {
-                case 0: return onT1Func((T1)_value);
-                case 1: return onT2Func((T2)_value);
-                case 2: return onT3Func((T3)_value);
-                case 3: return onT4Func((T4)_value);
-                case 4: return onT5Func((T5)_value);
-                case 5: return onT6Func((T6)_value);
+                case 0:
+                    if (onT1Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(T1).Name}");
+                    }
+
+                    return onT1Func((T1)_value);
+                case 1:
+                    if (onT2Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(T2).Name}");
+                    }
+
+                    return onT2Func((T2)_value);
+                case 2:
+                    if (onT3Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(T3).Name}");
+                    }
+
+                    return onT3Func((T3)_value);
+                case 3:
+                    if (onT4Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(T4).Name}");
+                    }
+
+                    return onT4Func((T4)_value);
+                case 4:
+                    if (onT5Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(T5).Name}");
+                    }
+
+                    return onT5Func((T5)_value);
+                case 5:
+                    if (onT6Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(T6).Name}");
+                    }
+
+                    return onT6Func((T6)_value);
                 default: throw new InvalidOperationException();
             }
         }
@@ -428,12 +659,54 @@ namespace GenericDataStructures
         {
             switch (_typeIndex)
             {
-                case 0: onT1Action((T1)_value); break;
-                case 1: onT2Action((T2)_value); break;
-                case 2: onT3Action((T3)_value); break;
-                case 3: onT4Action((T4)_value); break;
-                case 4: onT5Action((T5)_value); break;
-                case 5: onT6Action((T6)_value); break;
+                case 0:
+                    if (onT1Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(T1).Name}");
+                    }
+
+                    onT1Action((T1)_value);
+                    break;
+                case 1:
+                    if (onT2Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(T2).Name}");
+                    }
+
+                    onT2Action((T2)_value);
+                    break;
+                case 2:
+                    if (onT3Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(T3).Name}");
+                    }
+
+                    onT3Action((T3)_value);
+                    break;
+                case 3:
+                    if (onT4Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(T4).Name}");
+                    }
+
+                    onT4Action((T4)_value);
+                    break;
+                case 4:
+                    if (onT5Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(T5).Name}");
+                    }
+
+                    onT5Action((T5)_value);
+                    break;
+                case 5:
+                    if (onT6Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(T6).Name}");
+                    }
+
+                    onT6Action((T6)_value);
+                    break;
                 default: throw new InvalidOperationException();
             }
         }
@@ -522,13 +795,55 @@ namespace GenericDataStructures
         {
             switch (_typeIndex)
             {
-                case 0: return onT1Func((T1)_value);
-                case 1: return onT2Func((T2)_value);
-                case 2: return onT3Func((T3)_value);
-                case 3: return onT4Func((T4)_value);
-                case 4: return onT5Func((T5)_value);
-                case 5: return onT6Func((T6)_value);
-                case 6: return onT7Func((T7)_value);
+                case 0:
+                    if (onT1Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(T1).Name}");
+                    }
+
+                    return onT1Func((T1)_value);
+                case 1:
+                    if (onT2Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(T2).Name}");
+                    }
+
+                    return onT2Func((T2)_value);
+                case 2:
+                    if (onT3Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(T3).Name}");
+                    }
+
+                    return onT3Func((T3)_value);
+                case 3:
+                    if (onT4Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(T4).Name}");
+                    }
+
+                    return onT4Func((T4)_value);
+                case 4:
+                    if (onT5Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(T5).Name}");
+                    }
+
+                    return onT5Func((T5)_value);
+                case 5:
+                    if (onT6Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(T6).Name}");
+                    }
+
+                    return onT6Func((T6)_value);
+                case 6:
+                    if (onT7Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(T7).Name}");
+                    }
+
+                    return onT7Func((T7)_value);
                 default: throw new InvalidOperationException();
             }
         }
@@ -537,13 +852,62 @@ namespace GenericDataStructures
         {
             switch (_typeIndex)
             {
-                case 0: onT1Action((T1)_value); break;
-                case 1: onT2Action((T2)_value); break;
-                case 2: onT3Action((T3)_value); break;
-                case 3: onT4Action((T4)_value); break;
-                case 4: onT5Action((T5)_value); break;
-                case 5: onT6Action((T6)_value); break;
-                case 6: onT7Action((T7)_value); break;
+                case 0:
+                    if (onT1Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(T1).Name}");
+                    }
+
+                    onT1Action((T1)_value);
+                    break;
+                case 1:
+                    if (onT2Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(T2).Name}");
+                    }
+
+                    onT2Action((T2)_value);
+                    break;
+                case 2:
+                    if (onT3Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(T3).Name}");
+                    }
+
+                    onT3Action((T3)_value);
+                    break;
+                case 3:
+                    if (onT4Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(T4).Name}");
+                    }
+
+                    onT4Action((T4)_value);
+                    break;
+                case 4:
+                    if (onT5Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(T5).Name}");
+                    }
+
+                    onT5Action((T5)_value);
+                    break;
+                case 5:
+                    if (onT6Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(T6).Name}");
+                    }
+
+                    onT6Action((T6)_value);
+                    break;
+                case 6:
+                    if (onT7Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(T7).Name}");
+                    }
+
+                    onT7Action((T7)_value);
+                    break;
                 default: throw new InvalidOperationException();
             }
         }
@@ -640,14 +1004,62 @@ namespace GenericDataStructures
         {
             switch (_typeIndex)
             {
-                case 0: return onT1Func((T1)_value);
-                case 1: return onT2Func((T2)_value);
-                case 2: return onT3Func((T3)_value);
-                case 3: return onT4Func((T4)_value);
-                case 4: return onT5Func((T5)_value);
-                case 5: return onT6Func((T6)_value);
-                case 6: return onT7Func((T7)_value);
-                case 7: return onT8Func((T8)_value);
+                case 0:
+                    if (onT1Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(T1).Name}");
+                    }
+
+                    return onT1Func((T1)_value);
+                case 1:
+                    if (onT2Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(T2).Name}");
+                    }
+
+                    return onT2Func((T2)_value);
+                case 2:
+                    if (onT3Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(T3).Name}");
+                    }
+
+                    return onT3Func((T3)_value);
+                case 3:
+                    if (onT4Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(T4).Name}");
+                    }
+
+                    return onT4Func((T4)_value);
+                case 4:
+                    if (onT5Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(T5).Name}");
+                    }
+
+                    return onT5Func((T5)_value);
+                case 5:
+                    if (onT6Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(T6).Name}");
+                    }
+
+                    return onT6Func((T6)_value);
+                case 6:
+                    if (onT7Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(T7).Name}");
+                    }
+
+                    return onT7Func((T7)_value);
+                case 7:
+                    if (onT8Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(T8).Name}");
+                    }
+
+                    return onT8Func((T8)_value);
                 default: throw new InvalidOperationException();
             }
         }
@@ -656,14 +1068,70 @@ namespace GenericDataStructures
         {
             switch (_typeIndex)
             {
-                case 0: onT1Action((T1)_value); break;
-                case 1: onT2Action((T2)_value); break;
-                case 2: onT3Action((T3)_value); break;
-                case 3: onT4Action((T4)_value); break;
-                case 4: onT5Action((T5)_value); break;
-                case 5: onT6Action((T6)_value); break;
-                case 6: onT7Action((T7)_value); break;
-                case 7: onT8Action((T8)_value); break;
+                case 0:
+                    if (onT1Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(T1).Name}");
+                    }
+
+                    onT1Action((T1)_value);
+                    break;
+                case 1:
+                    if (onT2Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(T2).Name}");
+                    }
+
+                    onT2Action((T2)_value);
+                    break;
+                case 2:
+                    if (onT3Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(T3).Name}");
+                    }
+
+                    onT3Action((T3)_value);
+                    break;
+                case 3:
+                    if (onT4Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(T4).Name}");
+                    }
+
+                    onT4Action((T4)_value);
+                    break;
+                case 4:
+                    if (onT5Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(T5).Name}");
+                    }
+
+                    onT5Action((T5)_value);
+                    break;
+                case 5:
+                    if (onT6Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(T6).Name}");
+                    }
+
+                    onT6Action((T6)_value);
+                    break;
+                case 6:
+                    if (onT7Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(T7).Name}");
+                    }
+
+                    onT7Action((T7)_value);
+                    break;
+                case 7:
+                    if (onT8Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(T8).Name}");
+                    }
+
+                    onT8Action((T8)_value);
+                    break;
                 default: throw new InvalidOperationException();
             }
         }

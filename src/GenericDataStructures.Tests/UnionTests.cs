@@ -67,14 +67,14 @@ namespace GenericDataStructures.Tests
                     .Cast<object>()
                     .ToArray();
 
-                var mapMethod = resultType.GetMethods().Single(method => method.Name == "Switch" && !method.IsGenericMethod);
+                var switchMethod = resultType.GetMethods().Single(method => method.Name == "Switch" && !method.IsGenericMethod);
 
-                if (mapMethod == null)
+                if (switchMethod == null)
                 {
-                    throw new InvalidOperationException("Map method not found");
+                    throw new InvalidOperationException("Switch method not found");
                 }
 
-                mapMethod.Invoke(union, voidDelegates);
+                switchMethod.Invoke(union, voidDelegates);
 
                 Assert.AreEqual(1, delegateMonitor.TotalCalls);
 

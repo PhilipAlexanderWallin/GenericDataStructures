@@ -51,7 +51,13 @@ namespace GenericDataStructures
     for(int index = 0; index < types; index++)
     {
 #>
-                case <#= index #>: return onT<#= index + 1 #>Func((T<#= index + 1 #>)_value);
+                case <#= index #>:
+                    if (onT<#= index + 1 #>Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(T<#= index + 1 #>).Name}");
+                    }
+
+                    return onT<#= index + 1 #>Func((T<#= index + 1 #>)_value);
 <#
     }
 #>
@@ -67,7 +73,14 @@ namespace GenericDataStructures
     for(int index = 0; index < types; index++)
     {
 #>
-                case <#= index #>: onT<#= index + 1 #>Action((T<#= index + 1 #>)_value); break;
+                case <#= index #>:
+                    if (onT<#= index + 1 #>Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(T<#= index + 1 #>).Name}");
+                    }
+
+                    onT<#= index + 1 #>Action((T<#= index + 1 #>)_value);
+                    break;
 <#
     }
 #>

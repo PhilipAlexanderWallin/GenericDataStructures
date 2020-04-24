@@ -80,6 +80,11 @@ namespace GenericDataStructures
         {
             if (IsSuccess)
             {
+                if (onSuccessFunc == null)
+                {
+                    throw new ArgumentException($"No map function provided");
+                }
+
                 mappedValue = onSuccessFunc((TSuccess)_value);
                 return true;
             }
@@ -96,11 +101,23 @@ namespace GenericDataStructures
     for(int failureIndex = 0; failureIndex < failureTypes; failureIndex++)
     {
 #>
-                case <#= failureIndex #>: return onFailure<#= failureIndex + 1 #>Func((TFailure<#= failureIndex + 1 #>)_value);
+                case <#= failureIndex #>:
+                    if (onFailure<#= failureIndex + 1 #>Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(TFailure<#= failureIndex + 1 #>).Name}");
+                    }
+
+                    return onFailure<#= failureIndex + 1 #>Func((TFailure<#= failureIndex + 1 #>)_value);
 <#
     }
 #>
-                default: return onSuccessFunc((TSuccess)_value);
+                default:
+                    if (onSuccessFunc == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(TSuccess).Name}");
+                    }
+
+                    return onSuccessFunc((TSuccess)_value);
             }
         }
 
@@ -112,11 +129,25 @@ namespace GenericDataStructures
     for(int failureIndex = 0; failureIndex < failureTypes; failureIndex++)
     {
 #>
-                case <#= failureIndex #>: onFailure<#= failureIndex + 1 #>Action((TFailure<#= failureIndex + 1 #>)_value); break;
+                case <#= failureIndex #>:
+                    if (onFailure<#= failureIndex + 1 #>Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(TFailure<#= failureIndex + 1 #>).Name}");
+                    }
+
+                    onFailure<#= failureIndex + 1 #>Action((TFailure<#= failureIndex + 1 #>)_value);
+                    break;
 <#
     }
 #>
-                default: onSuccessAction((TSuccess)_value); break;
+                default:
+                    if (onSuccessAction == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(TSuccess).Name}");
+                    }
+
+                    onSuccessAction((TSuccess)_value);
+                    break;
             }
         }
 

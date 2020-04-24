@@ -46,8 +46,20 @@ namespace GenericDataStructures
         {
             switch (_failureTypeIndex)
             {
-                case 0: return onFailure1Func((TFailure1)_value);
-                default: return onSuccessFunc();
+                case 0:
+                    if (onFailure1Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(TFailure1).Name}");
+                    }
+
+                    return onFailure1Func((TFailure1)_value);
+                default:
+                    if (onSuccessFunc == null)
+                    {
+                        throw new ArgumentException($"No map function provided for success result");
+                    }
+
+                    return onSuccessFunc();
             }
         }
 
@@ -55,8 +67,22 @@ namespace GenericDataStructures
         {
             switch (_failureTypeIndex)
             {
-                case 0: onFailure1Action((TFailure1)_value); break;
-                default: onSuccessAction(); break;
+                case 0:
+                    if (onFailure1Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(TFailure1).Name}");
+                    }
+
+                    onFailure1Action((TFailure1)_value);
+                    break;
+                default:
+                    if (onSuccessAction == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for success result");
+                    }
+
+                    onSuccessAction();
+                    break;
             }
         }
 
@@ -112,9 +138,27 @@ namespace GenericDataStructures
         {
             switch (_failureTypeIndex)
             {
-                case 0: return onFailure1Func((TFailure1)_value);
-                case 1: return onFailure2Func((TFailure2)_value);
-                default: return onSuccessFunc();
+                case 0:
+                    if (onFailure1Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(TFailure1).Name}");
+                    }
+
+                    return onFailure1Func((TFailure1)_value);
+                case 1:
+                    if (onFailure2Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(TFailure2).Name}");
+                    }
+
+                    return onFailure2Func((TFailure2)_value);
+                default:
+                    if (onSuccessFunc == null)
+                    {
+                        throw new ArgumentException($"No map function provided for success result");
+                    }
+
+                    return onSuccessFunc();
             }
         }
 
@@ -122,9 +166,30 @@ namespace GenericDataStructures
         {
             switch (_failureTypeIndex)
             {
-                case 0: onFailure1Action((TFailure1)_value); break;
-                case 1: onFailure2Action((TFailure2)_value); break;
-                default: onSuccessAction(); break;
+                case 0:
+                    if (onFailure1Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(TFailure1).Name}");
+                    }
+
+                    onFailure1Action((TFailure1)_value);
+                    break;
+                case 1:
+                    if (onFailure2Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(TFailure2).Name}");
+                    }
+
+                    onFailure2Action((TFailure2)_value);
+                    break;
+                default:
+                    if (onSuccessAction == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for success result");
+                    }
+
+                    onSuccessAction();
+                    break;
             }
         }
 
@@ -188,10 +253,34 @@ namespace GenericDataStructures
         {
             switch (_failureTypeIndex)
             {
-                case 0: return onFailure1Func((TFailure1)_value);
-                case 1: return onFailure2Func((TFailure2)_value);
-                case 2: return onFailure3Func((TFailure3)_value);
-                default: return onSuccessFunc();
+                case 0:
+                    if (onFailure1Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(TFailure1).Name}");
+                    }
+
+                    return onFailure1Func((TFailure1)_value);
+                case 1:
+                    if (onFailure2Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(TFailure2).Name}");
+                    }
+
+                    return onFailure2Func((TFailure2)_value);
+                case 2:
+                    if (onFailure3Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(TFailure3).Name}");
+                    }
+
+                    return onFailure3Func((TFailure3)_value);
+                default:
+                    if (onSuccessFunc == null)
+                    {
+                        throw new ArgumentException($"No map function provided for success result");
+                    }
+
+                    return onSuccessFunc();
             }
         }
 
@@ -199,10 +288,38 @@ namespace GenericDataStructures
         {
             switch (_failureTypeIndex)
             {
-                case 0: onFailure1Action((TFailure1)_value); break;
-                case 1: onFailure2Action((TFailure2)_value); break;
-                case 2: onFailure3Action((TFailure3)_value); break;
-                default: onSuccessAction(); break;
+                case 0:
+                    if (onFailure1Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(TFailure1).Name}");
+                    }
+
+                    onFailure1Action((TFailure1)_value);
+                    break;
+                case 1:
+                    if (onFailure2Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(TFailure2).Name}");
+                    }
+
+                    onFailure2Action((TFailure2)_value);
+                    break;
+                case 2:
+                    if (onFailure3Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(TFailure3).Name}");
+                    }
+
+                    onFailure3Action((TFailure3)_value);
+                    break;
+                default:
+                    if (onSuccessAction == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for success result");
+                    }
+
+                    onSuccessAction();
+                    break;
             }
         }
 
@@ -274,11 +391,41 @@ namespace GenericDataStructures
         {
             switch (_failureTypeIndex)
             {
-                case 0: return onFailure1Func((TFailure1)_value);
-                case 1: return onFailure2Func((TFailure2)_value);
-                case 2: return onFailure3Func((TFailure3)_value);
-                case 3: return onFailure4Func((TFailure4)_value);
-                default: return onSuccessFunc();
+                case 0:
+                    if (onFailure1Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(TFailure1).Name}");
+                    }
+
+                    return onFailure1Func((TFailure1)_value);
+                case 1:
+                    if (onFailure2Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(TFailure2).Name}");
+                    }
+
+                    return onFailure2Func((TFailure2)_value);
+                case 2:
+                    if (onFailure3Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(TFailure3).Name}");
+                    }
+
+                    return onFailure3Func((TFailure3)_value);
+                case 3:
+                    if (onFailure4Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(TFailure4).Name}");
+                    }
+
+                    return onFailure4Func((TFailure4)_value);
+                default:
+                    if (onSuccessFunc == null)
+                    {
+                        throw new ArgumentException($"No map function provided for success result");
+                    }
+
+                    return onSuccessFunc();
             }
         }
 
@@ -286,11 +433,46 @@ namespace GenericDataStructures
         {
             switch (_failureTypeIndex)
             {
-                case 0: onFailure1Action((TFailure1)_value); break;
-                case 1: onFailure2Action((TFailure2)_value); break;
-                case 2: onFailure3Action((TFailure3)_value); break;
-                case 3: onFailure4Action((TFailure4)_value); break;
-                default: onSuccessAction(); break;
+                case 0:
+                    if (onFailure1Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(TFailure1).Name}");
+                    }
+
+                    onFailure1Action((TFailure1)_value);
+                    break;
+                case 1:
+                    if (onFailure2Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(TFailure2).Name}");
+                    }
+
+                    onFailure2Action((TFailure2)_value);
+                    break;
+                case 2:
+                    if (onFailure3Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(TFailure3).Name}");
+                    }
+
+                    onFailure3Action((TFailure3)_value);
+                    break;
+                case 3:
+                    if (onFailure4Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(TFailure4).Name}");
+                    }
+
+                    onFailure4Action((TFailure4)_value);
+                    break;
+                default:
+                    if (onSuccessAction == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for success result");
+                    }
+
+                    onSuccessAction();
+                    break;
             }
         }
 
@@ -370,12 +552,48 @@ namespace GenericDataStructures
         {
             switch (_failureTypeIndex)
             {
-                case 0: return onFailure1Func((TFailure1)_value);
-                case 1: return onFailure2Func((TFailure2)_value);
-                case 2: return onFailure3Func((TFailure3)_value);
-                case 3: return onFailure4Func((TFailure4)_value);
-                case 4: return onFailure5Func((TFailure5)_value);
-                default: return onSuccessFunc();
+                case 0:
+                    if (onFailure1Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(TFailure1).Name}");
+                    }
+
+                    return onFailure1Func((TFailure1)_value);
+                case 1:
+                    if (onFailure2Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(TFailure2).Name}");
+                    }
+
+                    return onFailure2Func((TFailure2)_value);
+                case 2:
+                    if (onFailure3Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(TFailure3).Name}");
+                    }
+
+                    return onFailure3Func((TFailure3)_value);
+                case 3:
+                    if (onFailure4Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(TFailure4).Name}");
+                    }
+
+                    return onFailure4Func((TFailure4)_value);
+                case 4:
+                    if (onFailure5Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(TFailure5).Name}");
+                    }
+
+                    return onFailure5Func((TFailure5)_value);
+                default:
+                    if (onSuccessFunc == null)
+                    {
+                        throw new ArgumentException($"No map function provided for success result");
+                    }
+
+                    return onSuccessFunc();
             }
         }
 
@@ -383,12 +601,54 @@ namespace GenericDataStructures
         {
             switch (_failureTypeIndex)
             {
-                case 0: onFailure1Action((TFailure1)_value); break;
-                case 1: onFailure2Action((TFailure2)_value); break;
-                case 2: onFailure3Action((TFailure3)_value); break;
-                case 3: onFailure4Action((TFailure4)_value); break;
-                case 4: onFailure5Action((TFailure5)_value); break;
-                default: onSuccessAction(); break;
+                case 0:
+                    if (onFailure1Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(TFailure1).Name}");
+                    }
+
+                    onFailure1Action((TFailure1)_value);
+                    break;
+                case 1:
+                    if (onFailure2Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(TFailure2).Name}");
+                    }
+
+                    onFailure2Action((TFailure2)_value);
+                    break;
+                case 2:
+                    if (onFailure3Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(TFailure3).Name}");
+                    }
+
+                    onFailure3Action((TFailure3)_value);
+                    break;
+                case 3:
+                    if (onFailure4Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(TFailure4).Name}");
+                    }
+
+                    onFailure4Action((TFailure4)_value);
+                    break;
+                case 4:
+                    if (onFailure5Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(TFailure5).Name}");
+                    }
+
+                    onFailure5Action((TFailure5)_value);
+                    break;
+                default:
+                    if (onSuccessAction == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for success result");
+                    }
+
+                    onSuccessAction();
+                    break;
             }
         }
 
@@ -476,13 +736,55 @@ namespace GenericDataStructures
         {
             switch (_failureTypeIndex)
             {
-                case 0: return onFailure1Func((TFailure1)_value);
-                case 1: return onFailure2Func((TFailure2)_value);
-                case 2: return onFailure3Func((TFailure3)_value);
-                case 3: return onFailure4Func((TFailure4)_value);
-                case 4: return onFailure5Func((TFailure5)_value);
-                case 5: return onFailure6Func((TFailure6)_value);
-                default: return onSuccessFunc();
+                case 0:
+                    if (onFailure1Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(TFailure1).Name}");
+                    }
+
+                    return onFailure1Func((TFailure1)_value);
+                case 1:
+                    if (onFailure2Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(TFailure2).Name}");
+                    }
+
+                    return onFailure2Func((TFailure2)_value);
+                case 2:
+                    if (onFailure3Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(TFailure3).Name}");
+                    }
+
+                    return onFailure3Func((TFailure3)_value);
+                case 3:
+                    if (onFailure4Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(TFailure4).Name}");
+                    }
+
+                    return onFailure4Func((TFailure4)_value);
+                case 4:
+                    if (onFailure5Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(TFailure5).Name}");
+                    }
+
+                    return onFailure5Func((TFailure5)_value);
+                case 5:
+                    if (onFailure6Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(TFailure6).Name}");
+                    }
+
+                    return onFailure6Func((TFailure6)_value);
+                default:
+                    if (onSuccessFunc == null)
+                    {
+                        throw new ArgumentException($"No map function provided for success result");
+                    }
+
+                    return onSuccessFunc();
             }
         }
 
@@ -490,13 +792,62 @@ namespace GenericDataStructures
         {
             switch (_failureTypeIndex)
             {
-                case 0: onFailure1Action((TFailure1)_value); break;
-                case 1: onFailure2Action((TFailure2)_value); break;
-                case 2: onFailure3Action((TFailure3)_value); break;
-                case 3: onFailure4Action((TFailure4)_value); break;
-                case 4: onFailure5Action((TFailure5)_value); break;
-                case 5: onFailure6Action((TFailure6)_value); break;
-                default: onSuccessAction(); break;
+                case 0:
+                    if (onFailure1Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(TFailure1).Name}");
+                    }
+
+                    onFailure1Action((TFailure1)_value);
+                    break;
+                case 1:
+                    if (onFailure2Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(TFailure2).Name}");
+                    }
+
+                    onFailure2Action((TFailure2)_value);
+                    break;
+                case 2:
+                    if (onFailure3Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(TFailure3).Name}");
+                    }
+
+                    onFailure3Action((TFailure3)_value);
+                    break;
+                case 3:
+                    if (onFailure4Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(TFailure4).Name}");
+                    }
+
+                    onFailure4Action((TFailure4)_value);
+                    break;
+                case 4:
+                    if (onFailure5Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(TFailure5).Name}");
+                    }
+
+                    onFailure5Action((TFailure5)_value);
+                    break;
+                case 5:
+                    if (onFailure6Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(TFailure6).Name}");
+                    }
+
+                    onFailure6Action((TFailure6)_value);
+                    break;
+                default:
+                    if (onSuccessAction == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for success result");
+                    }
+
+                    onSuccessAction();
+                    break;
             }
         }
 
@@ -592,14 +943,62 @@ namespace GenericDataStructures
         {
             switch (_failureTypeIndex)
             {
-                case 0: return onFailure1Func((TFailure1)_value);
-                case 1: return onFailure2Func((TFailure2)_value);
-                case 2: return onFailure3Func((TFailure3)_value);
-                case 3: return onFailure4Func((TFailure4)_value);
-                case 4: return onFailure5Func((TFailure5)_value);
-                case 5: return onFailure6Func((TFailure6)_value);
-                case 6: return onFailure7Func((TFailure7)_value);
-                default: return onSuccessFunc();
+                case 0:
+                    if (onFailure1Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(TFailure1).Name}");
+                    }
+
+                    return onFailure1Func((TFailure1)_value);
+                case 1:
+                    if (onFailure2Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(TFailure2).Name}");
+                    }
+
+                    return onFailure2Func((TFailure2)_value);
+                case 2:
+                    if (onFailure3Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(TFailure3).Name}");
+                    }
+
+                    return onFailure3Func((TFailure3)_value);
+                case 3:
+                    if (onFailure4Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(TFailure4).Name}");
+                    }
+
+                    return onFailure4Func((TFailure4)_value);
+                case 4:
+                    if (onFailure5Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(TFailure5).Name}");
+                    }
+
+                    return onFailure5Func((TFailure5)_value);
+                case 5:
+                    if (onFailure6Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(TFailure6).Name}");
+                    }
+
+                    return onFailure6Func((TFailure6)_value);
+                case 6:
+                    if (onFailure7Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(TFailure7).Name}");
+                    }
+
+                    return onFailure7Func((TFailure7)_value);
+                default:
+                    if (onSuccessFunc == null)
+                    {
+                        throw new ArgumentException($"No map function provided for success result");
+                    }
+
+                    return onSuccessFunc();
             }
         }
 
@@ -607,14 +1006,70 @@ namespace GenericDataStructures
         {
             switch (_failureTypeIndex)
             {
-                case 0: onFailure1Action((TFailure1)_value); break;
-                case 1: onFailure2Action((TFailure2)_value); break;
-                case 2: onFailure3Action((TFailure3)_value); break;
-                case 3: onFailure4Action((TFailure4)_value); break;
-                case 4: onFailure5Action((TFailure5)_value); break;
-                case 5: onFailure6Action((TFailure6)_value); break;
-                case 6: onFailure7Action((TFailure7)_value); break;
-                default: onSuccessAction(); break;
+                case 0:
+                    if (onFailure1Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(TFailure1).Name}");
+                    }
+
+                    onFailure1Action((TFailure1)_value);
+                    break;
+                case 1:
+                    if (onFailure2Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(TFailure2).Name}");
+                    }
+
+                    onFailure2Action((TFailure2)_value);
+                    break;
+                case 2:
+                    if (onFailure3Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(TFailure3).Name}");
+                    }
+
+                    onFailure3Action((TFailure3)_value);
+                    break;
+                case 3:
+                    if (onFailure4Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(TFailure4).Name}");
+                    }
+
+                    onFailure4Action((TFailure4)_value);
+                    break;
+                case 4:
+                    if (onFailure5Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(TFailure5).Name}");
+                    }
+
+                    onFailure5Action((TFailure5)_value);
+                    break;
+                case 5:
+                    if (onFailure6Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(TFailure6).Name}");
+                    }
+
+                    onFailure6Action((TFailure6)_value);
+                    break;
+                case 6:
+                    if (onFailure7Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(TFailure7).Name}");
+                    }
+
+                    onFailure7Action((TFailure7)_value);
+                    break;
+                default:
+                    if (onSuccessAction == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for success result");
+                    }
+
+                    onSuccessAction();
+                    break;
             }
         }
 
@@ -718,15 +1173,69 @@ namespace GenericDataStructures
         {
             switch (_failureTypeIndex)
             {
-                case 0: return onFailure1Func((TFailure1)_value);
-                case 1: return onFailure2Func((TFailure2)_value);
-                case 2: return onFailure3Func((TFailure3)_value);
-                case 3: return onFailure4Func((TFailure4)_value);
-                case 4: return onFailure5Func((TFailure5)_value);
-                case 5: return onFailure6Func((TFailure6)_value);
-                case 6: return onFailure7Func((TFailure7)_value);
-                case 7: return onFailure8Func((TFailure8)_value);
-                default: return onSuccessFunc();
+                case 0:
+                    if (onFailure1Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(TFailure1).Name}");
+                    }
+
+                    return onFailure1Func((TFailure1)_value);
+                case 1:
+                    if (onFailure2Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(TFailure2).Name}");
+                    }
+
+                    return onFailure2Func((TFailure2)_value);
+                case 2:
+                    if (onFailure3Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(TFailure3).Name}");
+                    }
+
+                    return onFailure3Func((TFailure3)_value);
+                case 3:
+                    if (onFailure4Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(TFailure4).Name}");
+                    }
+
+                    return onFailure4Func((TFailure4)_value);
+                case 4:
+                    if (onFailure5Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(TFailure5).Name}");
+                    }
+
+                    return onFailure5Func((TFailure5)_value);
+                case 5:
+                    if (onFailure6Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(TFailure6).Name}");
+                    }
+
+                    return onFailure6Func((TFailure6)_value);
+                case 6:
+                    if (onFailure7Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(TFailure7).Name}");
+                    }
+
+                    return onFailure7Func((TFailure7)_value);
+                case 7:
+                    if (onFailure8Func == null)
+                    {
+                        throw new ArgumentException($"No map function provided for {typeof(TFailure8).Name}");
+                    }
+
+                    return onFailure8Func((TFailure8)_value);
+                default:
+                    if (onSuccessFunc == null)
+                    {
+                        throw new ArgumentException($"No map function provided for success result");
+                    }
+
+                    return onSuccessFunc();
             }
         }
 
@@ -734,15 +1243,78 @@ namespace GenericDataStructures
         {
             switch (_failureTypeIndex)
             {
-                case 0: onFailure1Action((TFailure1)_value); break;
-                case 1: onFailure2Action((TFailure2)_value); break;
-                case 2: onFailure3Action((TFailure3)_value); break;
-                case 3: onFailure4Action((TFailure4)_value); break;
-                case 4: onFailure5Action((TFailure5)_value); break;
-                case 5: onFailure6Action((TFailure6)_value); break;
-                case 6: onFailure7Action((TFailure7)_value); break;
-                case 7: onFailure8Action((TFailure8)_value); break;
-                default: onSuccessAction(); break;
+                case 0:
+                    if (onFailure1Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(TFailure1).Name}");
+                    }
+
+                    onFailure1Action((TFailure1)_value);
+                    break;
+                case 1:
+                    if (onFailure2Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(TFailure2).Name}");
+                    }
+
+                    onFailure2Action((TFailure2)_value);
+                    break;
+                case 2:
+                    if (onFailure3Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(TFailure3).Name}");
+                    }
+
+                    onFailure3Action((TFailure3)_value);
+                    break;
+                case 3:
+                    if (onFailure4Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(TFailure4).Name}");
+                    }
+
+                    onFailure4Action((TFailure4)_value);
+                    break;
+                case 4:
+                    if (onFailure5Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(TFailure5).Name}");
+                    }
+
+                    onFailure5Action((TFailure5)_value);
+                    break;
+                case 5:
+                    if (onFailure6Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(TFailure6).Name}");
+                    }
+
+                    onFailure6Action((TFailure6)_value);
+                    break;
+                case 6:
+                    if (onFailure7Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(TFailure7).Name}");
+                    }
+
+                    onFailure7Action((TFailure7)_value);
+                    break;
+                case 7:
+                    if (onFailure8Action == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for {typeof(TFailure8).Name}");
+                    }
+
+                    onFailure8Action((TFailure8)_value);
+                    break;
+                default:
+                    if (onSuccessAction == null)
+                    {
+                        throw new ArgumentException($"No switch action provided for success result");
+                    }
+
+                    onSuccessAction();
+                    break;
             }
         }
 
