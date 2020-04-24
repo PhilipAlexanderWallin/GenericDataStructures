@@ -346,6 +346,42 @@ namespace GenericDataStructures.Tests
             }
         }
 
+        [Test]
+        public void DifferentValuesGiveDifferentHashCodes()
+        {
+            foreach (var resultType in AllResultTypesToTest())
+            {
+                foreach (var valueType in GetAllTypes(resultType))
+                {
+                    var usedHashCodes = TestData.GetPossibleValues(valueType)
+                        .Where(value => value != null)
+                        .Select(value => CreateResult(resultType, valueType, value))
+                        .Select(union => union.GetHashCode())
+                        .ToList();
+
+                    CollectionAssert.AllItemsAreUnique(usedHashCodes);
+                }
+            }
+        }
+
+        [Test]
+        public void SameValuesGiveSameHashCodes()
+        {
+            foreach (var resultType in AllResultTypesToTest())
+            {
+                foreach (var valueType in GetAllTypes(resultType))
+                {
+                    foreach (var value in TestData.GetPossibleValues(valueType))
+                    {
+                        var firstResult = CreateResult(resultType, valueType, value);
+                        var secondResult = CreateResult(resultType, valueType, value);
+
+                        Assert.AreEqual(firstResult.GetHashCode(), secondResult.GetHashCode());
+                    }
+                }
+            }
+        }
+
         private static object? GetDefaultValue(Type type)
         {
             return type.IsValueType ? Activator.CreateInstance(type) : null;

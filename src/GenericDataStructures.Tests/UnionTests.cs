@@ -140,6 +140,42 @@ namespace GenericDataStructures.Tests
             }
         }
 
+        [Test]
+        public void DifferentValuesGiveDifferentHashCodes()
+        {
+            foreach (var unionType in AllUnionTypesToTest())
+            {
+                foreach (var valueType in GetAllTypes(unionType))
+                {
+                    var usedHashCodes = TestData.GetPossibleValues(valueType)
+                        .Where(value => value != null)
+                        .Select(value => CreateUnion(unionType, valueType, value))
+                        .Select(union => union.GetHashCode())
+                        .ToList();
+
+                    CollectionAssert.AllItemsAreUnique(usedHashCodes);
+                }
+            }
+        }
+
+        [Test]
+        public void SameValuesGiveSameHashCodes()
+        {
+            foreach (var unionType in AllUnionTypesToTest())
+            {
+                foreach (var valueType in GetAllTypes(unionType))
+                {
+                    foreach (var value in TestData.GetPossibleValues(valueType))
+                    {
+                        var firstUnion = CreateUnion(unionType, valueType, value);
+                        var secondUnion = CreateUnion(unionType, valueType, value);
+
+                        Assert.AreEqual(firstUnion.GetHashCode(), secondUnion.GetHashCode());
+                    }
+                }
+            }
+        }
+
         private static IEnumerable<(object Union, object Value, Type ValueType)> AllUnionsToTest()
         {
             return

@@ -12,7 +12,7 @@ namespace GenericDataStructures.Tests
         [Test]
         public void WhenConstructedWithSuccessVoidResultIsSuccess()
         {
-            foreach (var voidResultType in AllVoidResultTypeToTest())
+            foreach (var voidResultType in AllVoidResultTypesToTest())
             {
                 dynamic voidResult = CreateSuccessVoidResult(voidResultType);
 
@@ -23,7 +23,7 @@ namespace GenericDataStructures.Tests
         [Test]
         public void WhenConstructedWithFailureTypeResultIsNotSuccess()
         {
-            foreach (var voidResultType in AllVoidResultTypeToTest())
+            foreach (var voidResultType in AllVoidResultTypesToTest())
             {
                 var failureTypes = GetFailureTypes(voidResultType);
                 foreach (var failureType in failureTypes)
@@ -134,7 +134,7 @@ namespace GenericDataStructures.Tests
         [Test]
         public void SuccessVoidResultsAreEqualForSameType()
         {
-            foreach (var voidResultType in AllVoidResultTypeToTest())
+            foreach (var voidResultType in AllVoidResultTypesToTest())
             {
                 var firstVoidResult = CreateSuccessVoidResult(voidResultType);
                 var secondVoidResult = CreateSuccessVoidResult(voidResultType);
@@ -147,11 +147,11 @@ namespace GenericDataStructures.Tests
         [Test]
         public void SuccessVoidResultsAreNotEqualForDifferentTypes()
         {
-            foreach (var firstVoidResultType in AllVoidResultTypeToTest())
+            foreach (var firstVoidResultType in AllVoidResultTypesToTest())
             {
                 var firstVoidResult = CreateSuccessVoidResult(firstVoidResultType);
 
-                foreach (var secondVoidResultType in AllVoidResultTypeToTest().Where(voidResultTypeCandidate => voidResultTypeCandidate != firstVoidResultType))
+                foreach (var secondVoidResultType in AllVoidResultTypesToTest().Where(voidResultTypeCandidate => voidResultTypeCandidate != firstVoidResultType))
                 {
                     var secondVoidResult = CreateSuccessVoidResult(secondVoidResultType);
 
@@ -164,7 +164,7 @@ namespace GenericDataStructures.Tests
         [Test]
         public void SuccessVoidResultsAreNotEqualFailureVoidResults()
         {
-            foreach (var voidResultType in AllVoidResultTypeToTest())
+            foreach (var voidResultType in AllVoidResultTypesToTest())
             {
                 var successVoidResult = CreateSuccessVoidResult(voidResultType);
 
@@ -184,7 +184,7 @@ namespace GenericDataStructures.Tests
         [Test]
         public void InstancesCreatedWithTheSameFailureInputAreEqual()
         {
-            foreach (var voidResultType in AllVoidResultTypeToTest())
+            foreach (var voidResultType in AllVoidResultTypesToTest())
             {
                 foreach (var valueType in GetFailureTypes(voidResultType))
                 {
@@ -203,7 +203,7 @@ namespace GenericDataStructures.Tests
         [Test]
         public void InstancesCreatedWithDifferentFailureInputAreNotEqual()
         {
-            foreach (var voidResultType in AllVoidResultTypeToTest())
+            foreach (var voidResultType in AllVoidResultTypesToTest())
             {
                 foreach (var firstValueType in GetFailureTypes(voidResultType))
                 {
@@ -239,9 +239,47 @@ namespace GenericDataStructures.Tests
             }
         }
 
+        [Test]
+        public void DifferentValuesGiveDifferentHashCodes()
+        {
+            foreach (var voidResultType in AllVoidResultTypesToTest())
+            {
+                foreach (var valueType in GetFailureTypes(voidResultType))
+                {
+                    var usedHashCodes = TestData.GetPossibleValues(valueType)
+                        .Where(value => value != null)
+                        .Select(value => CreateFailureVoidResult(voidResultType, valueType, value))
+                        .Select(union => union.GetHashCode())
+                        .ToList();
+
+                    CollectionAssert.AllItemsAreUnique(usedHashCodes);
+                }
+            }
+        }
+
+        [Test]
+        public void SameValuesGiveSameHashCodes()
+        {
+            foreach (var voidResultType in AllVoidResultTypesToTest())
+            {
+                foreach (var valueType in GetFailureTypes(voidResultType))
+                {
+                    foreach (var value in TestData.GetPossibleValues(valueType))
+                    {
+                        var firstVoidResult = CreateFailureVoidResult(voidResultType, valueType, value);
+                        var secondVoidResult = CreateFailureVoidResult(voidResultType, valueType, value);
+
+                        Assert.AreEqual(firstVoidResult.GetHashCode(), secondVoidResult.GetHashCode());
+                    }
+
+                    Assert.AreEqual(CreateSuccessVoidResult(voidResultType).GetHashCode(), CreateSuccessVoidResult(voidResultType).GetHashCode());
+                }
+            }
+        }
+
         private static IEnumerable<(object VoidResult, bool IsSuccess, object? Value, Type? ValueType)> AllVoidResultsToTest()
         {
-            foreach (var voidResultType in AllVoidResultTypeToTest())
+            foreach (var voidResultType in AllVoidResultTypesToTest())
             {
                 var failureTypes = GetFailureTypes(voidResultType);
 
@@ -257,7 +295,7 @@ namespace GenericDataStructures.Tests
             }
         }
 
-        private static IEnumerable<Type> AllVoidResultTypeToTest()
+        private static IEnumerable<Type> AllVoidResultTypesToTest()
         {
             for (var numberOfFailureTypes = 1; numberOfFailureTypes <= NumberOfFailureTypesToTestWith; numberOfFailureTypes++)
             {
