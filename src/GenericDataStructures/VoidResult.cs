@@ -7,21 +7,7 @@ using NotNullAttribute = JetBrains.Annotations.NotNullAttribute;
 
 namespace GenericDataStructures
 {
-    public sealed class VoidResult
-    {
-        public static readonly VoidResult Success = new VoidResult();
-
-        private VoidResult()
-        {
-        }
-
-        public override string ToString()
-        {
-            return "GenericDataStructures.VoidResult.Success";
-        }
-    }
-
-    public class VoidResult<TFailure1>
+    public struct VoidResult<TFailure1>
     {
         private readonly object _value;
         private readonly byte? _failureTypeIndex;
@@ -32,15 +18,15 @@ namespace GenericDataStructures
             _failureTypeIndex = 0;
         }
 
-        private VoidResult(VoidResult value)
-        {
-        }
-
         public bool IsSuccess => !_failureTypeIndex.HasValue;
 
-        public static implicit operator VoidResult<TFailure1>(VoidResult value) => new VoidResult<TFailure1>(value);
+        public static implicit operator VoidResult<TFailure1>(VoidResult value) => default(VoidResult<TFailure1>);
 
         public static implicit operator VoidResult<TFailure1>(TFailure1 value) => new VoidResult<TFailure1>(value);
+
+        public static bool operator ==(VoidResult<TFailure1> left, VoidResult<TFailure1> right) => Equals(left, right);
+
+        public static bool operator !=(VoidResult<TFailure1> left, VoidResult<TFailure1> right) => !Equals(left, right);
 
         public TOutput Map<TOutput>([InstantHandle][NotNull]Func<TOutput> onSuccessFunc, [InstantHandle][NotNull]Func<TFailure1, TOutput> onFailure1Func)
         {
@@ -88,7 +74,7 @@ namespace GenericDataStructures
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is VoidResult<TFailure1> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex);
+            return obj is VoidResult<TFailure1> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex;
         }
 
         public override int GetHashCode()
@@ -105,7 +91,7 @@ namespace GenericDataStructures
         }
     }
 
-    public class VoidResult<TFailure1, TFailure2>
+    public struct VoidResult<TFailure1, TFailure2>
     {
         private readonly object _value;
         private readonly byte? _failureTypeIndex;
@@ -122,17 +108,17 @@ namespace GenericDataStructures
             _failureTypeIndex = 1;
         }
 
-        private VoidResult(VoidResult value)
-        {
-        }
-
         public bool IsSuccess => !_failureTypeIndex.HasValue;
 
-        public static implicit operator VoidResult<TFailure1, TFailure2>(VoidResult value) => new VoidResult<TFailure1, TFailure2>(value);
+        public static implicit operator VoidResult<TFailure1, TFailure2>(VoidResult value) => default(VoidResult<TFailure1, TFailure2>);
 
         public static implicit operator VoidResult<TFailure1, TFailure2>(TFailure1 value) => new VoidResult<TFailure1, TFailure2>(value);
 
         public static implicit operator VoidResult<TFailure1, TFailure2>(TFailure2 value) => new VoidResult<TFailure1, TFailure2>(value);
+
+        public static bool operator ==(VoidResult<TFailure1, TFailure2> left, VoidResult<TFailure1, TFailure2> right) => Equals(left, right);
+
+        public static bool operator !=(VoidResult<TFailure1, TFailure2> left, VoidResult<TFailure1, TFailure2> right) => !Equals(left, right);
 
         public TOutput Map<TOutput>([InstantHandle][NotNull]Func<TOutput> onSuccessFunc, [InstantHandle][NotNull]Func<TFailure1, TOutput> onFailure1Func, [InstantHandle][NotNull]Func<TFailure2, TOutput> onFailure2Func)
         {
@@ -195,7 +181,7 @@ namespace GenericDataStructures
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is VoidResult<TFailure1, TFailure2> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex);
+            return obj is VoidResult<TFailure1, TFailure2> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex;
         }
 
         public override int GetHashCode()
@@ -212,7 +198,7 @@ namespace GenericDataStructures
         }
     }
 
-    public class VoidResult<TFailure1, TFailure2, TFailure3>
+    public struct VoidResult<TFailure1, TFailure2, TFailure3>
     {
         private readonly object _value;
         private readonly byte? _failureTypeIndex;
@@ -235,19 +221,19 @@ namespace GenericDataStructures
             _failureTypeIndex = 2;
         }
 
-        private VoidResult(VoidResult value)
-        {
-        }
-
         public bool IsSuccess => !_failureTypeIndex.HasValue;
 
-        public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3>(VoidResult value) => new VoidResult<TFailure1, TFailure2, TFailure3>(value);
+        public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3>(VoidResult value) => default(VoidResult<TFailure1, TFailure2, TFailure3>);
 
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3>(TFailure1 value) => new VoidResult<TFailure1, TFailure2, TFailure3>(value);
 
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3>(TFailure2 value) => new VoidResult<TFailure1, TFailure2, TFailure3>(value);
 
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3>(TFailure3 value) => new VoidResult<TFailure1, TFailure2, TFailure3>(value);
+
+        public static bool operator ==(VoidResult<TFailure1, TFailure2, TFailure3> left, VoidResult<TFailure1, TFailure2, TFailure3> right) => Equals(left, right);
+
+        public static bool operator !=(VoidResult<TFailure1, TFailure2, TFailure3> left, VoidResult<TFailure1, TFailure2, TFailure3> right) => !Equals(left, right);
 
         public TOutput Map<TOutput>([InstantHandle][NotNull]Func<TOutput> onSuccessFunc, [InstantHandle][NotNull]Func<TFailure1, TOutput> onFailure1Func, [InstantHandle][NotNull]Func<TFailure2, TOutput> onFailure2Func, [InstantHandle][NotNull]Func<TFailure3, TOutput> onFailure3Func)
         {
@@ -325,7 +311,7 @@ namespace GenericDataStructures
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is VoidResult<TFailure1, TFailure2, TFailure3> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex);
+            return obj is VoidResult<TFailure1, TFailure2, TFailure3> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex;
         }
 
         public override int GetHashCode()
@@ -342,7 +328,7 @@ namespace GenericDataStructures
         }
     }
 
-    public class VoidResult<TFailure1, TFailure2, TFailure3, TFailure4>
+    public struct VoidResult<TFailure1, TFailure2, TFailure3, TFailure4>
     {
         private readonly object _value;
         private readonly byte? _failureTypeIndex;
@@ -371,13 +357,9 @@ namespace GenericDataStructures
             _failureTypeIndex = 3;
         }
 
-        private VoidResult(VoidResult value)
-        {
-        }
-
         public bool IsSuccess => !_failureTypeIndex.HasValue;
 
-        public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4>(VoidResult value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4>(value);
+        public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4>(VoidResult value) => default(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4>);
 
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4>(TFailure1 value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4>(value);
 
@@ -386,6 +368,10 @@ namespace GenericDataStructures
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4>(TFailure3 value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4>(value);
 
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4>(TFailure4 value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4>(value);
+
+        public static bool operator ==(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4> left, VoidResult<TFailure1, TFailure2, TFailure3, TFailure4> right) => Equals(left, right);
+
+        public static bool operator !=(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4> left, VoidResult<TFailure1, TFailure2, TFailure3, TFailure4> right) => !Equals(left, right);
 
         public TOutput Map<TOutput>([InstantHandle][NotNull]Func<TOutput> onSuccessFunc, [InstantHandle][NotNull]Func<TFailure1, TOutput> onFailure1Func, [InstantHandle][NotNull]Func<TFailure2, TOutput> onFailure2Func, [InstantHandle][NotNull]Func<TFailure3, TOutput> onFailure3Func, [InstantHandle][NotNull]Func<TFailure4, TOutput> onFailure4Func)
         {
@@ -478,7 +464,7 @@ namespace GenericDataStructures
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is VoidResult<TFailure1, TFailure2, TFailure3, TFailure4> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex);
+            return obj is VoidResult<TFailure1, TFailure2, TFailure3, TFailure4> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex;
         }
 
         public override int GetHashCode()
@@ -495,7 +481,7 @@ namespace GenericDataStructures
         }
     }
 
-    public class VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>
+    public struct VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>
     {
         private readonly object _value;
         private readonly byte? _failureTypeIndex;
@@ -530,13 +516,9 @@ namespace GenericDataStructures
             _failureTypeIndex = 4;
         }
 
-        private VoidResult(VoidResult value)
-        {
-        }
-
         public bool IsSuccess => !_failureTypeIndex.HasValue;
 
-        public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>(VoidResult value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>(value);
+        public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>(VoidResult value) => default(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>);
 
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>(TFailure1 value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>(value);
 
@@ -547,6 +529,10 @@ namespace GenericDataStructures
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>(TFailure4 value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>(value);
 
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>(TFailure5 value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>(value);
+
+        public static bool operator ==(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5> left, VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5> right) => Equals(left, right);
+
+        public static bool operator !=(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5> left, VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5> right) => !Equals(left, right);
 
         public TOutput Map<TOutput>([InstantHandle][NotNull]Func<TOutput> onSuccessFunc, [InstantHandle][NotNull]Func<TFailure1, TOutput> onFailure1Func, [InstantHandle][NotNull]Func<TFailure2, TOutput> onFailure2Func, [InstantHandle][NotNull]Func<TFailure3, TOutput> onFailure3Func, [InstantHandle][NotNull]Func<TFailure4, TOutput> onFailure4Func, [InstantHandle][NotNull]Func<TFailure5, TOutput> onFailure5Func)
         {
@@ -654,7 +640,7 @@ namespace GenericDataStructures
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex);
+            return obj is VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex;
         }
 
         public override int GetHashCode()
@@ -671,7 +657,7 @@ namespace GenericDataStructures
         }
     }
 
-    public class VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>
+    public struct VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>
     {
         private readonly object _value;
         private readonly byte? _failureTypeIndex;
@@ -712,13 +698,9 @@ namespace GenericDataStructures
             _failureTypeIndex = 5;
         }
 
-        private VoidResult(VoidResult value)
-        {
-        }
-
         public bool IsSuccess => !_failureTypeIndex.HasValue;
 
-        public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>(VoidResult value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>(value);
+        public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>(VoidResult value) => default(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>);
 
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>(TFailure1 value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>(value);
 
@@ -731,6 +713,10 @@ namespace GenericDataStructures
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>(TFailure5 value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>(value);
 
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>(TFailure6 value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>(value);
+
+        public static bool operator ==(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6> left, VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6> right) => Equals(left, right);
+
+        public static bool operator !=(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6> left, VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6> right) => !Equals(left, right);
 
         public TOutput Map<TOutput>([InstantHandle][NotNull]Func<TOutput> onSuccessFunc, [InstantHandle][NotNull]Func<TFailure1, TOutput> onFailure1Func, [InstantHandle][NotNull]Func<TFailure2, TOutput> onFailure2Func, [InstantHandle][NotNull]Func<TFailure3, TOutput> onFailure3Func, [InstantHandle][NotNull]Func<TFailure4, TOutput> onFailure4Func, [InstantHandle][NotNull]Func<TFailure5, TOutput> onFailure5Func, [InstantHandle][NotNull]Func<TFailure6, TOutput> onFailure6Func)
         {
@@ -853,7 +839,7 @@ namespace GenericDataStructures
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex);
+            return obj is VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex;
         }
 
         public override int GetHashCode()
@@ -870,7 +856,7 @@ namespace GenericDataStructures
         }
     }
 
-    public class VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>
+    public struct VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>
     {
         private readonly object _value;
         private readonly byte? _failureTypeIndex;
@@ -917,13 +903,9 @@ namespace GenericDataStructures
             _failureTypeIndex = 6;
         }
 
-        private VoidResult(VoidResult value)
-        {
-        }
-
         public bool IsSuccess => !_failureTypeIndex.HasValue;
 
-        public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>(VoidResult value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>(value);
+        public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>(VoidResult value) => default(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>);
 
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>(TFailure1 value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>(value);
 
@@ -938,6 +920,10 @@ namespace GenericDataStructures
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>(TFailure6 value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>(value);
 
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>(TFailure7 value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>(value);
+
+        public static bool operator ==(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7> left, VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7> right) => Equals(left, right);
+
+        public static bool operator !=(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7> left, VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7> right) => !Equals(left, right);
 
         public TOutput Map<TOutput>([InstantHandle][NotNull]Func<TOutput> onSuccessFunc, [InstantHandle][NotNull]Func<TFailure1, TOutput> onFailure1Func, [InstantHandle][NotNull]Func<TFailure2, TOutput> onFailure2Func, [InstantHandle][NotNull]Func<TFailure3, TOutput> onFailure3Func, [InstantHandle][NotNull]Func<TFailure4, TOutput> onFailure4Func, [InstantHandle][NotNull]Func<TFailure5, TOutput> onFailure5Func, [InstantHandle][NotNull]Func<TFailure6, TOutput> onFailure6Func, [InstantHandle][NotNull]Func<TFailure7, TOutput> onFailure7Func)
         {
@@ -1075,7 +1061,7 @@ namespace GenericDataStructures
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex);
+            return obj is VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex;
         }
 
         public override int GetHashCode()
@@ -1092,7 +1078,7 @@ namespace GenericDataStructures
         }
     }
 
-    public class VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>
+    public struct VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>
     {
         private readonly object _value;
         private readonly byte? _failureTypeIndex;
@@ -1145,13 +1131,9 @@ namespace GenericDataStructures
             _failureTypeIndex = 7;
         }
 
-        private VoidResult(VoidResult value)
-        {
-        }
-
         public bool IsSuccess => !_failureTypeIndex.HasValue;
 
-        public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>(VoidResult value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>(value);
+        public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>(VoidResult value) => default(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>);
 
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>(TFailure1 value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>(value);
 
@@ -1168,6 +1150,10 @@ namespace GenericDataStructures
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>(TFailure7 value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>(value);
 
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>(TFailure8 value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>(value);
+
+        public static bool operator ==(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8> left, VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8> right) => Equals(left, right);
+
+        public static bool operator !=(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8> left, VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8> right) => !Equals(left, right);
 
         public TOutput Map<TOutput>([InstantHandle][NotNull]Func<TOutput> onSuccessFunc, [InstantHandle][NotNull]Func<TFailure1, TOutput> onFailure1Func, [InstantHandle][NotNull]Func<TFailure2, TOutput> onFailure2Func, [InstantHandle][NotNull]Func<TFailure3, TOutput> onFailure3Func, [InstantHandle][NotNull]Func<TFailure4, TOutput> onFailure4Func, [InstantHandle][NotNull]Func<TFailure5, TOutput> onFailure5Func, [InstantHandle][NotNull]Func<TFailure6, TOutput> onFailure6Func, [InstantHandle][NotNull]Func<TFailure7, TOutput> onFailure7Func, [InstantHandle][NotNull]Func<TFailure8, TOutput> onFailure8Func)
         {
@@ -1320,7 +1306,7 @@ namespace GenericDataStructures
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex);
+            return obj is VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex;
         }
 
         public override int GetHashCode()
@@ -1337,7 +1323,7 @@ namespace GenericDataStructures
         }
     }
 
-    public class VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9>
+    public struct VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9>
     {
         private readonly object _value;
         private readonly byte? _failureTypeIndex;
@@ -1396,13 +1382,9 @@ namespace GenericDataStructures
             _failureTypeIndex = 8;
         }
 
-        private VoidResult(VoidResult value)
-        {
-        }
-
         public bool IsSuccess => !_failureTypeIndex.HasValue;
 
-        public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9>(VoidResult value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9>(value);
+        public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9>(VoidResult value) => default(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9>);
 
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9>(TFailure1 value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9>(value);
 
@@ -1421,6 +1403,10 @@ namespace GenericDataStructures
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9>(TFailure8 value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9>(value);
 
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9>(TFailure9 value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9>(value);
+
+        public static bool operator ==(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9> left, VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9> right) => Equals(left, right);
+
+        public static bool operator !=(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9> left, VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9> right) => !Equals(left, right);
 
         public TOutput Map<TOutput>([InstantHandle][NotNull]Func<TOutput> onSuccessFunc, [InstantHandle][NotNull]Func<TFailure1, TOutput> onFailure1Func, [InstantHandle][NotNull]Func<TFailure2, TOutput> onFailure2Func, [InstantHandle][NotNull]Func<TFailure3, TOutput> onFailure3Func, [InstantHandle][NotNull]Func<TFailure4, TOutput> onFailure4Func, [InstantHandle][NotNull]Func<TFailure5, TOutput> onFailure5Func, [InstantHandle][NotNull]Func<TFailure6, TOutput> onFailure6Func, [InstantHandle][NotNull]Func<TFailure7, TOutput> onFailure7Func, [InstantHandle][NotNull]Func<TFailure8, TOutput> onFailure8Func, [InstantHandle][NotNull]Func<TFailure9, TOutput> onFailure9Func)
         {
@@ -1588,7 +1574,7 @@ namespace GenericDataStructures
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex);
+            return obj is VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex;
         }
 
         public override int GetHashCode()
@@ -1605,7 +1591,7 @@ namespace GenericDataStructures
         }
     }
 
-    public class VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10>
+    public struct VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10>
     {
         private readonly object _value;
         private readonly byte? _failureTypeIndex;
@@ -1670,13 +1656,9 @@ namespace GenericDataStructures
             _failureTypeIndex = 9;
         }
 
-        private VoidResult(VoidResult value)
-        {
-        }
-
         public bool IsSuccess => !_failureTypeIndex.HasValue;
 
-        public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10>(VoidResult value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10>(value);
+        public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10>(VoidResult value) => default(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10>);
 
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10>(TFailure1 value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10>(value);
 
@@ -1697,6 +1679,10 @@ namespace GenericDataStructures
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10>(TFailure9 value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10>(value);
 
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10>(TFailure10 value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10>(value);
+
+        public static bool operator ==(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10> left, VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10> right) => Equals(left, right);
+
+        public static bool operator !=(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10> left, VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10> right) => !Equals(left, right);
 
         public TOutput Map<TOutput>([InstantHandle][NotNull]Func<TOutput> onSuccessFunc, [InstantHandle][NotNull]Func<TFailure1, TOutput> onFailure1Func, [InstantHandle][NotNull]Func<TFailure2, TOutput> onFailure2Func, [InstantHandle][NotNull]Func<TFailure3, TOutput> onFailure3Func, [InstantHandle][NotNull]Func<TFailure4, TOutput> onFailure4Func, [InstantHandle][NotNull]Func<TFailure5, TOutput> onFailure5Func, [InstantHandle][NotNull]Func<TFailure6, TOutput> onFailure6Func, [InstantHandle][NotNull]Func<TFailure7, TOutput> onFailure7Func, [InstantHandle][NotNull]Func<TFailure8, TOutput> onFailure8Func, [InstantHandle][NotNull]Func<TFailure9, TOutput> onFailure9Func, [InstantHandle][NotNull]Func<TFailure10, TOutput> onFailure10Func)
         {
@@ -1879,7 +1865,7 @@ namespace GenericDataStructures
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex);
+            return obj is VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex;
         }
 
         public override int GetHashCode()
@@ -1896,7 +1882,7 @@ namespace GenericDataStructures
         }
     }
 
-    public class VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11>
+    public struct VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11>
     {
         private readonly object _value;
         private readonly byte? _failureTypeIndex;
@@ -1967,13 +1953,9 @@ namespace GenericDataStructures
             _failureTypeIndex = 10;
         }
 
-        private VoidResult(VoidResult value)
-        {
-        }
-
         public bool IsSuccess => !_failureTypeIndex.HasValue;
 
-        public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11>(VoidResult value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11>(value);
+        public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11>(VoidResult value) => default(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11>);
 
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11>(TFailure1 value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11>(value);
 
@@ -1996,6 +1978,10 @@ namespace GenericDataStructures
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11>(TFailure10 value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11>(value);
 
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11>(TFailure11 value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11>(value);
+
+        public static bool operator ==(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11> left, VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11> right) => Equals(left, right);
+
+        public static bool operator !=(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11> left, VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11> right) => !Equals(left, right);
 
         public TOutput Map<TOutput>([InstantHandle][NotNull]Func<TOutput> onSuccessFunc, [InstantHandle][NotNull]Func<TFailure1, TOutput> onFailure1Func, [InstantHandle][NotNull]Func<TFailure2, TOutput> onFailure2Func, [InstantHandle][NotNull]Func<TFailure3, TOutput> onFailure3Func, [InstantHandle][NotNull]Func<TFailure4, TOutput> onFailure4Func, [InstantHandle][NotNull]Func<TFailure5, TOutput> onFailure5Func, [InstantHandle][NotNull]Func<TFailure6, TOutput> onFailure6Func, [InstantHandle][NotNull]Func<TFailure7, TOutput> onFailure7Func, [InstantHandle][NotNull]Func<TFailure8, TOutput> onFailure8Func, [InstantHandle][NotNull]Func<TFailure9, TOutput> onFailure9Func, [InstantHandle][NotNull]Func<TFailure10, TOutput> onFailure10Func, [InstantHandle][NotNull]Func<TFailure11, TOutput> onFailure11Func)
         {
@@ -2193,7 +2179,7 @@ namespace GenericDataStructures
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex);
+            return obj is VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex;
         }
 
         public override int GetHashCode()
@@ -2210,7 +2196,7 @@ namespace GenericDataStructures
         }
     }
 
-    public class VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12>
+    public struct VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12>
     {
         private readonly object _value;
         private readonly byte? _failureTypeIndex;
@@ -2287,13 +2273,9 @@ namespace GenericDataStructures
             _failureTypeIndex = 11;
         }
 
-        private VoidResult(VoidResult value)
-        {
-        }
-
         public bool IsSuccess => !_failureTypeIndex.HasValue;
 
-        public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12>(VoidResult value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12>(value);
+        public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12>(VoidResult value) => default(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12>);
 
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12>(TFailure1 value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12>(value);
 
@@ -2318,6 +2300,10 @@ namespace GenericDataStructures
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12>(TFailure11 value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12>(value);
 
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12>(TFailure12 value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12>(value);
+
+        public static bool operator ==(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12> left, VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12> right) => Equals(left, right);
+
+        public static bool operator !=(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12> left, VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12> right) => !Equals(left, right);
 
         public TOutput Map<TOutput>([InstantHandle][NotNull]Func<TOutput> onSuccessFunc, [InstantHandle][NotNull]Func<TFailure1, TOutput> onFailure1Func, [InstantHandle][NotNull]Func<TFailure2, TOutput> onFailure2Func, [InstantHandle][NotNull]Func<TFailure3, TOutput> onFailure3Func, [InstantHandle][NotNull]Func<TFailure4, TOutput> onFailure4Func, [InstantHandle][NotNull]Func<TFailure5, TOutput> onFailure5Func, [InstantHandle][NotNull]Func<TFailure6, TOutput> onFailure6Func, [InstantHandle][NotNull]Func<TFailure7, TOutput> onFailure7Func, [InstantHandle][NotNull]Func<TFailure8, TOutput> onFailure8Func, [InstantHandle][NotNull]Func<TFailure9, TOutput> onFailure9Func, [InstantHandle][NotNull]Func<TFailure10, TOutput> onFailure10Func, [InstantHandle][NotNull]Func<TFailure11, TOutput> onFailure11Func, [InstantHandle][NotNull]Func<TFailure12, TOutput> onFailure12Func)
         {
@@ -2530,7 +2516,7 @@ namespace GenericDataStructures
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex);
+            return obj is VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex;
         }
 
         public override int GetHashCode()
@@ -2547,7 +2533,7 @@ namespace GenericDataStructures
         }
     }
 
-    public class VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13>
+    public struct VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13>
     {
         private readonly object _value;
         private readonly byte? _failureTypeIndex;
@@ -2630,13 +2616,9 @@ namespace GenericDataStructures
             _failureTypeIndex = 12;
         }
 
-        private VoidResult(VoidResult value)
-        {
-        }
-
         public bool IsSuccess => !_failureTypeIndex.HasValue;
 
-        public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13>(VoidResult value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13>(value);
+        public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13>(VoidResult value) => default(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13>);
 
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13>(TFailure1 value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13>(value);
 
@@ -2663,6 +2645,10 @@ namespace GenericDataStructures
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13>(TFailure12 value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13>(value);
 
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13>(TFailure13 value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13>(value);
+
+        public static bool operator ==(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13> left, VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13> right) => Equals(left, right);
+
+        public static bool operator !=(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13> left, VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13> right) => !Equals(left, right);
 
         public TOutput Map<TOutput>([InstantHandle][NotNull]Func<TOutput> onSuccessFunc, [InstantHandle][NotNull]Func<TFailure1, TOutput> onFailure1Func, [InstantHandle][NotNull]Func<TFailure2, TOutput> onFailure2Func, [InstantHandle][NotNull]Func<TFailure3, TOutput> onFailure3Func, [InstantHandle][NotNull]Func<TFailure4, TOutput> onFailure4Func, [InstantHandle][NotNull]Func<TFailure5, TOutput> onFailure5Func, [InstantHandle][NotNull]Func<TFailure6, TOutput> onFailure6Func, [InstantHandle][NotNull]Func<TFailure7, TOutput> onFailure7Func, [InstantHandle][NotNull]Func<TFailure8, TOutput> onFailure8Func, [InstantHandle][NotNull]Func<TFailure9, TOutput> onFailure9Func, [InstantHandle][NotNull]Func<TFailure10, TOutput> onFailure10Func, [InstantHandle][NotNull]Func<TFailure11, TOutput> onFailure11Func, [InstantHandle][NotNull]Func<TFailure12, TOutput> onFailure12Func, [InstantHandle][NotNull]Func<TFailure13, TOutput> onFailure13Func)
         {
@@ -2890,7 +2876,7 @@ namespace GenericDataStructures
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex);
+            return obj is VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex;
         }
 
         public override int GetHashCode()
@@ -2907,7 +2893,7 @@ namespace GenericDataStructures
         }
     }
 
-    public class VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14>
+    public struct VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14>
     {
         private readonly object _value;
         private readonly byte? _failureTypeIndex;
@@ -2996,13 +2982,9 @@ namespace GenericDataStructures
             _failureTypeIndex = 13;
         }
 
-        private VoidResult(VoidResult value)
-        {
-        }
-
         public bool IsSuccess => !_failureTypeIndex.HasValue;
 
-        public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14>(VoidResult value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14>(value);
+        public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14>(VoidResult value) => default(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14>);
 
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14>(TFailure1 value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14>(value);
 
@@ -3031,6 +3013,10 @@ namespace GenericDataStructures
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14>(TFailure13 value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14>(value);
 
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14>(TFailure14 value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14>(value);
+
+        public static bool operator ==(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14> left, VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14> right) => Equals(left, right);
+
+        public static bool operator !=(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14> left, VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14> right) => !Equals(left, right);
 
         public TOutput Map<TOutput>([InstantHandle][NotNull]Func<TOutput> onSuccessFunc, [InstantHandle][NotNull]Func<TFailure1, TOutput> onFailure1Func, [InstantHandle][NotNull]Func<TFailure2, TOutput> onFailure2Func, [InstantHandle][NotNull]Func<TFailure3, TOutput> onFailure3Func, [InstantHandle][NotNull]Func<TFailure4, TOutput> onFailure4Func, [InstantHandle][NotNull]Func<TFailure5, TOutput> onFailure5Func, [InstantHandle][NotNull]Func<TFailure6, TOutput> onFailure6Func, [InstantHandle][NotNull]Func<TFailure7, TOutput> onFailure7Func, [InstantHandle][NotNull]Func<TFailure8, TOutput> onFailure8Func, [InstantHandle][NotNull]Func<TFailure9, TOutput> onFailure9Func, [InstantHandle][NotNull]Func<TFailure10, TOutput> onFailure10Func, [InstantHandle][NotNull]Func<TFailure11, TOutput> onFailure11Func, [InstantHandle][NotNull]Func<TFailure12, TOutput> onFailure12Func, [InstantHandle][NotNull]Func<TFailure13, TOutput> onFailure13Func, [InstantHandle][NotNull]Func<TFailure14, TOutput> onFailure14Func)
         {
@@ -3273,7 +3259,7 @@ namespace GenericDataStructures
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex);
+            return obj is VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex;
         }
 
         public override int GetHashCode()
@@ -3290,7 +3276,7 @@ namespace GenericDataStructures
         }
     }
 
-    public class VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15>
+    public struct VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15>
     {
         private readonly object _value;
         private readonly byte? _failureTypeIndex;
@@ -3385,13 +3371,9 @@ namespace GenericDataStructures
             _failureTypeIndex = 14;
         }
 
-        private VoidResult(VoidResult value)
-        {
-        }
-
         public bool IsSuccess => !_failureTypeIndex.HasValue;
 
-        public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15>(VoidResult value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15>(value);
+        public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15>(VoidResult value) => default(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15>);
 
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15>(TFailure1 value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15>(value);
 
@@ -3422,6 +3404,10 @@ namespace GenericDataStructures
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15>(TFailure14 value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15>(value);
 
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15>(TFailure15 value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15>(value);
+
+        public static bool operator ==(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15> left, VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15> right) => Equals(left, right);
+
+        public static bool operator !=(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15> left, VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15> right) => !Equals(left, right);
 
         public TOutput Map<TOutput>([InstantHandle][NotNull]Func<TOutput> onSuccessFunc, [InstantHandle][NotNull]Func<TFailure1, TOutput> onFailure1Func, [InstantHandle][NotNull]Func<TFailure2, TOutput> onFailure2Func, [InstantHandle][NotNull]Func<TFailure3, TOutput> onFailure3Func, [InstantHandle][NotNull]Func<TFailure4, TOutput> onFailure4Func, [InstantHandle][NotNull]Func<TFailure5, TOutput> onFailure5Func, [InstantHandle][NotNull]Func<TFailure6, TOutput> onFailure6Func, [InstantHandle][NotNull]Func<TFailure7, TOutput> onFailure7Func, [InstantHandle][NotNull]Func<TFailure8, TOutput> onFailure8Func, [InstantHandle][NotNull]Func<TFailure9, TOutput> onFailure9Func, [InstantHandle][NotNull]Func<TFailure10, TOutput> onFailure10Func, [InstantHandle][NotNull]Func<TFailure11, TOutput> onFailure11Func, [InstantHandle][NotNull]Func<TFailure12, TOutput> onFailure12Func, [InstantHandle][NotNull]Func<TFailure13, TOutput> onFailure13Func, [InstantHandle][NotNull]Func<TFailure14, TOutput> onFailure14Func, [InstantHandle][NotNull]Func<TFailure15, TOutput> onFailure15Func)
         {
@@ -3679,7 +3665,7 @@ namespace GenericDataStructures
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex);
+            return obj is VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex;
         }
 
         public override int GetHashCode()
@@ -3696,7 +3682,7 @@ namespace GenericDataStructures
         }
     }
 
-    public class VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15, TFailure16>
+    public struct VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15, TFailure16>
     {
         private readonly object _value;
         private readonly byte? _failureTypeIndex;
@@ -3797,13 +3783,9 @@ namespace GenericDataStructures
             _failureTypeIndex = 15;
         }
 
-        private VoidResult(VoidResult value)
-        {
-        }
-
         public bool IsSuccess => !_failureTypeIndex.HasValue;
 
-        public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15, TFailure16>(VoidResult value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15, TFailure16>(value);
+        public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15, TFailure16>(VoidResult value) => default(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15, TFailure16>);
 
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15, TFailure16>(TFailure1 value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15, TFailure16>(value);
 
@@ -3836,6 +3818,10 @@ namespace GenericDataStructures
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15, TFailure16>(TFailure15 value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15, TFailure16>(value);
 
         public static implicit operator VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15, TFailure16>(TFailure16 value) => new VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15, TFailure16>(value);
+
+        public static bool operator ==(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15, TFailure16> left, VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15, TFailure16> right) => Equals(left, right);
+
+        public static bool operator !=(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15, TFailure16> left, VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15, TFailure16> right) => !Equals(left, right);
 
         public TOutput Map<TOutput>([InstantHandle][NotNull]Func<TOutput> onSuccessFunc, [InstantHandle][NotNull]Func<TFailure1, TOutput> onFailure1Func, [InstantHandle][NotNull]Func<TFailure2, TOutput> onFailure2Func, [InstantHandle][NotNull]Func<TFailure3, TOutput> onFailure3Func, [InstantHandle][NotNull]Func<TFailure4, TOutput> onFailure4Func, [InstantHandle][NotNull]Func<TFailure5, TOutput> onFailure5Func, [InstantHandle][NotNull]Func<TFailure6, TOutput> onFailure6Func, [InstantHandle][NotNull]Func<TFailure7, TOutput> onFailure7Func, [InstantHandle][NotNull]Func<TFailure8, TOutput> onFailure8Func, [InstantHandle][NotNull]Func<TFailure9, TOutput> onFailure9Func, [InstantHandle][NotNull]Func<TFailure10, TOutput> onFailure10Func, [InstantHandle][NotNull]Func<TFailure11, TOutput> onFailure11Func, [InstantHandle][NotNull]Func<TFailure12, TOutput> onFailure12Func, [InstantHandle][NotNull]Func<TFailure13, TOutput> onFailure13Func, [InstantHandle][NotNull]Func<TFailure14, TOutput> onFailure14Func, [InstantHandle][NotNull]Func<TFailure15, TOutput> onFailure15Func, [InstantHandle][NotNull]Func<TFailure16, TOutput> onFailure16Func)
         {
@@ -4108,7 +4094,7 @@ namespace GenericDataStructures
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15, TFailure16> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex);
+            return obj is VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15, TFailure16> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex;
         }
 
         public override int GetHashCode()
@@ -4122,6 +4108,20 @@ namespace GenericDataStructures
         public override string ToString()
         {
             return _failureTypeIndex != null ? (_value != null ? _value.ToString() : string.Empty) : VoidResult.Success.ToString();
+        }
+    }
+
+    public class VoidResult
+    {
+        public static readonly VoidResult Success = new VoidResult();
+
+        private VoidResult()
+        {
+        }
+
+        public override string ToString()
+        {
+            return "GenericDataStructures.VoidResult.Success";
         }
     }
 }

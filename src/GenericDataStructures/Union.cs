@@ -7,10 +7,10 @@ using NotNullAttribute = JetBrains.Annotations.NotNullAttribute;
 
 namespace GenericDataStructures
 {
-    public sealed class Union<T1>
+    public struct Union<T1>
     {
         private readonly object _value;
-        private readonly byte? _typeIndex;
+        private readonly byte _typeIndex;
 
         public Union(T1 value)
         {
@@ -18,7 +18,24 @@ namespace GenericDataStructures
             _typeIndex = 0;
         }
 
+        private object Value
+        {
+            get
+            {
+                switch (_typeIndex)
+                {
+                    case 0:
+                        return _value ?? default(T1);
+                    default: throw new InvalidOperationException();
+                }
+            }
+        }
+
         public static implicit operator Union<T1>(T1 value) => new Union<T1>(value);
+
+        public static bool operator ==(Union<T1> left, Union<T1> right) => Equals(left, right);
+
+        public static bool operator !=(Union<T1> left, Union<T1> right) => !Equals(left, right);
 
         public TOutput Map<TOutput>([InstantHandle][NotNull]Func<T1, TOutput> onT1Func)
         {
@@ -30,7 +47,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No map function provided for {typeof(T1).Name}");
                     }
 
-                    return onT1Func((T1)_value);
+                    return onT1Func((T1)Value);
                 default: throw new InvalidOperationException();
             }
         }
@@ -45,7 +62,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T1).Name}");
                     }
 
-                    onT1Action((T1)_value);
+                    onT1Action((T1)Value);
                     break;
                 default: throw new InvalidOperationException();
             }
@@ -53,27 +70,27 @@ namespace GenericDataStructures
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is Union<T1> other && Equals(_value, other._value) && _typeIndex == other._typeIndex);
+            return obj is Union<T1> other && Equals(Value, other.Value) && _typeIndex == other._typeIndex;
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _typeIndex.GetHashCode();
+                return ((Value != null ? Value.GetHashCode() : 0) * 397) ^ _typeIndex.GetHashCode();
             }
         }
 
         public override string ToString()
         {
-            return _value != null ? _value.ToString() : string.Empty;
+            return Value != null ? Value.ToString() : string.Empty;
         }
     }
 
-    public sealed class Union<T1, T2>
+    public struct Union<T1, T2>
     {
         private readonly object _value;
-        private readonly byte? _typeIndex;
+        private readonly byte _typeIndex;
 
         public Union(T1 value)
         {
@@ -87,9 +104,28 @@ namespace GenericDataStructures
             _typeIndex = 1;
         }
 
+        private object Value
+        {
+            get
+            {
+                switch (_typeIndex)
+                {
+                    case 0:
+                        return _value ?? default(T1);
+                    case 1:
+                        return _value ?? default(T2);
+                    default: throw new InvalidOperationException();
+                }
+            }
+        }
+
         public static implicit operator Union<T1, T2>(T1 value) => new Union<T1, T2>(value);
 
         public static implicit operator Union<T1, T2>(T2 value) => new Union<T1, T2>(value);
+
+        public static bool operator ==(Union<T1, T2> left, Union<T1, T2> right) => Equals(left, right);
+
+        public static bool operator !=(Union<T1, T2> left, Union<T1, T2> right) => !Equals(left, right);
 
         public TOutput Map<TOutput>([InstantHandle][NotNull]Func<T1, TOutput> onT1Func, [InstantHandle][NotNull]Func<T2, TOutput> onT2Func)
         {
@@ -101,14 +137,14 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No map function provided for {typeof(T1).Name}");
                     }
 
-                    return onT1Func((T1)_value);
+                    return onT1Func((T1)Value);
                 case 1:
                     if (onT2Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T2).Name}");
                     }
 
-                    return onT2Func((T2)_value);
+                    return onT2Func((T2)Value);
                 default: throw new InvalidOperationException();
             }
         }
@@ -123,7 +159,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T1).Name}");
                     }
 
-                    onT1Action((T1)_value);
+                    onT1Action((T1)Value);
                     break;
                 case 1:
                     if (onT2Action == null)
@@ -131,7 +167,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T2).Name}");
                     }
 
-                    onT2Action((T2)_value);
+                    onT2Action((T2)Value);
                     break;
                 default: throw new InvalidOperationException();
             }
@@ -139,27 +175,27 @@ namespace GenericDataStructures
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is Union<T1, T2> other && Equals(_value, other._value) && _typeIndex == other._typeIndex);
+            return obj is Union<T1, T2> other && Equals(Value, other.Value) && _typeIndex == other._typeIndex;
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _typeIndex.GetHashCode();
+                return ((Value != null ? Value.GetHashCode() : 0) * 397) ^ _typeIndex.GetHashCode();
             }
         }
 
         public override string ToString()
         {
-            return _value != null ? _value.ToString() : string.Empty;
+            return Value != null ? Value.ToString() : string.Empty;
         }
     }
 
-    public sealed class Union<T1, T2, T3>
+    public struct Union<T1, T2, T3>
     {
         private readonly object _value;
-        private readonly byte? _typeIndex;
+        private readonly byte _typeIndex;
 
         public Union(T1 value)
         {
@@ -179,11 +215,32 @@ namespace GenericDataStructures
             _typeIndex = 2;
         }
 
+        private object Value
+        {
+            get
+            {
+                switch (_typeIndex)
+                {
+                    case 0:
+                        return _value ?? default(T1);
+                    case 1:
+                        return _value ?? default(T2);
+                    case 2:
+                        return _value ?? default(T3);
+                    default: throw new InvalidOperationException();
+                }
+            }
+        }
+
         public static implicit operator Union<T1, T2, T3>(T1 value) => new Union<T1, T2, T3>(value);
 
         public static implicit operator Union<T1, T2, T3>(T2 value) => new Union<T1, T2, T3>(value);
 
         public static implicit operator Union<T1, T2, T3>(T3 value) => new Union<T1, T2, T3>(value);
+
+        public static bool operator ==(Union<T1, T2, T3> left, Union<T1, T2, T3> right) => Equals(left, right);
+
+        public static bool operator !=(Union<T1, T2, T3> left, Union<T1, T2, T3> right) => !Equals(left, right);
 
         public TOutput Map<TOutput>([InstantHandle][NotNull]Func<T1, TOutput> onT1Func, [InstantHandle][NotNull]Func<T2, TOutput> onT2Func, [InstantHandle][NotNull]Func<T3, TOutput> onT3Func)
         {
@@ -195,21 +252,21 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No map function provided for {typeof(T1).Name}");
                     }
 
-                    return onT1Func((T1)_value);
+                    return onT1Func((T1)Value);
                 case 1:
                     if (onT2Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T2).Name}");
                     }
 
-                    return onT2Func((T2)_value);
+                    return onT2Func((T2)Value);
                 case 2:
                     if (onT3Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T3).Name}");
                     }
 
-                    return onT3Func((T3)_value);
+                    return onT3Func((T3)Value);
                 default: throw new InvalidOperationException();
             }
         }
@@ -224,7 +281,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T1).Name}");
                     }
 
-                    onT1Action((T1)_value);
+                    onT1Action((T1)Value);
                     break;
                 case 1:
                     if (onT2Action == null)
@@ -232,7 +289,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T2).Name}");
                     }
 
-                    onT2Action((T2)_value);
+                    onT2Action((T2)Value);
                     break;
                 case 2:
                     if (onT3Action == null)
@@ -240,7 +297,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T3).Name}");
                     }
 
-                    onT3Action((T3)_value);
+                    onT3Action((T3)Value);
                     break;
                 default: throw new InvalidOperationException();
             }
@@ -248,27 +305,27 @@ namespace GenericDataStructures
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is Union<T1, T2, T3> other && Equals(_value, other._value) && _typeIndex == other._typeIndex);
+            return obj is Union<T1, T2, T3> other && Equals(Value, other.Value) && _typeIndex == other._typeIndex;
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _typeIndex.GetHashCode();
+                return ((Value != null ? Value.GetHashCode() : 0) * 397) ^ _typeIndex.GetHashCode();
             }
         }
 
         public override string ToString()
         {
-            return _value != null ? _value.ToString() : string.Empty;
+            return Value != null ? Value.ToString() : string.Empty;
         }
     }
 
-    public sealed class Union<T1, T2, T3, T4>
+    public struct Union<T1, T2, T3, T4>
     {
         private readonly object _value;
-        private readonly byte? _typeIndex;
+        private readonly byte _typeIndex;
 
         public Union(T1 value)
         {
@@ -294,6 +351,25 @@ namespace GenericDataStructures
             _typeIndex = 3;
         }
 
+        private object Value
+        {
+            get
+            {
+                switch (_typeIndex)
+                {
+                    case 0:
+                        return _value ?? default(T1);
+                    case 1:
+                        return _value ?? default(T2);
+                    case 2:
+                        return _value ?? default(T3);
+                    case 3:
+                        return _value ?? default(T4);
+                    default: throw new InvalidOperationException();
+                }
+            }
+        }
+
         public static implicit operator Union<T1, T2, T3, T4>(T1 value) => new Union<T1, T2, T3, T4>(value);
 
         public static implicit operator Union<T1, T2, T3, T4>(T2 value) => new Union<T1, T2, T3, T4>(value);
@@ -301,6 +377,10 @@ namespace GenericDataStructures
         public static implicit operator Union<T1, T2, T3, T4>(T3 value) => new Union<T1, T2, T3, T4>(value);
 
         public static implicit operator Union<T1, T2, T3, T4>(T4 value) => new Union<T1, T2, T3, T4>(value);
+
+        public static bool operator ==(Union<T1, T2, T3, T4> left, Union<T1, T2, T3, T4> right) => Equals(left, right);
+
+        public static bool operator !=(Union<T1, T2, T3, T4> left, Union<T1, T2, T3, T4> right) => !Equals(left, right);
 
         public TOutput Map<TOutput>([InstantHandle][NotNull]Func<T1, TOutput> onT1Func, [InstantHandle][NotNull]Func<T2, TOutput> onT2Func, [InstantHandle][NotNull]Func<T3, TOutput> onT3Func, [InstantHandle][NotNull]Func<T4, TOutput> onT4Func)
         {
@@ -312,28 +392,28 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No map function provided for {typeof(T1).Name}");
                     }
 
-                    return onT1Func((T1)_value);
+                    return onT1Func((T1)Value);
                 case 1:
                     if (onT2Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T2).Name}");
                     }
 
-                    return onT2Func((T2)_value);
+                    return onT2Func((T2)Value);
                 case 2:
                     if (onT3Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T3).Name}");
                     }
 
-                    return onT3Func((T3)_value);
+                    return onT3Func((T3)Value);
                 case 3:
                     if (onT4Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T4).Name}");
                     }
 
-                    return onT4Func((T4)_value);
+                    return onT4Func((T4)Value);
                 default: throw new InvalidOperationException();
             }
         }
@@ -348,7 +428,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T1).Name}");
                     }
 
-                    onT1Action((T1)_value);
+                    onT1Action((T1)Value);
                     break;
                 case 1:
                     if (onT2Action == null)
@@ -356,7 +436,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T2).Name}");
                     }
 
-                    onT2Action((T2)_value);
+                    onT2Action((T2)Value);
                     break;
                 case 2:
                     if (onT3Action == null)
@@ -364,7 +444,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T3).Name}");
                     }
 
-                    onT3Action((T3)_value);
+                    onT3Action((T3)Value);
                     break;
                 case 3:
                     if (onT4Action == null)
@@ -372,7 +452,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T4).Name}");
                     }
 
-                    onT4Action((T4)_value);
+                    onT4Action((T4)Value);
                     break;
                 default: throw new InvalidOperationException();
             }
@@ -380,27 +460,27 @@ namespace GenericDataStructures
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is Union<T1, T2, T3, T4> other && Equals(_value, other._value) && _typeIndex == other._typeIndex);
+            return obj is Union<T1, T2, T3, T4> other && Equals(Value, other.Value) && _typeIndex == other._typeIndex;
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _typeIndex.GetHashCode();
+                return ((Value != null ? Value.GetHashCode() : 0) * 397) ^ _typeIndex.GetHashCode();
             }
         }
 
         public override string ToString()
         {
-            return _value != null ? _value.ToString() : string.Empty;
+            return Value != null ? Value.ToString() : string.Empty;
         }
     }
 
-    public sealed class Union<T1, T2, T3, T4, T5>
+    public struct Union<T1, T2, T3, T4, T5>
     {
         private readonly object _value;
-        private readonly byte? _typeIndex;
+        private readonly byte _typeIndex;
 
         public Union(T1 value)
         {
@@ -432,6 +512,27 @@ namespace GenericDataStructures
             _typeIndex = 4;
         }
 
+        private object Value
+        {
+            get
+            {
+                switch (_typeIndex)
+                {
+                    case 0:
+                        return _value ?? default(T1);
+                    case 1:
+                        return _value ?? default(T2);
+                    case 2:
+                        return _value ?? default(T3);
+                    case 3:
+                        return _value ?? default(T4);
+                    case 4:
+                        return _value ?? default(T5);
+                    default: throw new InvalidOperationException();
+                }
+            }
+        }
+
         public static implicit operator Union<T1, T2, T3, T4, T5>(T1 value) => new Union<T1, T2, T3, T4, T5>(value);
 
         public static implicit operator Union<T1, T2, T3, T4, T5>(T2 value) => new Union<T1, T2, T3, T4, T5>(value);
@@ -441,6 +542,10 @@ namespace GenericDataStructures
         public static implicit operator Union<T1, T2, T3, T4, T5>(T4 value) => new Union<T1, T2, T3, T4, T5>(value);
 
         public static implicit operator Union<T1, T2, T3, T4, T5>(T5 value) => new Union<T1, T2, T3, T4, T5>(value);
+
+        public static bool operator ==(Union<T1, T2, T3, T4, T5> left, Union<T1, T2, T3, T4, T5> right) => Equals(left, right);
+
+        public static bool operator !=(Union<T1, T2, T3, T4, T5> left, Union<T1, T2, T3, T4, T5> right) => !Equals(left, right);
 
         public TOutput Map<TOutput>([InstantHandle][NotNull]Func<T1, TOutput> onT1Func, [InstantHandle][NotNull]Func<T2, TOutput> onT2Func, [InstantHandle][NotNull]Func<T3, TOutput> onT3Func, [InstantHandle][NotNull]Func<T4, TOutput> onT4Func, [InstantHandle][NotNull]Func<T5, TOutput> onT5Func)
         {
@@ -452,35 +557,35 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No map function provided for {typeof(T1).Name}");
                     }
 
-                    return onT1Func((T1)_value);
+                    return onT1Func((T1)Value);
                 case 1:
                     if (onT2Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T2).Name}");
                     }
 
-                    return onT2Func((T2)_value);
+                    return onT2Func((T2)Value);
                 case 2:
                     if (onT3Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T3).Name}");
                     }
 
-                    return onT3Func((T3)_value);
+                    return onT3Func((T3)Value);
                 case 3:
                     if (onT4Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T4).Name}");
                     }
 
-                    return onT4Func((T4)_value);
+                    return onT4Func((T4)Value);
                 case 4:
                     if (onT5Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T5).Name}");
                     }
 
-                    return onT5Func((T5)_value);
+                    return onT5Func((T5)Value);
                 default: throw new InvalidOperationException();
             }
         }
@@ -495,7 +600,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T1).Name}");
                     }
 
-                    onT1Action((T1)_value);
+                    onT1Action((T1)Value);
                     break;
                 case 1:
                     if (onT2Action == null)
@@ -503,7 +608,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T2).Name}");
                     }
 
-                    onT2Action((T2)_value);
+                    onT2Action((T2)Value);
                     break;
                 case 2:
                     if (onT3Action == null)
@@ -511,7 +616,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T3).Name}");
                     }
 
-                    onT3Action((T3)_value);
+                    onT3Action((T3)Value);
                     break;
                 case 3:
                     if (onT4Action == null)
@@ -519,7 +624,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T4).Name}");
                     }
 
-                    onT4Action((T4)_value);
+                    onT4Action((T4)Value);
                     break;
                 case 4:
                     if (onT5Action == null)
@@ -527,7 +632,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T5).Name}");
                     }
 
-                    onT5Action((T5)_value);
+                    onT5Action((T5)Value);
                     break;
                 default: throw new InvalidOperationException();
             }
@@ -535,27 +640,27 @@ namespace GenericDataStructures
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is Union<T1, T2, T3, T4, T5> other && Equals(_value, other._value) && _typeIndex == other._typeIndex);
+            return obj is Union<T1, T2, T3, T4, T5> other && Equals(Value, other.Value) && _typeIndex == other._typeIndex;
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _typeIndex.GetHashCode();
+                return ((Value != null ? Value.GetHashCode() : 0) * 397) ^ _typeIndex.GetHashCode();
             }
         }
 
         public override string ToString()
         {
-            return _value != null ? _value.ToString() : string.Empty;
+            return Value != null ? Value.ToString() : string.Empty;
         }
     }
 
-    public sealed class Union<T1, T2, T3, T4, T5, T6>
+    public struct Union<T1, T2, T3, T4, T5, T6>
     {
         private readonly object _value;
-        private readonly byte? _typeIndex;
+        private readonly byte _typeIndex;
 
         public Union(T1 value)
         {
@@ -593,6 +698,29 @@ namespace GenericDataStructures
             _typeIndex = 5;
         }
 
+        private object Value
+        {
+            get
+            {
+                switch (_typeIndex)
+                {
+                    case 0:
+                        return _value ?? default(T1);
+                    case 1:
+                        return _value ?? default(T2);
+                    case 2:
+                        return _value ?? default(T3);
+                    case 3:
+                        return _value ?? default(T4);
+                    case 4:
+                        return _value ?? default(T5);
+                    case 5:
+                        return _value ?? default(T6);
+                    default: throw new InvalidOperationException();
+                }
+            }
+        }
+
         public static implicit operator Union<T1, T2, T3, T4, T5, T6>(T1 value) => new Union<T1, T2, T3, T4, T5, T6>(value);
 
         public static implicit operator Union<T1, T2, T3, T4, T5, T6>(T2 value) => new Union<T1, T2, T3, T4, T5, T6>(value);
@@ -605,6 +733,10 @@ namespace GenericDataStructures
 
         public static implicit operator Union<T1, T2, T3, T4, T5, T6>(T6 value) => new Union<T1, T2, T3, T4, T5, T6>(value);
 
+        public static bool operator ==(Union<T1, T2, T3, T4, T5, T6> left, Union<T1, T2, T3, T4, T5, T6> right) => Equals(left, right);
+
+        public static bool operator !=(Union<T1, T2, T3, T4, T5, T6> left, Union<T1, T2, T3, T4, T5, T6> right) => !Equals(left, right);
+
         public TOutput Map<TOutput>([InstantHandle][NotNull]Func<T1, TOutput> onT1Func, [InstantHandle][NotNull]Func<T2, TOutput> onT2Func, [InstantHandle][NotNull]Func<T3, TOutput> onT3Func, [InstantHandle][NotNull]Func<T4, TOutput> onT4Func, [InstantHandle][NotNull]Func<T5, TOutput> onT5Func, [InstantHandle][NotNull]Func<T6, TOutput> onT6Func)
         {
             switch (_typeIndex)
@@ -615,42 +747,42 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No map function provided for {typeof(T1).Name}");
                     }
 
-                    return onT1Func((T1)_value);
+                    return onT1Func((T1)Value);
                 case 1:
                     if (onT2Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T2).Name}");
                     }
 
-                    return onT2Func((T2)_value);
+                    return onT2Func((T2)Value);
                 case 2:
                     if (onT3Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T3).Name}");
                     }
 
-                    return onT3Func((T3)_value);
+                    return onT3Func((T3)Value);
                 case 3:
                     if (onT4Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T4).Name}");
                     }
 
-                    return onT4Func((T4)_value);
+                    return onT4Func((T4)Value);
                 case 4:
                     if (onT5Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T5).Name}");
                     }
 
-                    return onT5Func((T5)_value);
+                    return onT5Func((T5)Value);
                 case 5:
                     if (onT6Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T6).Name}");
                     }
 
-                    return onT6Func((T6)_value);
+                    return onT6Func((T6)Value);
                 default: throw new InvalidOperationException();
             }
         }
@@ -665,7 +797,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T1).Name}");
                     }
 
-                    onT1Action((T1)_value);
+                    onT1Action((T1)Value);
                     break;
                 case 1:
                     if (onT2Action == null)
@@ -673,7 +805,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T2).Name}");
                     }
 
-                    onT2Action((T2)_value);
+                    onT2Action((T2)Value);
                     break;
                 case 2:
                     if (onT3Action == null)
@@ -681,7 +813,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T3).Name}");
                     }
 
-                    onT3Action((T3)_value);
+                    onT3Action((T3)Value);
                     break;
                 case 3:
                     if (onT4Action == null)
@@ -689,7 +821,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T4).Name}");
                     }
 
-                    onT4Action((T4)_value);
+                    onT4Action((T4)Value);
                     break;
                 case 4:
                     if (onT5Action == null)
@@ -697,7 +829,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T5).Name}");
                     }
 
-                    onT5Action((T5)_value);
+                    onT5Action((T5)Value);
                     break;
                 case 5:
                     if (onT6Action == null)
@@ -705,7 +837,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T6).Name}");
                     }
 
-                    onT6Action((T6)_value);
+                    onT6Action((T6)Value);
                     break;
                 default: throw new InvalidOperationException();
             }
@@ -713,27 +845,27 @@ namespace GenericDataStructures
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is Union<T1, T2, T3, T4, T5, T6> other && Equals(_value, other._value) && _typeIndex == other._typeIndex);
+            return obj is Union<T1, T2, T3, T4, T5, T6> other && Equals(Value, other.Value) && _typeIndex == other._typeIndex;
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _typeIndex.GetHashCode();
+                return ((Value != null ? Value.GetHashCode() : 0) * 397) ^ _typeIndex.GetHashCode();
             }
         }
 
         public override string ToString()
         {
-            return _value != null ? _value.ToString() : string.Empty;
+            return Value != null ? Value.ToString() : string.Empty;
         }
     }
 
-    public sealed class Union<T1, T2, T3, T4, T5, T6, T7>
+    public struct Union<T1, T2, T3, T4, T5, T6, T7>
     {
         private readonly object _value;
-        private readonly byte? _typeIndex;
+        private readonly byte _typeIndex;
 
         public Union(T1 value)
         {
@@ -777,6 +909,31 @@ namespace GenericDataStructures
             _typeIndex = 6;
         }
 
+        private object Value
+        {
+            get
+            {
+                switch (_typeIndex)
+                {
+                    case 0:
+                        return _value ?? default(T1);
+                    case 1:
+                        return _value ?? default(T2);
+                    case 2:
+                        return _value ?? default(T3);
+                    case 3:
+                        return _value ?? default(T4);
+                    case 4:
+                        return _value ?? default(T5);
+                    case 5:
+                        return _value ?? default(T6);
+                    case 6:
+                        return _value ?? default(T7);
+                    default: throw new InvalidOperationException();
+                }
+            }
+        }
+
         public static implicit operator Union<T1, T2, T3, T4, T5, T6, T7>(T1 value) => new Union<T1, T2, T3, T4, T5, T6, T7>(value);
 
         public static implicit operator Union<T1, T2, T3, T4, T5, T6, T7>(T2 value) => new Union<T1, T2, T3, T4, T5, T6, T7>(value);
@@ -791,6 +948,10 @@ namespace GenericDataStructures
 
         public static implicit operator Union<T1, T2, T3, T4, T5, T6, T7>(T7 value) => new Union<T1, T2, T3, T4, T5, T6, T7>(value);
 
+        public static bool operator ==(Union<T1, T2, T3, T4, T5, T6, T7> left, Union<T1, T2, T3, T4, T5, T6, T7> right) => Equals(left, right);
+
+        public static bool operator !=(Union<T1, T2, T3, T4, T5, T6, T7> left, Union<T1, T2, T3, T4, T5, T6, T7> right) => !Equals(left, right);
+
         public TOutput Map<TOutput>([InstantHandle][NotNull]Func<T1, TOutput> onT1Func, [InstantHandle][NotNull]Func<T2, TOutput> onT2Func, [InstantHandle][NotNull]Func<T3, TOutput> onT3Func, [InstantHandle][NotNull]Func<T4, TOutput> onT4Func, [InstantHandle][NotNull]Func<T5, TOutput> onT5Func, [InstantHandle][NotNull]Func<T6, TOutput> onT6Func, [InstantHandle][NotNull]Func<T7, TOutput> onT7Func)
         {
             switch (_typeIndex)
@@ -801,49 +962,49 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No map function provided for {typeof(T1).Name}");
                     }
 
-                    return onT1Func((T1)_value);
+                    return onT1Func((T1)Value);
                 case 1:
                     if (onT2Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T2).Name}");
                     }
 
-                    return onT2Func((T2)_value);
+                    return onT2Func((T2)Value);
                 case 2:
                     if (onT3Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T3).Name}");
                     }
 
-                    return onT3Func((T3)_value);
+                    return onT3Func((T3)Value);
                 case 3:
                     if (onT4Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T4).Name}");
                     }
 
-                    return onT4Func((T4)_value);
+                    return onT4Func((T4)Value);
                 case 4:
                     if (onT5Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T5).Name}");
                     }
 
-                    return onT5Func((T5)_value);
+                    return onT5Func((T5)Value);
                 case 5:
                     if (onT6Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T6).Name}");
                     }
 
-                    return onT6Func((T6)_value);
+                    return onT6Func((T6)Value);
                 case 6:
                     if (onT7Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T7).Name}");
                     }
 
-                    return onT7Func((T7)_value);
+                    return onT7Func((T7)Value);
                 default: throw new InvalidOperationException();
             }
         }
@@ -858,7 +1019,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T1).Name}");
                     }
 
-                    onT1Action((T1)_value);
+                    onT1Action((T1)Value);
                     break;
                 case 1:
                     if (onT2Action == null)
@@ -866,7 +1027,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T2).Name}");
                     }
 
-                    onT2Action((T2)_value);
+                    onT2Action((T2)Value);
                     break;
                 case 2:
                     if (onT3Action == null)
@@ -874,7 +1035,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T3).Name}");
                     }
 
-                    onT3Action((T3)_value);
+                    onT3Action((T3)Value);
                     break;
                 case 3:
                     if (onT4Action == null)
@@ -882,7 +1043,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T4).Name}");
                     }
 
-                    onT4Action((T4)_value);
+                    onT4Action((T4)Value);
                     break;
                 case 4:
                     if (onT5Action == null)
@@ -890,7 +1051,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T5).Name}");
                     }
 
-                    onT5Action((T5)_value);
+                    onT5Action((T5)Value);
                     break;
                 case 5:
                     if (onT6Action == null)
@@ -898,7 +1059,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T6).Name}");
                     }
 
-                    onT6Action((T6)_value);
+                    onT6Action((T6)Value);
                     break;
                 case 6:
                     if (onT7Action == null)
@@ -906,7 +1067,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T7).Name}");
                     }
 
-                    onT7Action((T7)_value);
+                    onT7Action((T7)Value);
                     break;
                 default: throw new InvalidOperationException();
             }
@@ -914,27 +1075,27 @@ namespace GenericDataStructures
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is Union<T1, T2, T3, T4, T5, T6, T7> other && Equals(_value, other._value) && _typeIndex == other._typeIndex);
+            return obj is Union<T1, T2, T3, T4, T5, T6, T7> other && Equals(Value, other.Value) && _typeIndex == other._typeIndex;
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _typeIndex.GetHashCode();
+                return ((Value != null ? Value.GetHashCode() : 0) * 397) ^ _typeIndex.GetHashCode();
             }
         }
 
         public override string ToString()
         {
-            return _value != null ? _value.ToString() : string.Empty;
+            return Value != null ? Value.ToString() : string.Empty;
         }
     }
 
-    public sealed class Union<T1, T2, T3, T4, T5, T6, T7, T8>
+    public struct Union<T1, T2, T3, T4, T5, T6, T7, T8>
     {
         private readonly object _value;
-        private readonly byte? _typeIndex;
+        private readonly byte _typeIndex;
 
         public Union(T1 value)
         {
@@ -984,6 +1145,33 @@ namespace GenericDataStructures
             _typeIndex = 7;
         }
 
+        private object Value
+        {
+            get
+            {
+                switch (_typeIndex)
+                {
+                    case 0:
+                        return _value ?? default(T1);
+                    case 1:
+                        return _value ?? default(T2);
+                    case 2:
+                        return _value ?? default(T3);
+                    case 3:
+                        return _value ?? default(T4);
+                    case 4:
+                        return _value ?? default(T5);
+                    case 5:
+                        return _value ?? default(T6);
+                    case 6:
+                        return _value ?? default(T7);
+                    case 7:
+                        return _value ?? default(T8);
+                    default: throw new InvalidOperationException();
+                }
+            }
+        }
+
         public static implicit operator Union<T1, T2, T3, T4, T5, T6, T7, T8>(T1 value) => new Union<T1, T2, T3, T4, T5, T6, T7, T8>(value);
 
         public static implicit operator Union<T1, T2, T3, T4, T5, T6, T7, T8>(T2 value) => new Union<T1, T2, T3, T4, T5, T6, T7, T8>(value);
@@ -1000,6 +1188,10 @@ namespace GenericDataStructures
 
         public static implicit operator Union<T1, T2, T3, T4, T5, T6, T7, T8>(T8 value) => new Union<T1, T2, T3, T4, T5, T6, T7, T8>(value);
 
+        public static bool operator ==(Union<T1, T2, T3, T4, T5, T6, T7, T8> left, Union<T1, T2, T3, T4, T5, T6, T7, T8> right) => Equals(left, right);
+
+        public static bool operator !=(Union<T1, T2, T3, T4, T5, T6, T7, T8> left, Union<T1, T2, T3, T4, T5, T6, T7, T8> right) => !Equals(left, right);
+
         public TOutput Map<TOutput>([InstantHandle][NotNull]Func<T1, TOutput> onT1Func, [InstantHandle][NotNull]Func<T2, TOutput> onT2Func, [InstantHandle][NotNull]Func<T3, TOutput> onT3Func, [InstantHandle][NotNull]Func<T4, TOutput> onT4Func, [InstantHandle][NotNull]Func<T5, TOutput> onT5Func, [InstantHandle][NotNull]Func<T6, TOutput> onT6Func, [InstantHandle][NotNull]Func<T7, TOutput> onT7Func, [InstantHandle][NotNull]Func<T8, TOutput> onT8Func)
         {
             switch (_typeIndex)
@@ -1010,56 +1202,56 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No map function provided for {typeof(T1).Name}");
                     }
 
-                    return onT1Func((T1)_value);
+                    return onT1Func((T1)Value);
                 case 1:
                     if (onT2Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T2).Name}");
                     }
 
-                    return onT2Func((T2)_value);
+                    return onT2Func((T2)Value);
                 case 2:
                     if (onT3Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T3).Name}");
                     }
 
-                    return onT3Func((T3)_value);
+                    return onT3Func((T3)Value);
                 case 3:
                     if (onT4Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T4).Name}");
                     }
 
-                    return onT4Func((T4)_value);
+                    return onT4Func((T4)Value);
                 case 4:
                     if (onT5Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T5).Name}");
                     }
 
-                    return onT5Func((T5)_value);
+                    return onT5Func((T5)Value);
                 case 5:
                     if (onT6Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T6).Name}");
                     }
 
-                    return onT6Func((T6)_value);
+                    return onT6Func((T6)Value);
                 case 6:
                     if (onT7Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T7).Name}");
                     }
 
-                    return onT7Func((T7)_value);
+                    return onT7Func((T7)Value);
                 case 7:
                     if (onT8Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T8).Name}");
                     }
 
-                    return onT8Func((T8)_value);
+                    return onT8Func((T8)Value);
                 default: throw new InvalidOperationException();
             }
         }
@@ -1074,7 +1266,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T1).Name}");
                     }
 
-                    onT1Action((T1)_value);
+                    onT1Action((T1)Value);
                     break;
                 case 1:
                     if (onT2Action == null)
@@ -1082,7 +1274,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T2).Name}");
                     }
 
-                    onT2Action((T2)_value);
+                    onT2Action((T2)Value);
                     break;
                 case 2:
                     if (onT3Action == null)
@@ -1090,7 +1282,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T3).Name}");
                     }
 
-                    onT3Action((T3)_value);
+                    onT3Action((T3)Value);
                     break;
                 case 3:
                     if (onT4Action == null)
@@ -1098,7 +1290,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T4).Name}");
                     }
 
-                    onT4Action((T4)_value);
+                    onT4Action((T4)Value);
                     break;
                 case 4:
                     if (onT5Action == null)
@@ -1106,7 +1298,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T5).Name}");
                     }
 
-                    onT5Action((T5)_value);
+                    onT5Action((T5)Value);
                     break;
                 case 5:
                     if (onT6Action == null)
@@ -1114,7 +1306,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T6).Name}");
                     }
 
-                    onT6Action((T6)_value);
+                    onT6Action((T6)Value);
                     break;
                 case 6:
                     if (onT7Action == null)
@@ -1122,7 +1314,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T7).Name}");
                     }
 
-                    onT7Action((T7)_value);
+                    onT7Action((T7)Value);
                     break;
                 case 7:
                     if (onT8Action == null)
@@ -1130,7 +1322,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T8).Name}");
                     }
 
-                    onT8Action((T8)_value);
+                    onT8Action((T8)Value);
                     break;
                 default: throw new InvalidOperationException();
             }
@@ -1138,27 +1330,27 @@ namespace GenericDataStructures
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is Union<T1, T2, T3, T4, T5, T6, T7, T8> other && Equals(_value, other._value) && _typeIndex == other._typeIndex);
+            return obj is Union<T1, T2, T3, T4, T5, T6, T7, T8> other && Equals(Value, other.Value) && _typeIndex == other._typeIndex;
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _typeIndex.GetHashCode();
+                return ((Value != null ? Value.GetHashCode() : 0) * 397) ^ _typeIndex.GetHashCode();
             }
         }
 
         public override string ToString()
         {
-            return _value != null ? _value.ToString() : string.Empty;
+            return Value != null ? Value.ToString() : string.Empty;
         }
     }
 
-    public sealed class Union<T1, T2, T3, T4, T5, T6, T7, T8, T9>
+    public struct Union<T1, T2, T3, T4, T5, T6, T7, T8, T9>
     {
         private readonly object _value;
-        private readonly byte? _typeIndex;
+        private readonly byte _typeIndex;
 
         public Union(T1 value)
         {
@@ -1214,6 +1406,35 @@ namespace GenericDataStructures
             _typeIndex = 8;
         }
 
+        private object Value
+        {
+            get
+            {
+                switch (_typeIndex)
+                {
+                    case 0:
+                        return _value ?? default(T1);
+                    case 1:
+                        return _value ?? default(T2);
+                    case 2:
+                        return _value ?? default(T3);
+                    case 3:
+                        return _value ?? default(T4);
+                    case 4:
+                        return _value ?? default(T5);
+                    case 5:
+                        return _value ?? default(T6);
+                    case 6:
+                        return _value ?? default(T7);
+                    case 7:
+                        return _value ?? default(T8);
+                    case 8:
+                        return _value ?? default(T9);
+                    default: throw new InvalidOperationException();
+                }
+            }
+        }
+
         public static implicit operator Union<T1, T2, T3, T4, T5, T6, T7, T8, T9>(T1 value) => new Union<T1, T2, T3, T4, T5, T6, T7, T8, T9>(value);
 
         public static implicit operator Union<T1, T2, T3, T4, T5, T6, T7, T8, T9>(T2 value) => new Union<T1, T2, T3, T4, T5, T6, T7, T8, T9>(value);
@@ -1232,6 +1453,10 @@ namespace GenericDataStructures
 
         public static implicit operator Union<T1, T2, T3, T4, T5, T6, T7, T8, T9>(T9 value) => new Union<T1, T2, T3, T4, T5, T6, T7, T8, T9>(value);
 
+        public static bool operator ==(Union<T1, T2, T3, T4, T5, T6, T7, T8, T9> left, Union<T1, T2, T3, T4, T5, T6, T7, T8, T9> right) => Equals(left, right);
+
+        public static bool operator !=(Union<T1, T2, T3, T4, T5, T6, T7, T8, T9> left, Union<T1, T2, T3, T4, T5, T6, T7, T8, T9> right) => !Equals(left, right);
+
         public TOutput Map<TOutput>([InstantHandle][NotNull]Func<T1, TOutput> onT1Func, [InstantHandle][NotNull]Func<T2, TOutput> onT2Func, [InstantHandle][NotNull]Func<T3, TOutput> onT3Func, [InstantHandle][NotNull]Func<T4, TOutput> onT4Func, [InstantHandle][NotNull]Func<T5, TOutput> onT5Func, [InstantHandle][NotNull]Func<T6, TOutput> onT6Func, [InstantHandle][NotNull]Func<T7, TOutput> onT7Func, [InstantHandle][NotNull]Func<T8, TOutput> onT8Func, [InstantHandle][NotNull]Func<T9, TOutput> onT9Func)
         {
             switch (_typeIndex)
@@ -1242,63 +1467,63 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No map function provided for {typeof(T1).Name}");
                     }
 
-                    return onT1Func((T1)_value);
+                    return onT1Func((T1)Value);
                 case 1:
                     if (onT2Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T2).Name}");
                     }
 
-                    return onT2Func((T2)_value);
+                    return onT2Func((T2)Value);
                 case 2:
                     if (onT3Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T3).Name}");
                     }
 
-                    return onT3Func((T3)_value);
+                    return onT3Func((T3)Value);
                 case 3:
                     if (onT4Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T4).Name}");
                     }
 
-                    return onT4Func((T4)_value);
+                    return onT4Func((T4)Value);
                 case 4:
                     if (onT5Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T5).Name}");
                     }
 
-                    return onT5Func((T5)_value);
+                    return onT5Func((T5)Value);
                 case 5:
                     if (onT6Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T6).Name}");
                     }
 
-                    return onT6Func((T6)_value);
+                    return onT6Func((T6)Value);
                 case 6:
                     if (onT7Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T7).Name}");
                     }
 
-                    return onT7Func((T7)_value);
+                    return onT7Func((T7)Value);
                 case 7:
                     if (onT8Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T8).Name}");
                     }
 
-                    return onT8Func((T8)_value);
+                    return onT8Func((T8)Value);
                 case 8:
                     if (onT9Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T9).Name}");
                     }
 
-                    return onT9Func((T9)_value);
+                    return onT9Func((T9)Value);
                 default: throw new InvalidOperationException();
             }
         }
@@ -1313,7 +1538,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T1).Name}");
                     }
 
-                    onT1Action((T1)_value);
+                    onT1Action((T1)Value);
                     break;
                 case 1:
                     if (onT2Action == null)
@@ -1321,7 +1546,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T2).Name}");
                     }
 
-                    onT2Action((T2)_value);
+                    onT2Action((T2)Value);
                     break;
                 case 2:
                     if (onT3Action == null)
@@ -1329,7 +1554,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T3).Name}");
                     }
 
-                    onT3Action((T3)_value);
+                    onT3Action((T3)Value);
                     break;
                 case 3:
                     if (onT4Action == null)
@@ -1337,7 +1562,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T4).Name}");
                     }
 
-                    onT4Action((T4)_value);
+                    onT4Action((T4)Value);
                     break;
                 case 4:
                     if (onT5Action == null)
@@ -1345,7 +1570,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T5).Name}");
                     }
 
-                    onT5Action((T5)_value);
+                    onT5Action((T5)Value);
                     break;
                 case 5:
                     if (onT6Action == null)
@@ -1353,7 +1578,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T6).Name}");
                     }
 
-                    onT6Action((T6)_value);
+                    onT6Action((T6)Value);
                     break;
                 case 6:
                     if (onT7Action == null)
@@ -1361,7 +1586,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T7).Name}");
                     }
 
-                    onT7Action((T7)_value);
+                    onT7Action((T7)Value);
                     break;
                 case 7:
                     if (onT8Action == null)
@@ -1369,7 +1594,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T8).Name}");
                     }
 
-                    onT8Action((T8)_value);
+                    onT8Action((T8)Value);
                     break;
                 case 8:
                     if (onT9Action == null)
@@ -1377,7 +1602,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T9).Name}");
                     }
 
-                    onT9Action((T9)_value);
+                    onT9Action((T9)Value);
                     break;
                 default: throw new InvalidOperationException();
             }
@@ -1385,27 +1610,27 @@ namespace GenericDataStructures
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is Union<T1, T2, T3, T4, T5, T6, T7, T8, T9> other && Equals(_value, other._value) && _typeIndex == other._typeIndex);
+            return obj is Union<T1, T2, T3, T4, T5, T6, T7, T8, T9> other && Equals(Value, other.Value) && _typeIndex == other._typeIndex;
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _typeIndex.GetHashCode();
+                return ((Value != null ? Value.GetHashCode() : 0) * 397) ^ _typeIndex.GetHashCode();
             }
         }
 
         public override string ToString()
         {
-            return _value != null ? _value.ToString() : string.Empty;
+            return Value != null ? Value.ToString() : string.Empty;
         }
     }
 
-    public sealed class Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>
+    public struct Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>
     {
         private readonly object _value;
-        private readonly byte? _typeIndex;
+        private readonly byte _typeIndex;
 
         public Union(T1 value)
         {
@@ -1467,6 +1692,37 @@ namespace GenericDataStructures
             _typeIndex = 9;
         }
 
+        private object Value
+        {
+            get
+            {
+                switch (_typeIndex)
+                {
+                    case 0:
+                        return _value ?? default(T1);
+                    case 1:
+                        return _value ?? default(T2);
+                    case 2:
+                        return _value ?? default(T3);
+                    case 3:
+                        return _value ?? default(T4);
+                    case 4:
+                        return _value ?? default(T5);
+                    case 5:
+                        return _value ?? default(T6);
+                    case 6:
+                        return _value ?? default(T7);
+                    case 7:
+                        return _value ?? default(T8);
+                    case 8:
+                        return _value ?? default(T9);
+                    case 9:
+                        return _value ?? default(T10);
+                    default: throw new InvalidOperationException();
+                }
+            }
+        }
+
         public static implicit operator Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(T1 value) => new Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(value);
 
         public static implicit operator Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(T2 value) => new Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(value);
@@ -1487,6 +1743,10 @@ namespace GenericDataStructures
 
         public static implicit operator Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(T10 value) => new Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(value);
 
+        public static bool operator ==(Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> left, Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> right) => Equals(left, right);
+
+        public static bool operator !=(Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> left, Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> right) => !Equals(left, right);
+
         public TOutput Map<TOutput>([InstantHandle][NotNull]Func<T1, TOutput> onT1Func, [InstantHandle][NotNull]Func<T2, TOutput> onT2Func, [InstantHandle][NotNull]Func<T3, TOutput> onT3Func, [InstantHandle][NotNull]Func<T4, TOutput> onT4Func, [InstantHandle][NotNull]Func<T5, TOutput> onT5Func, [InstantHandle][NotNull]Func<T6, TOutput> onT6Func, [InstantHandle][NotNull]Func<T7, TOutput> onT7Func, [InstantHandle][NotNull]Func<T8, TOutput> onT8Func, [InstantHandle][NotNull]Func<T9, TOutput> onT9Func, [InstantHandle][NotNull]Func<T10, TOutput> onT10Func)
         {
             switch (_typeIndex)
@@ -1497,70 +1757,70 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No map function provided for {typeof(T1).Name}");
                     }
 
-                    return onT1Func((T1)_value);
+                    return onT1Func((T1)Value);
                 case 1:
                     if (onT2Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T2).Name}");
                     }
 
-                    return onT2Func((T2)_value);
+                    return onT2Func((T2)Value);
                 case 2:
                     if (onT3Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T3).Name}");
                     }
 
-                    return onT3Func((T3)_value);
+                    return onT3Func((T3)Value);
                 case 3:
                     if (onT4Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T4).Name}");
                     }
 
-                    return onT4Func((T4)_value);
+                    return onT4Func((T4)Value);
                 case 4:
                     if (onT5Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T5).Name}");
                     }
 
-                    return onT5Func((T5)_value);
+                    return onT5Func((T5)Value);
                 case 5:
                     if (onT6Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T6).Name}");
                     }
 
-                    return onT6Func((T6)_value);
+                    return onT6Func((T6)Value);
                 case 6:
                     if (onT7Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T7).Name}");
                     }
 
-                    return onT7Func((T7)_value);
+                    return onT7Func((T7)Value);
                 case 7:
                     if (onT8Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T8).Name}");
                     }
 
-                    return onT8Func((T8)_value);
+                    return onT8Func((T8)Value);
                 case 8:
                     if (onT9Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T9).Name}");
                     }
 
-                    return onT9Func((T9)_value);
+                    return onT9Func((T9)Value);
                 case 9:
                     if (onT10Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T10).Name}");
                     }
 
-                    return onT10Func((T10)_value);
+                    return onT10Func((T10)Value);
                 default: throw new InvalidOperationException();
             }
         }
@@ -1575,7 +1835,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T1).Name}");
                     }
 
-                    onT1Action((T1)_value);
+                    onT1Action((T1)Value);
                     break;
                 case 1:
                     if (onT2Action == null)
@@ -1583,7 +1843,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T2).Name}");
                     }
 
-                    onT2Action((T2)_value);
+                    onT2Action((T2)Value);
                     break;
                 case 2:
                     if (onT3Action == null)
@@ -1591,7 +1851,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T3).Name}");
                     }
 
-                    onT3Action((T3)_value);
+                    onT3Action((T3)Value);
                     break;
                 case 3:
                     if (onT4Action == null)
@@ -1599,7 +1859,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T4).Name}");
                     }
 
-                    onT4Action((T4)_value);
+                    onT4Action((T4)Value);
                     break;
                 case 4:
                     if (onT5Action == null)
@@ -1607,7 +1867,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T5).Name}");
                     }
 
-                    onT5Action((T5)_value);
+                    onT5Action((T5)Value);
                     break;
                 case 5:
                     if (onT6Action == null)
@@ -1615,7 +1875,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T6).Name}");
                     }
 
-                    onT6Action((T6)_value);
+                    onT6Action((T6)Value);
                     break;
                 case 6:
                     if (onT7Action == null)
@@ -1623,7 +1883,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T7).Name}");
                     }
 
-                    onT7Action((T7)_value);
+                    onT7Action((T7)Value);
                     break;
                 case 7:
                     if (onT8Action == null)
@@ -1631,7 +1891,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T8).Name}");
                     }
 
-                    onT8Action((T8)_value);
+                    onT8Action((T8)Value);
                     break;
                 case 8:
                     if (onT9Action == null)
@@ -1639,7 +1899,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T9).Name}");
                     }
 
-                    onT9Action((T9)_value);
+                    onT9Action((T9)Value);
                     break;
                 case 9:
                     if (onT10Action == null)
@@ -1647,7 +1907,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T10).Name}");
                     }
 
-                    onT10Action((T10)_value);
+                    onT10Action((T10)Value);
                     break;
                 default: throw new InvalidOperationException();
             }
@@ -1655,27 +1915,27 @@ namespace GenericDataStructures
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> other && Equals(_value, other._value) && _typeIndex == other._typeIndex);
+            return obj is Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> other && Equals(Value, other.Value) && _typeIndex == other._typeIndex;
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _typeIndex.GetHashCode();
+                return ((Value != null ? Value.GetHashCode() : 0) * 397) ^ _typeIndex.GetHashCode();
             }
         }
 
         public override string ToString()
         {
-            return _value != null ? _value.ToString() : string.Empty;
+            return Value != null ? Value.ToString() : string.Empty;
         }
     }
 
-    public sealed class Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>
+    public struct Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>
     {
         private readonly object _value;
-        private readonly byte? _typeIndex;
+        private readonly byte _typeIndex;
 
         public Union(T1 value)
         {
@@ -1743,6 +2003,39 @@ namespace GenericDataStructures
             _typeIndex = 10;
         }
 
+        private object Value
+        {
+            get
+            {
+                switch (_typeIndex)
+                {
+                    case 0:
+                        return _value ?? default(T1);
+                    case 1:
+                        return _value ?? default(T2);
+                    case 2:
+                        return _value ?? default(T3);
+                    case 3:
+                        return _value ?? default(T4);
+                    case 4:
+                        return _value ?? default(T5);
+                    case 5:
+                        return _value ?? default(T6);
+                    case 6:
+                        return _value ?? default(T7);
+                    case 7:
+                        return _value ?? default(T8);
+                    case 8:
+                        return _value ?? default(T9);
+                    case 9:
+                        return _value ?? default(T10);
+                    case 10:
+                        return _value ?? default(T11);
+                    default: throw new InvalidOperationException();
+                }
+            }
+        }
+
         public static implicit operator Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(T1 value) => new Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(value);
 
         public static implicit operator Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(T2 value) => new Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(value);
@@ -1765,6 +2058,10 @@ namespace GenericDataStructures
 
         public static implicit operator Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(T11 value) => new Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(value);
 
+        public static bool operator ==(Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> left, Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> right) => Equals(left, right);
+
+        public static bool operator !=(Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> left, Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> right) => !Equals(left, right);
+
         public TOutput Map<TOutput>([InstantHandle][NotNull]Func<T1, TOutput> onT1Func, [InstantHandle][NotNull]Func<T2, TOutput> onT2Func, [InstantHandle][NotNull]Func<T3, TOutput> onT3Func, [InstantHandle][NotNull]Func<T4, TOutput> onT4Func, [InstantHandle][NotNull]Func<T5, TOutput> onT5Func, [InstantHandle][NotNull]Func<T6, TOutput> onT6Func, [InstantHandle][NotNull]Func<T7, TOutput> onT7Func, [InstantHandle][NotNull]Func<T8, TOutput> onT8Func, [InstantHandle][NotNull]Func<T9, TOutput> onT9Func, [InstantHandle][NotNull]Func<T10, TOutput> onT10Func, [InstantHandle][NotNull]Func<T11, TOutput> onT11Func)
         {
             switch (_typeIndex)
@@ -1775,77 +2072,77 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No map function provided for {typeof(T1).Name}");
                     }
 
-                    return onT1Func((T1)_value);
+                    return onT1Func((T1)Value);
                 case 1:
                     if (onT2Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T2).Name}");
                     }
 
-                    return onT2Func((T2)_value);
+                    return onT2Func((T2)Value);
                 case 2:
                     if (onT3Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T3).Name}");
                     }
 
-                    return onT3Func((T3)_value);
+                    return onT3Func((T3)Value);
                 case 3:
                     if (onT4Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T4).Name}");
                     }
 
-                    return onT4Func((T4)_value);
+                    return onT4Func((T4)Value);
                 case 4:
                     if (onT5Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T5).Name}");
                     }
 
-                    return onT5Func((T5)_value);
+                    return onT5Func((T5)Value);
                 case 5:
                     if (onT6Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T6).Name}");
                     }
 
-                    return onT6Func((T6)_value);
+                    return onT6Func((T6)Value);
                 case 6:
                     if (onT7Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T7).Name}");
                     }
 
-                    return onT7Func((T7)_value);
+                    return onT7Func((T7)Value);
                 case 7:
                     if (onT8Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T8).Name}");
                     }
 
-                    return onT8Func((T8)_value);
+                    return onT8Func((T8)Value);
                 case 8:
                     if (onT9Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T9).Name}");
                     }
 
-                    return onT9Func((T9)_value);
+                    return onT9Func((T9)Value);
                 case 9:
                     if (onT10Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T10).Name}");
                     }
 
-                    return onT10Func((T10)_value);
+                    return onT10Func((T10)Value);
                 case 10:
                     if (onT11Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T11).Name}");
                     }
 
-                    return onT11Func((T11)_value);
+                    return onT11Func((T11)Value);
                 default: throw new InvalidOperationException();
             }
         }
@@ -1860,7 +2157,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T1).Name}");
                     }
 
-                    onT1Action((T1)_value);
+                    onT1Action((T1)Value);
                     break;
                 case 1:
                     if (onT2Action == null)
@@ -1868,7 +2165,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T2).Name}");
                     }
 
-                    onT2Action((T2)_value);
+                    onT2Action((T2)Value);
                     break;
                 case 2:
                     if (onT3Action == null)
@@ -1876,7 +2173,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T3).Name}");
                     }
 
-                    onT3Action((T3)_value);
+                    onT3Action((T3)Value);
                     break;
                 case 3:
                     if (onT4Action == null)
@@ -1884,7 +2181,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T4).Name}");
                     }
 
-                    onT4Action((T4)_value);
+                    onT4Action((T4)Value);
                     break;
                 case 4:
                     if (onT5Action == null)
@@ -1892,7 +2189,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T5).Name}");
                     }
 
-                    onT5Action((T5)_value);
+                    onT5Action((T5)Value);
                     break;
                 case 5:
                     if (onT6Action == null)
@@ -1900,7 +2197,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T6).Name}");
                     }
 
-                    onT6Action((T6)_value);
+                    onT6Action((T6)Value);
                     break;
                 case 6:
                     if (onT7Action == null)
@@ -1908,7 +2205,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T7).Name}");
                     }
 
-                    onT7Action((T7)_value);
+                    onT7Action((T7)Value);
                     break;
                 case 7:
                     if (onT8Action == null)
@@ -1916,7 +2213,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T8).Name}");
                     }
 
-                    onT8Action((T8)_value);
+                    onT8Action((T8)Value);
                     break;
                 case 8:
                     if (onT9Action == null)
@@ -1924,7 +2221,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T9).Name}");
                     }
 
-                    onT9Action((T9)_value);
+                    onT9Action((T9)Value);
                     break;
                 case 9:
                     if (onT10Action == null)
@@ -1932,7 +2229,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T10).Name}");
                     }
 
-                    onT10Action((T10)_value);
+                    onT10Action((T10)Value);
                     break;
                 case 10:
                     if (onT11Action == null)
@@ -1940,7 +2237,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T11).Name}");
                     }
 
-                    onT11Action((T11)_value);
+                    onT11Action((T11)Value);
                     break;
                 default: throw new InvalidOperationException();
             }
@@ -1948,27 +2245,27 @@ namespace GenericDataStructures
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> other && Equals(_value, other._value) && _typeIndex == other._typeIndex);
+            return obj is Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> other && Equals(Value, other.Value) && _typeIndex == other._typeIndex;
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _typeIndex.GetHashCode();
+                return ((Value != null ? Value.GetHashCode() : 0) * 397) ^ _typeIndex.GetHashCode();
             }
         }
 
         public override string ToString()
         {
-            return _value != null ? _value.ToString() : string.Empty;
+            return Value != null ? Value.ToString() : string.Empty;
         }
     }
 
-    public sealed class Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>
+    public struct Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>
     {
         private readonly object _value;
-        private readonly byte? _typeIndex;
+        private readonly byte _typeIndex;
 
         public Union(T1 value)
         {
@@ -2042,6 +2339,41 @@ namespace GenericDataStructures
             _typeIndex = 11;
         }
 
+        private object Value
+        {
+            get
+            {
+                switch (_typeIndex)
+                {
+                    case 0:
+                        return _value ?? default(T1);
+                    case 1:
+                        return _value ?? default(T2);
+                    case 2:
+                        return _value ?? default(T3);
+                    case 3:
+                        return _value ?? default(T4);
+                    case 4:
+                        return _value ?? default(T5);
+                    case 5:
+                        return _value ?? default(T6);
+                    case 6:
+                        return _value ?? default(T7);
+                    case 7:
+                        return _value ?? default(T8);
+                    case 8:
+                        return _value ?? default(T9);
+                    case 9:
+                        return _value ?? default(T10);
+                    case 10:
+                        return _value ?? default(T11);
+                    case 11:
+                        return _value ?? default(T12);
+                    default: throw new InvalidOperationException();
+                }
+            }
+        }
+
         public static implicit operator Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(T1 value) => new Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(value);
 
         public static implicit operator Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(T2 value) => new Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(value);
@@ -2066,6 +2398,10 @@ namespace GenericDataStructures
 
         public static implicit operator Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(T12 value) => new Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(value);
 
+        public static bool operator ==(Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> left, Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> right) => Equals(left, right);
+
+        public static bool operator !=(Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> left, Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> right) => !Equals(left, right);
+
         public TOutput Map<TOutput>([InstantHandle][NotNull]Func<T1, TOutput> onT1Func, [InstantHandle][NotNull]Func<T2, TOutput> onT2Func, [InstantHandle][NotNull]Func<T3, TOutput> onT3Func, [InstantHandle][NotNull]Func<T4, TOutput> onT4Func, [InstantHandle][NotNull]Func<T5, TOutput> onT5Func, [InstantHandle][NotNull]Func<T6, TOutput> onT6Func, [InstantHandle][NotNull]Func<T7, TOutput> onT7Func, [InstantHandle][NotNull]Func<T8, TOutput> onT8Func, [InstantHandle][NotNull]Func<T9, TOutput> onT9Func, [InstantHandle][NotNull]Func<T10, TOutput> onT10Func, [InstantHandle][NotNull]Func<T11, TOutput> onT11Func, [InstantHandle][NotNull]Func<T12, TOutput> onT12Func)
         {
             switch (_typeIndex)
@@ -2076,84 +2412,84 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No map function provided for {typeof(T1).Name}");
                     }
 
-                    return onT1Func((T1)_value);
+                    return onT1Func((T1)Value);
                 case 1:
                     if (onT2Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T2).Name}");
                     }
 
-                    return onT2Func((T2)_value);
+                    return onT2Func((T2)Value);
                 case 2:
                     if (onT3Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T3).Name}");
                     }
 
-                    return onT3Func((T3)_value);
+                    return onT3Func((T3)Value);
                 case 3:
                     if (onT4Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T4).Name}");
                     }
 
-                    return onT4Func((T4)_value);
+                    return onT4Func((T4)Value);
                 case 4:
                     if (onT5Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T5).Name}");
                     }
 
-                    return onT5Func((T5)_value);
+                    return onT5Func((T5)Value);
                 case 5:
                     if (onT6Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T6).Name}");
                     }
 
-                    return onT6Func((T6)_value);
+                    return onT6Func((T6)Value);
                 case 6:
                     if (onT7Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T7).Name}");
                     }
 
-                    return onT7Func((T7)_value);
+                    return onT7Func((T7)Value);
                 case 7:
                     if (onT8Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T8).Name}");
                     }
 
-                    return onT8Func((T8)_value);
+                    return onT8Func((T8)Value);
                 case 8:
                     if (onT9Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T9).Name}");
                     }
 
-                    return onT9Func((T9)_value);
+                    return onT9Func((T9)Value);
                 case 9:
                     if (onT10Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T10).Name}");
                     }
 
-                    return onT10Func((T10)_value);
+                    return onT10Func((T10)Value);
                 case 10:
                     if (onT11Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T11).Name}");
                     }
 
-                    return onT11Func((T11)_value);
+                    return onT11Func((T11)Value);
                 case 11:
                     if (onT12Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T12).Name}");
                     }
 
-                    return onT12Func((T12)_value);
+                    return onT12Func((T12)Value);
                 default: throw new InvalidOperationException();
             }
         }
@@ -2168,7 +2504,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T1).Name}");
                     }
 
-                    onT1Action((T1)_value);
+                    onT1Action((T1)Value);
                     break;
                 case 1:
                     if (onT2Action == null)
@@ -2176,7 +2512,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T2).Name}");
                     }
 
-                    onT2Action((T2)_value);
+                    onT2Action((T2)Value);
                     break;
                 case 2:
                     if (onT3Action == null)
@@ -2184,7 +2520,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T3).Name}");
                     }
 
-                    onT3Action((T3)_value);
+                    onT3Action((T3)Value);
                     break;
                 case 3:
                     if (onT4Action == null)
@@ -2192,7 +2528,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T4).Name}");
                     }
 
-                    onT4Action((T4)_value);
+                    onT4Action((T4)Value);
                     break;
                 case 4:
                     if (onT5Action == null)
@@ -2200,7 +2536,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T5).Name}");
                     }
 
-                    onT5Action((T5)_value);
+                    onT5Action((T5)Value);
                     break;
                 case 5:
                     if (onT6Action == null)
@@ -2208,7 +2544,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T6).Name}");
                     }
 
-                    onT6Action((T6)_value);
+                    onT6Action((T6)Value);
                     break;
                 case 6:
                     if (onT7Action == null)
@@ -2216,7 +2552,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T7).Name}");
                     }
 
-                    onT7Action((T7)_value);
+                    onT7Action((T7)Value);
                     break;
                 case 7:
                     if (onT8Action == null)
@@ -2224,7 +2560,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T8).Name}");
                     }
 
-                    onT8Action((T8)_value);
+                    onT8Action((T8)Value);
                     break;
                 case 8:
                     if (onT9Action == null)
@@ -2232,7 +2568,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T9).Name}");
                     }
 
-                    onT9Action((T9)_value);
+                    onT9Action((T9)Value);
                     break;
                 case 9:
                     if (onT10Action == null)
@@ -2240,7 +2576,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T10).Name}");
                     }
 
-                    onT10Action((T10)_value);
+                    onT10Action((T10)Value);
                     break;
                 case 10:
                     if (onT11Action == null)
@@ -2248,7 +2584,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T11).Name}");
                     }
 
-                    onT11Action((T11)_value);
+                    onT11Action((T11)Value);
                     break;
                 case 11:
                     if (onT12Action == null)
@@ -2256,7 +2592,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T12).Name}");
                     }
 
-                    onT12Action((T12)_value);
+                    onT12Action((T12)Value);
                     break;
                 default: throw new InvalidOperationException();
             }
@@ -2264,27 +2600,27 @@ namespace GenericDataStructures
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> other && Equals(_value, other._value) && _typeIndex == other._typeIndex);
+            return obj is Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> other && Equals(Value, other.Value) && _typeIndex == other._typeIndex;
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _typeIndex.GetHashCode();
+                return ((Value != null ? Value.GetHashCode() : 0) * 397) ^ _typeIndex.GetHashCode();
             }
         }
 
         public override string ToString()
         {
-            return _value != null ? _value.ToString() : string.Empty;
+            return Value != null ? Value.ToString() : string.Empty;
         }
     }
 
-    public sealed class Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>
+    public struct Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>
     {
         private readonly object _value;
-        private readonly byte? _typeIndex;
+        private readonly byte _typeIndex;
 
         public Union(T1 value)
         {
@@ -2364,6 +2700,43 @@ namespace GenericDataStructures
             _typeIndex = 12;
         }
 
+        private object Value
+        {
+            get
+            {
+                switch (_typeIndex)
+                {
+                    case 0:
+                        return _value ?? default(T1);
+                    case 1:
+                        return _value ?? default(T2);
+                    case 2:
+                        return _value ?? default(T3);
+                    case 3:
+                        return _value ?? default(T4);
+                    case 4:
+                        return _value ?? default(T5);
+                    case 5:
+                        return _value ?? default(T6);
+                    case 6:
+                        return _value ?? default(T7);
+                    case 7:
+                        return _value ?? default(T8);
+                    case 8:
+                        return _value ?? default(T9);
+                    case 9:
+                        return _value ?? default(T10);
+                    case 10:
+                        return _value ?? default(T11);
+                    case 11:
+                        return _value ?? default(T12);
+                    case 12:
+                        return _value ?? default(T13);
+                    default: throw new InvalidOperationException();
+                }
+            }
+        }
+
         public static implicit operator Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(T1 value) => new Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(value);
 
         public static implicit operator Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(T2 value) => new Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(value);
@@ -2390,6 +2763,10 @@ namespace GenericDataStructures
 
         public static implicit operator Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(T13 value) => new Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(value);
 
+        public static bool operator ==(Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> left, Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> right) => Equals(left, right);
+
+        public static bool operator !=(Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> left, Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> right) => !Equals(left, right);
+
         public TOutput Map<TOutput>([InstantHandle][NotNull]Func<T1, TOutput> onT1Func, [InstantHandle][NotNull]Func<T2, TOutput> onT2Func, [InstantHandle][NotNull]Func<T3, TOutput> onT3Func, [InstantHandle][NotNull]Func<T4, TOutput> onT4Func, [InstantHandle][NotNull]Func<T5, TOutput> onT5Func, [InstantHandle][NotNull]Func<T6, TOutput> onT6Func, [InstantHandle][NotNull]Func<T7, TOutput> onT7Func, [InstantHandle][NotNull]Func<T8, TOutput> onT8Func, [InstantHandle][NotNull]Func<T9, TOutput> onT9Func, [InstantHandle][NotNull]Func<T10, TOutput> onT10Func, [InstantHandle][NotNull]Func<T11, TOutput> onT11Func, [InstantHandle][NotNull]Func<T12, TOutput> onT12Func, [InstantHandle][NotNull]Func<T13, TOutput> onT13Func)
         {
             switch (_typeIndex)
@@ -2400,91 +2777,91 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No map function provided for {typeof(T1).Name}");
                     }
 
-                    return onT1Func((T1)_value);
+                    return onT1Func((T1)Value);
                 case 1:
                     if (onT2Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T2).Name}");
                     }
 
-                    return onT2Func((T2)_value);
+                    return onT2Func((T2)Value);
                 case 2:
                     if (onT3Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T3).Name}");
                     }
 
-                    return onT3Func((T3)_value);
+                    return onT3Func((T3)Value);
                 case 3:
                     if (onT4Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T4).Name}");
                     }
 
-                    return onT4Func((T4)_value);
+                    return onT4Func((T4)Value);
                 case 4:
                     if (onT5Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T5).Name}");
                     }
 
-                    return onT5Func((T5)_value);
+                    return onT5Func((T5)Value);
                 case 5:
                     if (onT6Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T6).Name}");
                     }
 
-                    return onT6Func((T6)_value);
+                    return onT6Func((T6)Value);
                 case 6:
                     if (onT7Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T7).Name}");
                     }
 
-                    return onT7Func((T7)_value);
+                    return onT7Func((T7)Value);
                 case 7:
                     if (onT8Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T8).Name}");
                     }
 
-                    return onT8Func((T8)_value);
+                    return onT8Func((T8)Value);
                 case 8:
                     if (onT9Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T9).Name}");
                     }
 
-                    return onT9Func((T9)_value);
+                    return onT9Func((T9)Value);
                 case 9:
                     if (onT10Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T10).Name}");
                     }
 
-                    return onT10Func((T10)_value);
+                    return onT10Func((T10)Value);
                 case 10:
                     if (onT11Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T11).Name}");
                     }
 
-                    return onT11Func((T11)_value);
+                    return onT11Func((T11)Value);
                 case 11:
                     if (onT12Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T12).Name}");
                     }
 
-                    return onT12Func((T12)_value);
+                    return onT12Func((T12)Value);
                 case 12:
                     if (onT13Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T13).Name}");
                     }
 
-                    return onT13Func((T13)_value);
+                    return onT13Func((T13)Value);
                 default: throw new InvalidOperationException();
             }
         }
@@ -2499,7 +2876,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T1).Name}");
                     }
 
-                    onT1Action((T1)_value);
+                    onT1Action((T1)Value);
                     break;
                 case 1:
                     if (onT2Action == null)
@@ -2507,7 +2884,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T2).Name}");
                     }
 
-                    onT2Action((T2)_value);
+                    onT2Action((T2)Value);
                     break;
                 case 2:
                     if (onT3Action == null)
@@ -2515,7 +2892,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T3).Name}");
                     }
 
-                    onT3Action((T3)_value);
+                    onT3Action((T3)Value);
                     break;
                 case 3:
                     if (onT4Action == null)
@@ -2523,7 +2900,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T4).Name}");
                     }
 
-                    onT4Action((T4)_value);
+                    onT4Action((T4)Value);
                     break;
                 case 4:
                     if (onT5Action == null)
@@ -2531,7 +2908,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T5).Name}");
                     }
 
-                    onT5Action((T5)_value);
+                    onT5Action((T5)Value);
                     break;
                 case 5:
                     if (onT6Action == null)
@@ -2539,7 +2916,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T6).Name}");
                     }
 
-                    onT6Action((T6)_value);
+                    onT6Action((T6)Value);
                     break;
                 case 6:
                     if (onT7Action == null)
@@ -2547,7 +2924,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T7).Name}");
                     }
 
-                    onT7Action((T7)_value);
+                    onT7Action((T7)Value);
                     break;
                 case 7:
                     if (onT8Action == null)
@@ -2555,7 +2932,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T8).Name}");
                     }
 
-                    onT8Action((T8)_value);
+                    onT8Action((T8)Value);
                     break;
                 case 8:
                     if (onT9Action == null)
@@ -2563,7 +2940,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T9).Name}");
                     }
 
-                    onT9Action((T9)_value);
+                    onT9Action((T9)Value);
                     break;
                 case 9:
                     if (onT10Action == null)
@@ -2571,7 +2948,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T10).Name}");
                     }
 
-                    onT10Action((T10)_value);
+                    onT10Action((T10)Value);
                     break;
                 case 10:
                     if (onT11Action == null)
@@ -2579,7 +2956,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T11).Name}");
                     }
 
-                    onT11Action((T11)_value);
+                    onT11Action((T11)Value);
                     break;
                 case 11:
                     if (onT12Action == null)
@@ -2587,7 +2964,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T12).Name}");
                     }
 
-                    onT12Action((T12)_value);
+                    onT12Action((T12)Value);
                     break;
                 case 12:
                     if (onT13Action == null)
@@ -2595,7 +2972,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T13).Name}");
                     }
 
-                    onT13Action((T13)_value);
+                    onT13Action((T13)Value);
                     break;
                 default: throw new InvalidOperationException();
             }
@@ -2603,27 +2980,27 @@ namespace GenericDataStructures
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> other && Equals(_value, other._value) && _typeIndex == other._typeIndex);
+            return obj is Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> other && Equals(Value, other.Value) && _typeIndex == other._typeIndex;
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _typeIndex.GetHashCode();
+                return ((Value != null ? Value.GetHashCode() : 0) * 397) ^ _typeIndex.GetHashCode();
             }
         }
 
         public override string ToString()
         {
-            return _value != null ? _value.ToString() : string.Empty;
+            return Value != null ? Value.ToString() : string.Empty;
         }
     }
 
-    public sealed class Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>
+    public struct Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>
     {
         private readonly object _value;
-        private readonly byte? _typeIndex;
+        private readonly byte _typeIndex;
 
         public Union(T1 value)
         {
@@ -2709,6 +3086,45 @@ namespace GenericDataStructures
             _typeIndex = 13;
         }
 
+        private object Value
+        {
+            get
+            {
+                switch (_typeIndex)
+                {
+                    case 0:
+                        return _value ?? default(T1);
+                    case 1:
+                        return _value ?? default(T2);
+                    case 2:
+                        return _value ?? default(T3);
+                    case 3:
+                        return _value ?? default(T4);
+                    case 4:
+                        return _value ?? default(T5);
+                    case 5:
+                        return _value ?? default(T6);
+                    case 6:
+                        return _value ?? default(T7);
+                    case 7:
+                        return _value ?? default(T8);
+                    case 8:
+                        return _value ?? default(T9);
+                    case 9:
+                        return _value ?? default(T10);
+                    case 10:
+                        return _value ?? default(T11);
+                    case 11:
+                        return _value ?? default(T12);
+                    case 12:
+                        return _value ?? default(T13);
+                    case 13:
+                        return _value ?? default(T14);
+                    default: throw new InvalidOperationException();
+                }
+            }
+        }
+
         public static implicit operator Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(T1 value) => new Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(value);
 
         public static implicit operator Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(T2 value) => new Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(value);
@@ -2737,6 +3153,10 @@ namespace GenericDataStructures
 
         public static implicit operator Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(T14 value) => new Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(value);
 
+        public static bool operator ==(Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> left, Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> right) => Equals(left, right);
+
+        public static bool operator !=(Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> left, Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> right) => !Equals(left, right);
+
         public TOutput Map<TOutput>([InstantHandle][NotNull]Func<T1, TOutput> onT1Func, [InstantHandle][NotNull]Func<T2, TOutput> onT2Func, [InstantHandle][NotNull]Func<T3, TOutput> onT3Func, [InstantHandle][NotNull]Func<T4, TOutput> onT4Func, [InstantHandle][NotNull]Func<T5, TOutput> onT5Func, [InstantHandle][NotNull]Func<T6, TOutput> onT6Func, [InstantHandle][NotNull]Func<T7, TOutput> onT7Func, [InstantHandle][NotNull]Func<T8, TOutput> onT8Func, [InstantHandle][NotNull]Func<T9, TOutput> onT9Func, [InstantHandle][NotNull]Func<T10, TOutput> onT10Func, [InstantHandle][NotNull]Func<T11, TOutput> onT11Func, [InstantHandle][NotNull]Func<T12, TOutput> onT12Func, [InstantHandle][NotNull]Func<T13, TOutput> onT13Func, [InstantHandle][NotNull]Func<T14, TOutput> onT14Func)
         {
             switch (_typeIndex)
@@ -2747,98 +3167,98 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No map function provided for {typeof(T1).Name}");
                     }
 
-                    return onT1Func((T1)_value);
+                    return onT1Func((T1)Value);
                 case 1:
                     if (onT2Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T2).Name}");
                     }
 
-                    return onT2Func((T2)_value);
+                    return onT2Func((T2)Value);
                 case 2:
                     if (onT3Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T3).Name}");
                     }
 
-                    return onT3Func((T3)_value);
+                    return onT3Func((T3)Value);
                 case 3:
                     if (onT4Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T4).Name}");
                     }
 
-                    return onT4Func((T4)_value);
+                    return onT4Func((T4)Value);
                 case 4:
                     if (onT5Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T5).Name}");
                     }
 
-                    return onT5Func((T5)_value);
+                    return onT5Func((T5)Value);
                 case 5:
                     if (onT6Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T6).Name}");
                     }
 
-                    return onT6Func((T6)_value);
+                    return onT6Func((T6)Value);
                 case 6:
                     if (onT7Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T7).Name}");
                     }
 
-                    return onT7Func((T7)_value);
+                    return onT7Func((T7)Value);
                 case 7:
                     if (onT8Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T8).Name}");
                     }
 
-                    return onT8Func((T8)_value);
+                    return onT8Func((T8)Value);
                 case 8:
                     if (onT9Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T9).Name}");
                     }
 
-                    return onT9Func((T9)_value);
+                    return onT9Func((T9)Value);
                 case 9:
                     if (onT10Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T10).Name}");
                     }
 
-                    return onT10Func((T10)_value);
+                    return onT10Func((T10)Value);
                 case 10:
                     if (onT11Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T11).Name}");
                     }
 
-                    return onT11Func((T11)_value);
+                    return onT11Func((T11)Value);
                 case 11:
                     if (onT12Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T12).Name}");
                     }
 
-                    return onT12Func((T12)_value);
+                    return onT12Func((T12)Value);
                 case 12:
                     if (onT13Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T13).Name}");
                     }
 
-                    return onT13Func((T13)_value);
+                    return onT13Func((T13)Value);
                 case 13:
                     if (onT14Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T14).Name}");
                     }
 
-                    return onT14Func((T14)_value);
+                    return onT14Func((T14)Value);
                 default: throw new InvalidOperationException();
             }
         }
@@ -2853,7 +3273,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T1).Name}");
                     }
 
-                    onT1Action((T1)_value);
+                    onT1Action((T1)Value);
                     break;
                 case 1:
                     if (onT2Action == null)
@@ -2861,7 +3281,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T2).Name}");
                     }
 
-                    onT2Action((T2)_value);
+                    onT2Action((T2)Value);
                     break;
                 case 2:
                     if (onT3Action == null)
@@ -2869,7 +3289,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T3).Name}");
                     }
 
-                    onT3Action((T3)_value);
+                    onT3Action((T3)Value);
                     break;
                 case 3:
                     if (onT4Action == null)
@@ -2877,7 +3297,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T4).Name}");
                     }
 
-                    onT4Action((T4)_value);
+                    onT4Action((T4)Value);
                     break;
                 case 4:
                     if (onT5Action == null)
@@ -2885,7 +3305,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T5).Name}");
                     }
 
-                    onT5Action((T5)_value);
+                    onT5Action((T5)Value);
                     break;
                 case 5:
                     if (onT6Action == null)
@@ -2893,7 +3313,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T6).Name}");
                     }
 
-                    onT6Action((T6)_value);
+                    onT6Action((T6)Value);
                     break;
                 case 6:
                     if (onT7Action == null)
@@ -2901,7 +3321,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T7).Name}");
                     }
 
-                    onT7Action((T7)_value);
+                    onT7Action((T7)Value);
                     break;
                 case 7:
                     if (onT8Action == null)
@@ -2909,7 +3329,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T8).Name}");
                     }
 
-                    onT8Action((T8)_value);
+                    onT8Action((T8)Value);
                     break;
                 case 8:
                     if (onT9Action == null)
@@ -2917,7 +3337,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T9).Name}");
                     }
 
-                    onT9Action((T9)_value);
+                    onT9Action((T9)Value);
                     break;
                 case 9:
                     if (onT10Action == null)
@@ -2925,7 +3345,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T10).Name}");
                     }
 
-                    onT10Action((T10)_value);
+                    onT10Action((T10)Value);
                     break;
                 case 10:
                     if (onT11Action == null)
@@ -2933,7 +3353,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T11).Name}");
                     }
 
-                    onT11Action((T11)_value);
+                    onT11Action((T11)Value);
                     break;
                 case 11:
                     if (onT12Action == null)
@@ -2941,7 +3361,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T12).Name}");
                     }
 
-                    onT12Action((T12)_value);
+                    onT12Action((T12)Value);
                     break;
                 case 12:
                     if (onT13Action == null)
@@ -2949,7 +3369,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T13).Name}");
                     }
 
-                    onT13Action((T13)_value);
+                    onT13Action((T13)Value);
                     break;
                 case 13:
                     if (onT14Action == null)
@@ -2957,7 +3377,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T14).Name}");
                     }
 
-                    onT14Action((T14)_value);
+                    onT14Action((T14)Value);
                     break;
                 default: throw new InvalidOperationException();
             }
@@ -2965,27 +3385,27 @@ namespace GenericDataStructures
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> other && Equals(_value, other._value) && _typeIndex == other._typeIndex);
+            return obj is Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> other && Equals(Value, other.Value) && _typeIndex == other._typeIndex;
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _typeIndex.GetHashCode();
+                return ((Value != null ? Value.GetHashCode() : 0) * 397) ^ _typeIndex.GetHashCode();
             }
         }
 
         public override string ToString()
         {
-            return _value != null ? _value.ToString() : string.Empty;
+            return Value != null ? Value.ToString() : string.Empty;
         }
     }
 
-    public sealed class Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>
+    public struct Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>
     {
         private readonly object _value;
-        private readonly byte? _typeIndex;
+        private readonly byte _typeIndex;
 
         public Union(T1 value)
         {
@@ -3077,6 +3497,47 @@ namespace GenericDataStructures
             _typeIndex = 14;
         }
 
+        private object Value
+        {
+            get
+            {
+                switch (_typeIndex)
+                {
+                    case 0:
+                        return _value ?? default(T1);
+                    case 1:
+                        return _value ?? default(T2);
+                    case 2:
+                        return _value ?? default(T3);
+                    case 3:
+                        return _value ?? default(T4);
+                    case 4:
+                        return _value ?? default(T5);
+                    case 5:
+                        return _value ?? default(T6);
+                    case 6:
+                        return _value ?? default(T7);
+                    case 7:
+                        return _value ?? default(T8);
+                    case 8:
+                        return _value ?? default(T9);
+                    case 9:
+                        return _value ?? default(T10);
+                    case 10:
+                        return _value ?? default(T11);
+                    case 11:
+                        return _value ?? default(T12);
+                    case 12:
+                        return _value ?? default(T13);
+                    case 13:
+                        return _value ?? default(T14);
+                    case 14:
+                        return _value ?? default(T15);
+                    default: throw new InvalidOperationException();
+                }
+            }
+        }
+
         public static implicit operator Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(T1 value) => new Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(value);
 
         public static implicit operator Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(T2 value) => new Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(value);
@@ -3107,6 +3568,10 @@ namespace GenericDataStructures
 
         public static implicit operator Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(T15 value) => new Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(value);
 
+        public static bool operator ==(Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> left, Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> right) => Equals(left, right);
+
+        public static bool operator !=(Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> left, Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> right) => !Equals(left, right);
+
         public TOutput Map<TOutput>([InstantHandle][NotNull]Func<T1, TOutput> onT1Func, [InstantHandle][NotNull]Func<T2, TOutput> onT2Func, [InstantHandle][NotNull]Func<T3, TOutput> onT3Func, [InstantHandle][NotNull]Func<T4, TOutput> onT4Func, [InstantHandle][NotNull]Func<T5, TOutput> onT5Func, [InstantHandle][NotNull]Func<T6, TOutput> onT6Func, [InstantHandle][NotNull]Func<T7, TOutput> onT7Func, [InstantHandle][NotNull]Func<T8, TOutput> onT8Func, [InstantHandle][NotNull]Func<T9, TOutput> onT9Func, [InstantHandle][NotNull]Func<T10, TOutput> onT10Func, [InstantHandle][NotNull]Func<T11, TOutput> onT11Func, [InstantHandle][NotNull]Func<T12, TOutput> onT12Func, [InstantHandle][NotNull]Func<T13, TOutput> onT13Func, [InstantHandle][NotNull]Func<T14, TOutput> onT14Func, [InstantHandle][NotNull]Func<T15, TOutput> onT15Func)
         {
             switch (_typeIndex)
@@ -3117,105 +3582,105 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No map function provided for {typeof(T1).Name}");
                     }
 
-                    return onT1Func((T1)_value);
+                    return onT1Func((T1)Value);
                 case 1:
                     if (onT2Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T2).Name}");
                     }
 
-                    return onT2Func((T2)_value);
+                    return onT2Func((T2)Value);
                 case 2:
                     if (onT3Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T3).Name}");
                     }
 
-                    return onT3Func((T3)_value);
+                    return onT3Func((T3)Value);
                 case 3:
                     if (onT4Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T4).Name}");
                     }
 
-                    return onT4Func((T4)_value);
+                    return onT4Func((T4)Value);
                 case 4:
                     if (onT5Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T5).Name}");
                     }
 
-                    return onT5Func((T5)_value);
+                    return onT5Func((T5)Value);
                 case 5:
                     if (onT6Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T6).Name}");
                     }
 
-                    return onT6Func((T6)_value);
+                    return onT6Func((T6)Value);
                 case 6:
                     if (onT7Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T7).Name}");
                     }
 
-                    return onT7Func((T7)_value);
+                    return onT7Func((T7)Value);
                 case 7:
                     if (onT8Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T8).Name}");
                     }
 
-                    return onT8Func((T8)_value);
+                    return onT8Func((T8)Value);
                 case 8:
                     if (onT9Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T9).Name}");
                     }
 
-                    return onT9Func((T9)_value);
+                    return onT9Func((T9)Value);
                 case 9:
                     if (onT10Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T10).Name}");
                     }
 
-                    return onT10Func((T10)_value);
+                    return onT10Func((T10)Value);
                 case 10:
                     if (onT11Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T11).Name}");
                     }
 
-                    return onT11Func((T11)_value);
+                    return onT11Func((T11)Value);
                 case 11:
                     if (onT12Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T12).Name}");
                     }
 
-                    return onT12Func((T12)_value);
+                    return onT12Func((T12)Value);
                 case 12:
                     if (onT13Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T13).Name}");
                     }
 
-                    return onT13Func((T13)_value);
+                    return onT13Func((T13)Value);
                 case 13:
                     if (onT14Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T14).Name}");
                     }
 
-                    return onT14Func((T14)_value);
+                    return onT14Func((T14)Value);
                 case 14:
                     if (onT15Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T15).Name}");
                     }
 
-                    return onT15Func((T15)_value);
+                    return onT15Func((T15)Value);
                 default: throw new InvalidOperationException();
             }
         }
@@ -3230,7 +3695,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T1).Name}");
                     }
 
-                    onT1Action((T1)_value);
+                    onT1Action((T1)Value);
                     break;
                 case 1:
                     if (onT2Action == null)
@@ -3238,7 +3703,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T2).Name}");
                     }
 
-                    onT2Action((T2)_value);
+                    onT2Action((T2)Value);
                     break;
                 case 2:
                     if (onT3Action == null)
@@ -3246,7 +3711,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T3).Name}");
                     }
 
-                    onT3Action((T3)_value);
+                    onT3Action((T3)Value);
                     break;
                 case 3:
                     if (onT4Action == null)
@@ -3254,7 +3719,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T4).Name}");
                     }
 
-                    onT4Action((T4)_value);
+                    onT4Action((T4)Value);
                     break;
                 case 4:
                     if (onT5Action == null)
@@ -3262,7 +3727,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T5).Name}");
                     }
 
-                    onT5Action((T5)_value);
+                    onT5Action((T5)Value);
                     break;
                 case 5:
                     if (onT6Action == null)
@@ -3270,7 +3735,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T6).Name}");
                     }
 
-                    onT6Action((T6)_value);
+                    onT6Action((T6)Value);
                     break;
                 case 6:
                     if (onT7Action == null)
@@ -3278,7 +3743,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T7).Name}");
                     }
 
-                    onT7Action((T7)_value);
+                    onT7Action((T7)Value);
                     break;
                 case 7:
                     if (onT8Action == null)
@@ -3286,7 +3751,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T8).Name}");
                     }
 
-                    onT8Action((T8)_value);
+                    onT8Action((T8)Value);
                     break;
                 case 8:
                     if (onT9Action == null)
@@ -3294,7 +3759,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T9).Name}");
                     }
 
-                    onT9Action((T9)_value);
+                    onT9Action((T9)Value);
                     break;
                 case 9:
                     if (onT10Action == null)
@@ -3302,7 +3767,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T10).Name}");
                     }
 
-                    onT10Action((T10)_value);
+                    onT10Action((T10)Value);
                     break;
                 case 10:
                     if (onT11Action == null)
@@ -3310,7 +3775,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T11).Name}");
                     }
 
-                    onT11Action((T11)_value);
+                    onT11Action((T11)Value);
                     break;
                 case 11:
                     if (onT12Action == null)
@@ -3318,7 +3783,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T12).Name}");
                     }
 
-                    onT12Action((T12)_value);
+                    onT12Action((T12)Value);
                     break;
                 case 12:
                     if (onT13Action == null)
@@ -3326,7 +3791,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T13).Name}");
                     }
 
-                    onT13Action((T13)_value);
+                    onT13Action((T13)Value);
                     break;
                 case 13:
                     if (onT14Action == null)
@@ -3334,7 +3799,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T14).Name}");
                     }
 
-                    onT14Action((T14)_value);
+                    onT14Action((T14)Value);
                     break;
                 case 14:
                     if (onT15Action == null)
@@ -3342,7 +3807,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T15).Name}");
                     }
 
-                    onT15Action((T15)_value);
+                    onT15Action((T15)Value);
                     break;
                 default: throw new InvalidOperationException();
             }
@@ -3350,27 +3815,27 @@ namespace GenericDataStructures
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> other && Equals(_value, other._value) && _typeIndex == other._typeIndex);
+            return obj is Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> other && Equals(Value, other.Value) && _typeIndex == other._typeIndex;
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _typeIndex.GetHashCode();
+                return ((Value != null ? Value.GetHashCode() : 0) * 397) ^ _typeIndex.GetHashCode();
             }
         }
 
         public override string ToString()
         {
-            return _value != null ? _value.ToString() : string.Empty;
+            return Value != null ? Value.ToString() : string.Empty;
         }
     }
 
-    public sealed class Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>
+    public struct Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>
     {
         private readonly object _value;
-        private readonly byte? _typeIndex;
+        private readonly byte _typeIndex;
 
         public Union(T1 value)
         {
@@ -3468,6 +3933,49 @@ namespace GenericDataStructures
             _typeIndex = 15;
         }
 
+        private object Value
+        {
+            get
+            {
+                switch (_typeIndex)
+                {
+                    case 0:
+                        return _value ?? default(T1);
+                    case 1:
+                        return _value ?? default(T2);
+                    case 2:
+                        return _value ?? default(T3);
+                    case 3:
+                        return _value ?? default(T4);
+                    case 4:
+                        return _value ?? default(T5);
+                    case 5:
+                        return _value ?? default(T6);
+                    case 6:
+                        return _value ?? default(T7);
+                    case 7:
+                        return _value ?? default(T8);
+                    case 8:
+                        return _value ?? default(T9);
+                    case 9:
+                        return _value ?? default(T10);
+                    case 10:
+                        return _value ?? default(T11);
+                    case 11:
+                        return _value ?? default(T12);
+                    case 12:
+                        return _value ?? default(T13);
+                    case 13:
+                        return _value ?? default(T14);
+                    case 14:
+                        return _value ?? default(T15);
+                    case 15:
+                        return _value ?? default(T16);
+                    default: throw new InvalidOperationException();
+                }
+            }
+        }
+
         public static implicit operator Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(T1 value) => new Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(value);
 
         public static implicit operator Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(T2 value) => new Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(value);
@@ -3500,6 +4008,10 @@ namespace GenericDataStructures
 
         public static implicit operator Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(T16 value) => new Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(value);
 
+        public static bool operator ==(Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16> left, Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16> right) => Equals(left, right);
+
+        public static bool operator !=(Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16> left, Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16> right) => !Equals(left, right);
+
         public TOutput Map<TOutput>([InstantHandle][NotNull]Func<T1, TOutput> onT1Func, [InstantHandle][NotNull]Func<T2, TOutput> onT2Func, [InstantHandle][NotNull]Func<T3, TOutput> onT3Func, [InstantHandle][NotNull]Func<T4, TOutput> onT4Func, [InstantHandle][NotNull]Func<T5, TOutput> onT5Func, [InstantHandle][NotNull]Func<T6, TOutput> onT6Func, [InstantHandle][NotNull]Func<T7, TOutput> onT7Func, [InstantHandle][NotNull]Func<T8, TOutput> onT8Func, [InstantHandle][NotNull]Func<T9, TOutput> onT9Func, [InstantHandle][NotNull]Func<T10, TOutput> onT10Func, [InstantHandle][NotNull]Func<T11, TOutput> onT11Func, [InstantHandle][NotNull]Func<T12, TOutput> onT12Func, [InstantHandle][NotNull]Func<T13, TOutput> onT13Func, [InstantHandle][NotNull]Func<T14, TOutput> onT14Func, [InstantHandle][NotNull]Func<T15, TOutput> onT15Func, [InstantHandle][NotNull]Func<T16, TOutput> onT16Func)
         {
             switch (_typeIndex)
@@ -3510,112 +4022,112 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No map function provided for {typeof(T1).Name}");
                     }
 
-                    return onT1Func((T1)_value);
+                    return onT1Func((T1)Value);
                 case 1:
                     if (onT2Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T2).Name}");
                     }
 
-                    return onT2Func((T2)_value);
+                    return onT2Func((T2)Value);
                 case 2:
                     if (onT3Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T3).Name}");
                     }
 
-                    return onT3Func((T3)_value);
+                    return onT3Func((T3)Value);
                 case 3:
                     if (onT4Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T4).Name}");
                     }
 
-                    return onT4Func((T4)_value);
+                    return onT4Func((T4)Value);
                 case 4:
                     if (onT5Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T5).Name}");
                     }
 
-                    return onT5Func((T5)_value);
+                    return onT5Func((T5)Value);
                 case 5:
                     if (onT6Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T6).Name}");
                     }
 
-                    return onT6Func((T6)_value);
+                    return onT6Func((T6)Value);
                 case 6:
                     if (onT7Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T7).Name}");
                     }
 
-                    return onT7Func((T7)_value);
+                    return onT7Func((T7)Value);
                 case 7:
                     if (onT8Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T8).Name}");
                     }
 
-                    return onT8Func((T8)_value);
+                    return onT8Func((T8)Value);
                 case 8:
                     if (onT9Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T9).Name}");
                     }
 
-                    return onT9Func((T9)_value);
+                    return onT9Func((T9)Value);
                 case 9:
                     if (onT10Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T10).Name}");
                     }
 
-                    return onT10Func((T10)_value);
+                    return onT10Func((T10)Value);
                 case 10:
                     if (onT11Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T11).Name}");
                     }
 
-                    return onT11Func((T11)_value);
+                    return onT11Func((T11)Value);
                 case 11:
                     if (onT12Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T12).Name}");
                     }
 
-                    return onT12Func((T12)_value);
+                    return onT12Func((T12)Value);
                 case 12:
                     if (onT13Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T13).Name}");
                     }
 
-                    return onT13Func((T13)_value);
+                    return onT13Func((T13)Value);
                 case 13:
                     if (onT14Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T14).Name}");
                     }
 
-                    return onT14Func((T14)_value);
+                    return onT14Func((T14)Value);
                 case 14:
                     if (onT15Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T15).Name}");
                     }
 
-                    return onT15Func((T15)_value);
+                    return onT15Func((T15)Value);
                 case 15:
                     if (onT16Func == null)
                     {
                         throw new ArgumentException($"No map function provided for {typeof(T16).Name}");
                     }
 
-                    return onT16Func((T16)_value);
+                    return onT16Func((T16)Value);
                 default: throw new InvalidOperationException();
             }
         }
@@ -3630,7 +4142,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T1).Name}");
                     }
 
-                    onT1Action((T1)_value);
+                    onT1Action((T1)Value);
                     break;
                 case 1:
                     if (onT2Action == null)
@@ -3638,7 +4150,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T2).Name}");
                     }
 
-                    onT2Action((T2)_value);
+                    onT2Action((T2)Value);
                     break;
                 case 2:
                     if (onT3Action == null)
@@ -3646,7 +4158,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T3).Name}");
                     }
 
-                    onT3Action((T3)_value);
+                    onT3Action((T3)Value);
                     break;
                 case 3:
                     if (onT4Action == null)
@@ -3654,7 +4166,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T4).Name}");
                     }
 
-                    onT4Action((T4)_value);
+                    onT4Action((T4)Value);
                     break;
                 case 4:
                     if (onT5Action == null)
@@ -3662,7 +4174,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T5).Name}");
                     }
 
-                    onT5Action((T5)_value);
+                    onT5Action((T5)Value);
                     break;
                 case 5:
                     if (onT6Action == null)
@@ -3670,7 +4182,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T6).Name}");
                     }
 
-                    onT6Action((T6)_value);
+                    onT6Action((T6)Value);
                     break;
                 case 6:
                     if (onT7Action == null)
@@ -3678,7 +4190,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T7).Name}");
                     }
 
-                    onT7Action((T7)_value);
+                    onT7Action((T7)Value);
                     break;
                 case 7:
                     if (onT8Action == null)
@@ -3686,7 +4198,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T8).Name}");
                     }
 
-                    onT8Action((T8)_value);
+                    onT8Action((T8)Value);
                     break;
                 case 8:
                     if (onT9Action == null)
@@ -3694,7 +4206,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T9).Name}");
                     }
 
-                    onT9Action((T9)_value);
+                    onT9Action((T9)Value);
                     break;
                 case 9:
                     if (onT10Action == null)
@@ -3702,7 +4214,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T10).Name}");
                     }
 
-                    onT10Action((T10)_value);
+                    onT10Action((T10)Value);
                     break;
                 case 10:
                     if (onT11Action == null)
@@ -3710,7 +4222,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T11).Name}");
                     }
 
-                    onT11Action((T11)_value);
+                    onT11Action((T11)Value);
                     break;
                 case 11:
                     if (onT12Action == null)
@@ -3718,7 +4230,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T12).Name}");
                     }
 
-                    onT12Action((T12)_value);
+                    onT12Action((T12)Value);
                     break;
                 case 12:
                     if (onT13Action == null)
@@ -3726,7 +4238,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T13).Name}");
                     }
 
-                    onT13Action((T13)_value);
+                    onT13Action((T13)Value);
                     break;
                 case 13:
                     if (onT14Action == null)
@@ -3734,7 +4246,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T14).Name}");
                     }
 
-                    onT14Action((T14)_value);
+                    onT14Action((T14)Value);
                     break;
                 case 14:
                     if (onT15Action == null)
@@ -3742,7 +4254,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T15).Name}");
                     }
 
-                    onT15Action((T15)_value);
+                    onT15Action((T15)Value);
                     break;
                 case 15:
                     if (onT16Action == null)
@@ -3750,7 +4262,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T16).Name}");
                     }
 
-                    onT16Action((T16)_value);
+                    onT16Action((T16)Value);
                     break;
                 default: throw new InvalidOperationException();
             }
@@ -3758,20 +4270,20 @@ namespace GenericDataStructures
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16> other && Equals(_value, other._value) && _typeIndex == other._typeIndex);
+            return obj is Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16> other && Equals(Value, other.Value) && _typeIndex == other._typeIndex;
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _typeIndex.GetHashCode();
+                return ((Value != null ? Value.GetHashCode() : 0) * 397) ^ _typeIndex.GetHashCode();
             }
         }
 
         public override string ToString()
         {
-            return _value != null ? _value.ToString() : string.Empty;
+            return Value != null ? Value.ToString() : string.Empty;
         }
     }
 }

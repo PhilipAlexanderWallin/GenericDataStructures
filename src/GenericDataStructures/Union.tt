@@ -17,10 +17,10 @@ namespace GenericDataStructures
     for(int types = 1; types <= GetNumberOfTypes(); types++)
     {
 #>
-    public sealed class <#= GetClassName(types) #>
+    public struct <#= GetClassName(types) #>
     {
         private readonly object _value;
-        private readonly byte? _typeIndex;
+        private readonly byte _typeIndex;
 
 <#
     for(int index = 0; index < types; index++)
@@ -34,7 +34,28 @@ namespace GenericDataStructures
 
 <#
     }
+#>
+        private object Value
+        {
+            get
+            {
+                switch (_typeIndex)
+                {
+<#
+    for(int index = 0; index < types; index++)
+    {
+#>
+                    case <#= index #>:
+                        return _value ?? default(T<#= index + 1 #>);
+<#
+    }
+#>
+                    default: throw new InvalidOperationException();
+                }
+            }
+        }
 
+<#
     for(int index = 0; index < types; index++)
     {
 #>
@@ -43,6 +64,10 @@ namespace GenericDataStructures
 <#
     }
 #>
+        public static bool operator ==(<#= GetClassName(types) #> left, <#= GetClassName(types) #> right) => Equals(left, right);
+
+        public static bool operator !=(<#= GetClassName(types) #> left, <#= GetClassName(types) #> right) => !Equals(left, right);
+
         public TOutput Map<TOutput>(<# Write(string.Join(", ", Enumerable.Range(1, types).Select(number => $"[InstantHandle][NotNull]Func<T{number}, TOutput> onT{number}Func"))); #>)
         {
             switch (_typeIndex)
@@ -57,7 +82,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No map function provided for {typeof(T<#= index + 1 #>).Name}");
                     }
 
-                    return onT<#= index + 1 #>Func((T<#= index + 1 #>)_value);
+                    return onT<#= index + 1 #>Func((T<#= index + 1 #>)Value);
 <#
     }
 #>
@@ -79,7 +104,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(T<#= index + 1 #>).Name}");
                     }
 
-                    onT<#= index + 1 #>Action((T<#= index + 1 #>)_value);
+                    onT<#= index + 1 #>Action((T<#= index + 1 #>)Value);
                     break;
 <#
     }
@@ -90,20 +115,20 @@ namespace GenericDataStructures
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is <#= GetClassName(types) #> other && Equals(_value, other._value) && _typeIndex == other._typeIndex);
+            return obj is <#= GetClassName(types) #> other && Equals(Value, other.Value) && _typeIndex == other._typeIndex;
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _typeIndex.GetHashCode();
+                return ((Value != null ? Value.GetHashCode() : 0) * 397) ^ _typeIndex.GetHashCode();
             }
         }
 
         public override string ToString()
         {
-            return _value != null ? _value.ToString() : string.Empty;
+            return Value != null ? Value.ToString() : string.Empty;
         }
     }
 <#

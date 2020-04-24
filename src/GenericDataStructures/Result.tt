@@ -20,7 +20,7 @@ namespace GenericDataStructures
     for(int failureTypes = 1; failureTypes <= GetNumberOfFailureTypes(); failureTypes++)
     {
 #>
-    public sealed class <#= GetClassName(failureTypes) #>
+    public struct <#= GetClassName(failureTypes) #>
     {
         private readonly object _value;
         private readonly byte? _failureTypeIndex;
@@ -28,6 +28,7 @@ namespace GenericDataStructures
         public Result(TSuccess value)
         {
             _value = value;
+            _failureTypeIndex = null;
         }
 
 <#
@@ -45,6 +46,10 @@ namespace GenericDataStructures
 #>
         public bool IsSuccess => !_failureTypeIndex.HasValue;
 
+        private TSuccess SuccessValue => _value != null ? (TSuccess)_value : default(TSuccess);
+
+        private object Value => IsSuccess ? SuccessValue : _value;
+
         public static implicit operator <#= GetClassName(failureTypes) #>(TSuccess value) => new <#= GetClassName(failureTypes) #>(value);
 
 <#
@@ -56,6 +61,10 @@ namespace GenericDataStructures
 <#
     }
 #>
+        public static bool operator ==(<#= GetClassName(failureTypes) #> left, <#= GetClassName(failureTypes) #> right) => Equals(left, right);
+
+        public static bool operator !=(<#= GetClassName(failureTypes) #> left, <#= GetClassName(failureTypes) #> right) => !Equals(left, right);
+
 #if NULLABLE_REFERENCE_TYPES_SUPPORTED
         public bool TryGetSuccessValue([MaybeNullWhen(false)] out TSuccess successValue)
 #else
@@ -64,7 +73,7 @@ namespace GenericDataStructures
         {
             if (IsSuccess)
             {
-                successValue = (TSuccess)_value;
+                successValue = SuccessValue;
                 return true;
             }
 
@@ -85,7 +94,7 @@ namespace GenericDataStructures
                     throw new ArgumentException($"No map function provided");
                 }
 
-                mappedValue = onSuccessFunc((TSuccess)_value);
+                mappedValue = onSuccessFunc(SuccessValue);
                 return true;
             }
 
@@ -117,7 +126,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No map function provided for {typeof(TSuccess).Name}");
                     }
 
-                    return onSuccessFunc((TSuccess)_value);
+                    return onSuccessFunc(SuccessValue);
             }
         }
 
@@ -146,27 +155,27 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(TSuccess).Name}");
                     }
 
-                    onSuccessAction((TSuccess)_value);
+                    onSuccessAction(SuccessValue);
                     break;
             }
         }
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is <#= GetClassName(failureTypes) #> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex);
+            return obj is <#= GetClassName(failureTypes) #> other && Equals(Value, other.Value) && _failureTypeIndex == other._failureTypeIndex;
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
+                return ((Value != null ? Value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
             }
         }
 
         public override string ToString()
         {
-            return _value != null ? _value.ToString() : string.Empty;
+            return Value != null ? Value.ToString() : string.Empty;
         }
     }
 <#

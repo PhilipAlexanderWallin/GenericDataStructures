@@ -10,7 +10,7 @@ using NotNullAttribute = JetBrains.Annotations.NotNullAttribute;
 
 namespace GenericDataStructures
 {
-    public sealed class Result<TSuccess, TFailure1>
+    public struct Result<TSuccess, TFailure1>
     {
         private readonly object _value;
         private readonly byte? _failureTypeIndex;
@@ -18,6 +18,7 @@ namespace GenericDataStructures
         public Result(TSuccess value)
         {
             _value = value;
+            _failureTypeIndex = null;
         }
 
         public Result(TFailure1 value)
@@ -28,9 +29,17 @@ namespace GenericDataStructures
 
         public bool IsSuccess => !_failureTypeIndex.HasValue;
 
+        private TSuccess SuccessValue => _value != null ? (TSuccess)_value : default(TSuccess);
+
+        private object Value => IsSuccess ? SuccessValue : _value;
+
         public static implicit operator Result<TSuccess, TFailure1>(TSuccess value) => new Result<TSuccess, TFailure1>(value);
 
         public static implicit operator Result<TSuccess, TFailure1>(TFailure1 value) => new Result<TSuccess, TFailure1>(value);
+
+        public static bool operator ==(Result<TSuccess, TFailure1> left, Result<TSuccess, TFailure1> right) => Equals(left, right);
+
+        public static bool operator !=(Result<TSuccess, TFailure1> left, Result<TSuccess, TFailure1> right) => !Equals(left, right);
 
 #if NULLABLE_REFERENCE_TYPES_SUPPORTED
         public bool TryGetSuccessValue([MaybeNullWhen(false)] out TSuccess successValue)
@@ -40,7 +49,7 @@ namespace GenericDataStructures
         {
             if (IsSuccess)
             {
-                successValue = (TSuccess)_value;
+                successValue = SuccessValue;
                 return true;
             }
 
@@ -61,7 +70,7 @@ namespace GenericDataStructures
                     throw new ArgumentException($"No map function provided");
                 }
 
-                mappedValue = onSuccessFunc((TSuccess)_value);
+                mappedValue = onSuccessFunc(SuccessValue);
                 return true;
             }
 
@@ -86,7 +95,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No map function provided for {typeof(TSuccess).Name}");
                     }
 
-                    return onSuccessFunc((TSuccess)_value);
+                    return onSuccessFunc(SuccessValue);
             }
         }
 
@@ -108,31 +117,31 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(TSuccess).Name}");
                     }
 
-                    onSuccessAction((TSuccess)_value);
+                    onSuccessAction(SuccessValue);
                     break;
             }
         }
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is Result<TSuccess, TFailure1> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex);
+            return obj is Result<TSuccess, TFailure1> other && Equals(Value, other.Value) && _failureTypeIndex == other._failureTypeIndex;
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
+                return ((Value != null ? Value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
             }
         }
 
         public override string ToString()
         {
-            return _value != null ? _value.ToString() : string.Empty;
+            return Value != null ? Value.ToString() : string.Empty;
         }
     }
 
-    public sealed class Result<TSuccess, TFailure1, TFailure2>
+    public struct Result<TSuccess, TFailure1, TFailure2>
     {
         private readonly object _value;
         private readonly byte? _failureTypeIndex;
@@ -140,6 +149,7 @@ namespace GenericDataStructures
         public Result(TSuccess value)
         {
             _value = value;
+            _failureTypeIndex = null;
         }
 
         public Result(TFailure1 value)
@@ -156,11 +166,19 @@ namespace GenericDataStructures
 
         public bool IsSuccess => !_failureTypeIndex.HasValue;
 
+        private TSuccess SuccessValue => _value != null ? (TSuccess)_value : default(TSuccess);
+
+        private object Value => IsSuccess ? SuccessValue : _value;
+
         public static implicit operator Result<TSuccess, TFailure1, TFailure2>(TSuccess value) => new Result<TSuccess, TFailure1, TFailure2>(value);
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2>(TFailure1 value) => new Result<TSuccess, TFailure1, TFailure2>(value);
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2>(TFailure2 value) => new Result<TSuccess, TFailure1, TFailure2>(value);
+
+        public static bool operator ==(Result<TSuccess, TFailure1, TFailure2> left, Result<TSuccess, TFailure1, TFailure2> right) => Equals(left, right);
+
+        public static bool operator !=(Result<TSuccess, TFailure1, TFailure2> left, Result<TSuccess, TFailure1, TFailure2> right) => !Equals(left, right);
 
 #if NULLABLE_REFERENCE_TYPES_SUPPORTED
         public bool TryGetSuccessValue([MaybeNullWhen(false)] out TSuccess successValue)
@@ -170,7 +188,7 @@ namespace GenericDataStructures
         {
             if (IsSuccess)
             {
-                successValue = (TSuccess)_value;
+                successValue = SuccessValue;
                 return true;
             }
 
@@ -191,7 +209,7 @@ namespace GenericDataStructures
                     throw new ArgumentException($"No map function provided");
                 }
 
-                mappedValue = onSuccessFunc((TSuccess)_value);
+                mappedValue = onSuccessFunc(SuccessValue);
                 return true;
             }
 
@@ -223,7 +241,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No map function provided for {typeof(TSuccess).Name}");
                     }
 
-                    return onSuccessFunc((TSuccess)_value);
+                    return onSuccessFunc(SuccessValue);
             }
         }
 
@@ -253,31 +271,31 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(TSuccess).Name}");
                     }
 
-                    onSuccessAction((TSuccess)_value);
+                    onSuccessAction(SuccessValue);
                     break;
             }
         }
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is Result<TSuccess, TFailure1, TFailure2> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex);
+            return obj is Result<TSuccess, TFailure1, TFailure2> other && Equals(Value, other.Value) && _failureTypeIndex == other._failureTypeIndex;
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
+                return ((Value != null ? Value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
             }
         }
 
         public override string ToString()
         {
-            return _value != null ? _value.ToString() : string.Empty;
+            return Value != null ? Value.ToString() : string.Empty;
         }
     }
 
-    public sealed class Result<TSuccess, TFailure1, TFailure2, TFailure3>
+    public struct Result<TSuccess, TFailure1, TFailure2, TFailure3>
     {
         private readonly object _value;
         private readonly byte? _failureTypeIndex;
@@ -285,6 +303,7 @@ namespace GenericDataStructures
         public Result(TSuccess value)
         {
             _value = value;
+            _failureTypeIndex = null;
         }
 
         public Result(TFailure1 value)
@@ -307,6 +326,10 @@ namespace GenericDataStructures
 
         public bool IsSuccess => !_failureTypeIndex.HasValue;
 
+        private TSuccess SuccessValue => _value != null ? (TSuccess)_value : default(TSuccess);
+
+        private object Value => IsSuccess ? SuccessValue : _value;
+
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3>(TSuccess value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3>(value);
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3>(TFailure1 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3>(value);
@@ -314,6 +337,10 @@ namespace GenericDataStructures
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3>(TFailure2 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3>(value);
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3>(TFailure3 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3>(value);
+
+        public static bool operator ==(Result<TSuccess, TFailure1, TFailure2, TFailure3> left, Result<TSuccess, TFailure1, TFailure2, TFailure3> right) => Equals(left, right);
+
+        public static bool operator !=(Result<TSuccess, TFailure1, TFailure2, TFailure3> left, Result<TSuccess, TFailure1, TFailure2, TFailure3> right) => !Equals(left, right);
 
 #if NULLABLE_REFERENCE_TYPES_SUPPORTED
         public bool TryGetSuccessValue([MaybeNullWhen(false)] out TSuccess successValue)
@@ -323,7 +350,7 @@ namespace GenericDataStructures
         {
             if (IsSuccess)
             {
-                successValue = (TSuccess)_value;
+                successValue = SuccessValue;
                 return true;
             }
 
@@ -344,7 +371,7 @@ namespace GenericDataStructures
                     throw new ArgumentException($"No map function provided");
                 }
 
-                mappedValue = onSuccessFunc((TSuccess)_value);
+                mappedValue = onSuccessFunc(SuccessValue);
                 return true;
             }
 
@@ -383,7 +410,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No map function provided for {typeof(TSuccess).Name}");
                     }
 
-                    return onSuccessFunc((TSuccess)_value);
+                    return onSuccessFunc(SuccessValue);
             }
         }
 
@@ -421,31 +448,31 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(TSuccess).Name}");
                     }
 
-                    onSuccessAction((TSuccess)_value);
+                    onSuccessAction(SuccessValue);
                     break;
             }
         }
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is Result<TSuccess, TFailure1, TFailure2, TFailure3> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex);
+            return obj is Result<TSuccess, TFailure1, TFailure2, TFailure3> other && Equals(Value, other.Value) && _failureTypeIndex == other._failureTypeIndex;
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
+                return ((Value != null ? Value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
             }
         }
 
         public override string ToString()
         {
-            return _value != null ? _value.ToString() : string.Empty;
+            return Value != null ? Value.ToString() : string.Empty;
         }
     }
 
-    public sealed class Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4>
+    public struct Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4>
     {
         private readonly object _value;
         private readonly byte? _failureTypeIndex;
@@ -453,6 +480,7 @@ namespace GenericDataStructures
         public Result(TSuccess value)
         {
             _value = value;
+            _failureTypeIndex = null;
         }
 
         public Result(TFailure1 value)
@@ -481,6 +509,10 @@ namespace GenericDataStructures
 
         public bool IsSuccess => !_failureTypeIndex.HasValue;
 
+        private TSuccess SuccessValue => _value != null ? (TSuccess)_value : default(TSuccess);
+
+        private object Value => IsSuccess ? SuccessValue : _value;
+
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4>(TSuccess value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4>(value);
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4>(TFailure1 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4>(value);
@@ -491,6 +523,10 @@ namespace GenericDataStructures
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4>(TFailure4 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4>(value);
 
+        public static bool operator ==(Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4> left, Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4> right) => Equals(left, right);
+
+        public static bool operator !=(Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4> left, Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4> right) => !Equals(left, right);
+
 #if NULLABLE_REFERENCE_TYPES_SUPPORTED
         public bool TryGetSuccessValue([MaybeNullWhen(false)] out TSuccess successValue)
 #else
@@ -499,7 +535,7 @@ namespace GenericDataStructures
         {
             if (IsSuccess)
             {
-                successValue = (TSuccess)_value;
+                successValue = SuccessValue;
                 return true;
             }
 
@@ -520,7 +556,7 @@ namespace GenericDataStructures
                     throw new ArgumentException($"No map function provided");
                 }
 
-                mappedValue = onSuccessFunc((TSuccess)_value);
+                mappedValue = onSuccessFunc(SuccessValue);
                 return true;
             }
 
@@ -566,7 +602,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No map function provided for {typeof(TSuccess).Name}");
                     }
 
-                    return onSuccessFunc((TSuccess)_value);
+                    return onSuccessFunc(SuccessValue);
             }
         }
 
@@ -612,31 +648,31 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(TSuccess).Name}");
                     }
 
-                    onSuccessAction((TSuccess)_value);
+                    onSuccessAction(SuccessValue);
                     break;
             }
         }
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex);
+            return obj is Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4> other && Equals(Value, other.Value) && _failureTypeIndex == other._failureTypeIndex;
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
+                return ((Value != null ? Value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
             }
         }
 
         public override string ToString()
         {
-            return _value != null ? _value.ToString() : string.Empty;
+            return Value != null ? Value.ToString() : string.Empty;
         }
     }
 
-    public sealed class Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>
+    public struct Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>
     {
         private readonly object _value;
         private readonly byte? _failureTypeIndex;
@@ -644,6 +680,7 @@ namespace GenericDataStructures
         public Result(TSuccess value)
         {
             _value = value;
+            _failureTypeIndex = null;
         }
 
         public Result(TFailure1 value)
@@ -678,6 +715,10 @@ namespace GenericDataStructures
 
         public bool IsSuccess => !_failureTypeIndex.HasValue;
 
+        private TSuccess SuccessValue => _value != null ? (TSuccess)_value : default(TSuccess);
+
+        private object Value => IsSuccess ? SuccessValue : _value;
+
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>(TSuccess value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>(value);
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>(TFailure1 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>(value);
@@ -690,6 +731,10 @@ namespace GenericDataStructures
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>(TFailure5 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>(value);
 
+        public static bool operator ==(Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5> left, Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5> right) => Equals(left, right);
+
+        public static bool operator !=(Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5> left, Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5> right) => !Equals(left, right);
+
 #if NULLABLE_REFERENCE_TYPES_SUPPORTED
         public bool TryGetSuccessValue([MaybeNullWhen(false)] out TSuccess successValue)
 #else
@@ -698,7 +743,7 @@ namespace GenericDataStructures
         {
             if (IsSuccess)
             {
-                successValue = (TSuccess)_value;
+                successValue = SuccessValue;
                 return true;
             }
 
@@ -719,7 +764,7 @@ namespace GenericDataStructures
                     throw new ArgumentException($"No map function provided");
                 }
 
-                mappedValue = onSuccessFunc((TSuccess)_value);
+                mappedValue = onSuccessFunc(SuccessValue);
                 return true;
             }
 
@@ -772,7 +817,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No map function provided for {typeof(TSuccess).Name}");
                     }
 
-                    return onSuccessFunc((TSuccess)_value);
+                    return onSuccessFunc(SuccessValue);
             }
         }
 
@@ -826,31 +871,31 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(TSuccess).Name}");
                     }
 
-                    onSuccessAction((TSuccess)_value);
+                    onSuccessAction(SuccessValue);
                     break;
             }
         }
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex);
+            return obj is Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5> other && Equals(Value, other.Value) && _failureTypeIndex == other._failureTypeIndex;
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
+                return ((Value != null ? Value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
             }
         }
 
         public override string ToString()
         {
-            return _value != null ? _value.ToString() : string.Empty;
+            return Value != null ? Value.ToString() : string.Empty;
         }
     }
 
-    public sealed class Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>
+    public struct Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>
     {
         private readonly object _value;
         private readonly byte? _failureTypeIndex;
@@ -858,6 +903,7 @@ namespace GenericDataStructures
         public Result(TSuccess value)
         {
             _value = value;
+            _failureTypeIndex = null;
         }
 
         public Result(TFailure1 value)
@@ -898,6 +944,10 @@ namespace GenericDataStructures
 
         public bool IsSuccess => !_failureTypeIndex.HasValue;
 
+        private TSuccess SuccessValue => _value != null ? (TSuccess)_value : default(TSuccess);
+
+        private object Value => IsSuccess ? SuccessValue : _value;
+
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>(TSuccess value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>(value);
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>(TFailure1 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>(value);
@@ -912,6 +962,10 @@ namespace GenericDataStructures
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>(TFailure6 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>(value);
 
+        public static bool operator ==(Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6> left, Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6> right) => Equals(left, right);
+
+        public static bool operator !=(Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6> left, Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6> right) => !Equals(left, right);
+
 #if NULLABLE_REFERENCE_TYPES_SUPPORTED
         public bool TryGetSuccessValue([MaybeNullWhen(false)] out TSuccess successValue)
 #else
@@ -920,7 +974,7 @@ namespace GenericDataStructures
         {
             if (IsSuccess)
             {
-                successValue = (TSuccess)_value;
+                successValue = SuccessValue;
                 return true;
             }
 
@@ -941,7 +995,7 @@ namespace GenericDataStructures
                     throw new ArgumentException($"No map function provided");
                 }
 
-                mappedValue = onSuccessFunc((TSuccess)_value);
+                mappedValue = onSuccessFunc(SuccessValue);
                 return true;
             }
 
@@ -1001,7 +1055,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No map function provided for {typeof(TSuccess).Name}");
                     }
 
-                    return onSuccessFunc((TSuccess)_value);
+                    return onSuccessFunc(SuccessValue);
             }
         }
 
@@ -1063,31 +1117,31 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(TSuccess).Name}");
                     }
 
-                    onSuccessAction((TSuccess)_value);
+                    onSuccessAction(SuccessValue);
                     break;
             }
         }
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex);
+            return obj is Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6> other && Equals(Value, other.Value) && _failureTypeIndex == other._failureTypeIndex;
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
+                return ((Value != null ? Value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
             }
         }
 
         public override string ToString()
         {
-            return _value != null ? _value.ToString() : string.Empty;
+            return Value != null ? Value.ToString() : string.Empty;
         }
     }
 
-    public sealed class Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>
+    public struct Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>
     {
         private readonly object _value;
         private readonly byte? _failureTypeIndex;
@@ -1095,6 +1149,7 @@ namespace GenericDataStructures
         public Result(TSuccess value)
         {
             _value = value;
+            _failureTypeIndex = null;
         }
 
         public Result(TFailure1 value)
@@ -1141,6 +1196,10 @@ namespace GenericDataStructures
 
         public bool IsSuccess => !_failureTypeIndex.HasValue;
 
+        private TSuccess SuccessValue => _value != null ? (TSuccess)_value : default(TSuccess);
+
+        private object Value => IsSuccess ? SuccessValue : _value;
+
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>(TSuccess value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>(value);
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>(TFailure1 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>(value);
@@ -1157,6 +1216,10 @@ namespace GenericDataStructures
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>(TFailure7 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>(value);
 
+        public static bool operator ==(Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7> left, Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7> right) => Equals(left, right);
+
+        public static bool operator !=(Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7> left, Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7> right) => !Equals(left, right);
+
 #if NULLABLE_REFERENCE_TYPES_SUPPORTED
         public bool TryGetSuccessValue([MaybeNullWhen(false)] out TSuccess successValue)
 #else
@@ -1165,7 +1228,7 @@ namespace GenericDataStructures
         {
             if (IsSuccess)
             {
-                successValue = (TSuccess)_value;
+                successValue = SuccessValue;
                 return true;
             }
 
@@ -1186,7 +1249,7 @@ namespace GenericDataStructures
                     throw new ArgumentException($"No map function provided");
                 }
 
-                mappedValue = onSuccessFunc((TSuccess)_value);
+                mappedValue = onSuccessFunc(SuccessValue);
                 return true;
             }
 
@@ -1253,7 +1316,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No map function provided for {typeof(TSuccess).Name}");
                     }
 
-                    return onSuccessFunc((TSuccess)_value);
+                    return onSuccessFunc(SuccessValue);
             }
         }
 
@@ -1323,31 +1386,31 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(TSuccess).Name}");
                     }
 
-                    onSuccessAction((TSuccess)_value);
+                    onSuccessAction(SuccessValue);
                     break;
             }
         }
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex);
+            return obj is Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7> other && Equals(Value, other.Value) && _failureTypeIndex == other._failureTypeIndex;
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
+                return ((Value != null ? Value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
             }
         }
 
         public override string ToString()
         {
-            return _value != null ? _value.ToString() : string.Empty;
+            return Value != null ? Value.ToString() : string.Empty;
         }
     }
 
-    public sealed class Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>
+    public struct Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>
     {
         private readonly object _value;
         private readonly byte? _failureTypeIndex;
@@ -1355,6 +1418,7 @@ namespace GenericDataStructures
         public Result(TSuccess value)
         {
             _value = value;
+            _failureTypeIndex = null;
         }
 
         public Result(TFailure1 value)
@@ -1407,6 +1471,10 @@ namespace GenericDataStructures
 
         public bool IsSuccess => !_failureTypeIndex.HasValue;
 
+        private TSuccess SuccessValue => _value != null ? (TSuccess)_value : default(TSuccess);
+
+        private object Value => IsSuccess ? SuccessValue : _value;
+
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>(TSuccess value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>(value);
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>(TFailure1 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>(value);
@@ -1425,6 +1493,10 @@ namespace GenericDataStructures
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>(TFailure8 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>(value);
 
+        public static bool operator ==(Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8> left, Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8> right) => Equals(left, right);
+
+        public static bool operator !=(Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8> left, Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8> right) => !Equals(left, right);
+
 #if NULLABLE_REFERENCE_TYPES_SUPPORTED
         public bool TryGetSuccessValue([MaybeNullWhen(false)] out TSuccess successValue)
 #else
@@ -1433,7 +1505,7 @@ namespace GenericDataStructures
         {
             if (IsSuccess)
             {
-                successValue = (TSuccess)_value;
+                successValue = SuccessValue;
                 return true;
             }
 
@@ -1454,7 +1526,7 @@ namespace GenericDataStructures
                     throw new ArgumentException($"No map function provided");
                 }
 
-                mappedValue = onSuccessFunc((TSuccess)_value);
+                mappedValue = onSuccessFunc(SuccessValue);
                 return true;
             }
 
@@ -1528,7 +1600,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No map function provided for {typeof(TSuccess).Name}");
                     }
 
-                    return onSuccessFunc((TSuccess)_value);
+                    return onSuccessFunc(SuccessValue);
             }
         }
 
@@ -1606,31 +1678,31 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(TSuccess).Name}");
                     }
 
-                    onSuccessAction((TSuccess)_value);
+                    onSuccessAction(SuccessValue);
                     break;
             }
         }
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex);
+            return obj is Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8> other && Equals(Value, other.Value) && _failureTypeIndex == other._failureTypeIndex;
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
+                return ((Value != null ? Value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
             }
         }
 
         public override string ToString()
         {
-            return _value != null ? _value.ToString() : string.Empty;
+            return Value != null ? Value.ToString() : string.Empty;
         }
     }
 
-    public sealed class Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9>
+    public struct Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9>
     {
         private readonly object _value;
         private readonly byte? _failureTypeIndex;
@@ -1638,6 +1710,7 @@ namespace GenericDataStructures
         public Result(TSuccess value)
         {
             _value = value;
+            _failureTypeIndex = null;
         }
 
         public Result(TFailure1 value)
@@ -1696,6 +1769,10 @@ namespace GenericDataStructures
 
         public bool IsSuccess => !_failureTypeIndex.HasValue;
 
+        private TSuccess SuccessValue => _value != null ? (TSuccess)_value : default(TSuccess);
+
+        private object Value => IsSuccess ? SuccessValue : _value;
+
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9>(TSuccess value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9>(value);
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9>(TFailure1 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9>(value);
@@ -1716,6 +1793,10 @@ namespace GenericDataStructures
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9>(TFailure9 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9>(value);
 
+        public static bool operator ==(Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9> left, Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9> right) => Equals(left, right);
+
+        public static bool operator !=(Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9> left, Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9> right) => !Equals(left, right);
+
 #if NULLABLE_REFERENCE_TYPES_SUPPORTED
         public bool TryGetSuccessValue([MaybeNullWhen(false)] out TSuccess successValue)
 #else
@@ -1724,7 +1805,7 @@ namespace GenericDataStructures
         {
             if (IsSuccess)
             {
-                successValue = (TSuccess)_value;
+                successValue = SuccessValue;
                 return true;
             }
 
@@ -1745,7 +1826,7 @@ namespace GenericDataStructures
                     throw new ArgumentException($"No map function provided");
                 }
 
-                mappedValue = onSuccessFunc((TSuccess)_value);
+                mappedValue = onSuccessFunc(SuccessValue);
                 return true;
             }
 
@@ -1826,7 +1907,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No map function provided for {typeof(TSuccess).Name}");
                     }
 
-                    return onSuccessFunc((TSuccess)_value);
+                    return onSuccessFunc(SuccessValue);
             }
         }
 
@@ -1912,31 +1993,31 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(TSuccess).Name}");
                     }
 
-                    onSuccessAction((TSuccess)_value);
+                    onSuccessAction(SuccessValue);
                     break;
             }
         }
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex);
+            return obj is Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9> other && Equals(Value, other.Value) && _failureTypeIndex == other._failureTypeIndex;
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
+                return ((Value != null ? Value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
             }
         }
 
         public override string ToString()
         {
-            return _value != null ? _value.ToString() : string.Empty;
+            return Value != null ? Value.ToString() : string.Empty;
         }
     }
 
-    public sealed class Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10>
+    public struct Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10>
     {
         private readonly object _value;
         private readonly byte? _failureTypeIndex;
@@ -1944,6 +2025,7 @@ namespace GenericDataStructures
         public Result(TSuccess value)
         {
             _value = value;
+            _failureTypeIndex = null;
         }
 
         public Result(TFailure1 value)
@@ -2008,6 +2090,10 @@ namespace GenericDataStructures
 
         public bool IsSuccess => !_failureTypeIndex.HasValue;
 
+        private TSuccess SuccessValue => _value != null ? (TSuccess)_value : default(TSuccess);
+
+        private object Value => IsSuccess ? SuccessValue : _value;
+
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10>(TSuccess value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10>(value);
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10>(TFailure1 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10>(value);
@@ -2030,6 +2116,10 @@ namespace GenericDataStructures
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10>(TFailure10 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10>(value);
 
+        public static bool operator ==(Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10> left, Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10> right) => Equals(left, right);
+
+        public static bool operator !=(Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10> left, Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10> right) => !Equals(left, right);
+
 #if NULLABLE_REFERENCE_TYPES_SUPPORTED
         public bool TryGetSuccessValue([MaybeNullWhen(false)] out TSuccess successValue)
 #else
@@ -2038,7 +2128,7 @@ namespace GenericDataStructures
         {
             if (IsSuccess)
             {
-                successValue = (TSuccess)_value;
+                successValue = SuccessValue;
                 return true;
             }
 
@@ -2059,7 +2149,7 @@ namespace GenericDataStructures
                     throw new ArgumentException($"No map function provided");
                 }
 
-                mappedValue = onSuccessFunc((TSuccess)_value);
+                mappedValue = onSuccessFunc(SuccessValue);
                 return true;
             }
 
@@ -2147,7 +2237,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No map function provided for {typeof(TSuccess).Name}");
                     }
 
-                    return onSuccessFunc((TSuccess)_value);
+                    return onSuccessFunc(SuccessValue);
             }
         }
 
@@ -2241,31 +2331,31 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(TSuccess).Name}");
                     }
 
-                    onSuccessAction((TSuccess)_value);
+                    onSuccessAction(SuccessValue);
                     break;
             }
         }
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex);
+            return obj is Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10> other && Equals(Value, other.Value) && _failureTypeIndex == other._failureTypeIndex;
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
+                return ((Value != null ? Value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
             }
         }
 
         public override string ToString()
         {
-            return _value != null ? _value.ToString() : string.Empty;
+            return Value != null ? Value.ToString() : string.Empty;
         }
     }
 
-    public sealed class Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11>
+    public struct Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11>
     {
         private readonly object _value;
         private readonly byte? _failureTypeIndex;
@@ -2273,6 +2363,7 @@ namespace GenericDataStructures
         public Result(TSuccess value)
         {
             _value = value;
+            _failureTypeIndex = null;
         }
 
         public Result(TFailure1 value)
@@ -2343,6 +2434,10 @@ namespace GenericDataStructures
 
         public bool IsSuccess => !_failureTypeIndex.HasValue;
 
+        private TSuccess SuccessValue => _value != null ? (TSuccess)_value : default(TSuccess);
+
+        private object Value => IsSuccess ? SuccessValue : _value;
+
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11>(TSuccess value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11>(value);
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11>(TFailure1 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11>(value);
@@ -2367,6 +2462,10 @@ namespace GenericDataStructures
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11>(TFailure11 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11>(value);
 
+        public static bool operator ==(Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11> left, Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11> right) => Equals(left, right);
+
+        public static bool operator !=(Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11> left, Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11> right) => !Equals(left, right);
+
 #if NULLABLE_REFERENCE_TYPES_SUPPORTED
         public bool TryGetSuccessValue([MaybeNullWhen(false)] out TSuccess successValue)
 #else
@@ -2375,7 +2474,7 @@ namespace GenericDataStructures
         {
             if (IsSuccess)
             {
-                successValue = (TSuccess)_value;
+                successValue = SuccessValue;
                 return true;
             }
 
@@ -2396,7 +2495,7 @@ namespace GenericDataStructures
                     throw new ArgumentException($"No map function provided");
                 }
 
-                mappedValue = onSuccessFunc((TSuccess)_value);
+                mappedValue = onSuccessFunc(SuccessValue);
                 return true;
             }
 
@@ -2491,7 +2590,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No map function provided for {typeof(TSuccess).Name}");
                     }
 
-                    return onSuccessFunc((TSuccess)_value);
+                    return onSuccessFunc(SuccessValue);
             }
         }
 
@@ -2593,31 +2692,31 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(TSuccess).Name}");
                     }
 
-                    onSuccessAction((TSuccess)_value);
+                    onSuccessAction(SuccessValue);
                     break;
             }
         }
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex);
+            return obj is Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11> other && Equals(Value, other.Value) && _failureTypeIndex == other._failureTypeIndex;
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
+                return ((Value != null ? Value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
             }
         }
 
         public override string ToString()
         {
-            return _value != null ? _value.ToString() : string.Empty;
+            return Value != null ? Value.ToString() : string.Empty;
         }
     }
 
-    public sealed class Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12>
+    public struct Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12>
     {
         private readonly object _value;
         private readonly byte? _failureTypeIndex;
@@ -2625,6 +2724,7 @@ namespace GenericDataStructures
         public Result(TSuccess value)
         {
             _value = value;
+            _failureTypeIndex = null;
         }
 
         public Result(TFailure1 value)
@@ -2701,6 +2801,10 @@ namespace GenericDataStructures
 
         public bool IsSuccess => !_failureTypeIndex.HasValue;
 
+        private TSuccess SuccessValue => _value != null ? (TSuccess)_value : default(TSuccess);
+
+        private object Value => IsSuccess ? SuccessValue : _value;
+
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12>(TSuccess value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12>(value);
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12>(TFailure1 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12>(value);
@@ -2727,6 +2831,10 @@ namespace GenericDataStructures
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12>(TFailure12 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12>(value);
 
+        public static bool operator ==(Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12> left, Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12> right) => Equals(left, right);
+
+        public static bool operator !=(Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12> left, Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12> right) => !Equals(left, right);
+
 #if NULLABLE_REFERENCE_TYPES_SUPPORTED
         public bool TryGetSuccessValue([MaybeNullWhen(false)] out TSuccess successValue)
 #else
@@ -2735,7 +2843,7 @@ namespace GenericDataStructures
         {
             if (IsSuccess)
             {
-                successValue = (TSuccess)_value;
+                successValue = SuccessValue;
                 return true;
             }
 
@@ -2756,7 +2864,7 @@ namespace GenericDataStructures
                     throw new ArgumentException($"No map function provided");
                 }
 
-                mappedValue = onSuccessFunc((TSuccess)_value);
+                mappedValue = onSuccessFunc(SuccessValue);
                 return true;
             }
 
@@ -2858,7 +2966,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No map function provided for {typeof(TSuccess).Name}");
                     }
 
-                    return onSuccessFunc((TSuccess)_value);
+                    return onSuccessFunc(SuccessValue);
             }
         }
 
@@ -2968,31 +3076,31 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(TSuccess).Name}");
                     }
 
-                    onSuccessAction((TSuccess)_value);
+                    onSuccessAction(SuccessValue);
                     break;
             }
         }
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex);
+            return obj is Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12> other && Equals(Value, other.Value) && _failureTypeIndex == other._failureTypeIndex;
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
+                return ((Value != null ? Value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
             }
         }
 
         public override string ToString()
         {
-            return _value != null ? _value.ToString() : string.Empty;
+            return Value != null ? Value.ToString() : string.Empty;
         }
     }
 
-    public sealed class Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13>
+    public struct Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13>
     {
         private readonly object _value;
         private readonly byte? _failureTypeIndex;
@@ -3000,6 +3108,7 @@ namespace GenericDataStructures
         public Result(TSuccess value)
         {
             _value = value;
+            _failureTypeIndex = null;
         }
 
         public Result(TFailure1 value)
@@ -3082,6 +3191,10 @@ namespace GenericDataStructures
 
         public bool IsSuccess => !_failureTypeIndex.HasValue;
 
+        private TSuccess SuccessValue => _value != null ? (TSuccess)_value : default(TSuccess);
+
+        private object Value => IsSuccess ? SuccessValue : _value;
+
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13>(TSuccess value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13>(value);
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13>(TFailure1 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13>(value);
@@ -3110,6 +3223,10 @@ namespace GenericDataStructures
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13>(TFailure13 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13>(value);
 
+        public static bool operator ==(Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13> left, Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13> right) => Equals(left, right);
+
+        public static bool operator !=(Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13> left, Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13> right) => !Equals(left, right);
+
 #if NULLABLE_REFERENCE_TYPES_SUPPORTED
         public bool TryGetSuccessValue([MaybeNullWhen(false)] out TSuccess successValue)
 #else
@@ -3118,7 +3235,7 @@ namespace GenericDataStructures
         {
             if (IsSuccess)
             {
-                successValue = (TSuccess)_value;
+                successValue = SuccessValue;
                 return true;
             }
 
@@ -3139,7 +3256,7 @@ namespace GenericDataStructures
                     throw new ArgumentException($"No map function provided");
                 }
 
-                mappedValue = onSuccessFunc((TSuccess)_value);
+                mappedValue = onSuccessFunc(SuccessValue);
                 return true;
             }
 
@@ -3248,7 +3365,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No map function provided for {typeof(TSuccess).Name}");
                     }
 
-                    return onSuccessFunc((TSuccess)_value);
+                    return onSuccessFunc(SuccessValue);
             }
         }
 
@@ -3366,31 +3483,31 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(TSuccess).Name}");
                     }
 
-                    onSuccessAction((TSuccess)_value);
+                    onSuccessAction(SuccessValue);
                     break;
             }
         }
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex);
+            return obj is Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13> other && Equals(Value, other.Value) && _failureTypeIndex == other._failureTypeIndex;
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
+                return ((Value != null ? Value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
             }
         }
 
         public override string ToString()
         {
-            return _value != null ? _value.ToString() : string.Empty;
+            return Value != null ? Value.ToString() : string.Empty;
         }
     }
 
-    public sealed class Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14>
+    public struct Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14>
     {
         private readonly object _value;
         private readonly byte? _failureTypeIndex;
@@ -3398,6 +3515,7 @@ namespace GenericDataStructures
         public Result(TSuccess value)
         {
             _value = value;
+            _failureTypeIndex = null;
         }
 
         public Result(TFailure1 value)
@@ -3486,6 +3604,10 @@ namespace GenericDataStructures
 
         public bool IsSuccess => !_failureTypeIndex.HasValue;
 
+        private TSuccess SuccessValue => _value != null ? (TSuccess)_value : default(TSuccess);
+
+        private object Value => IsSuccess ? SuccessValue : _value;
+
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14>(TSuccess value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14>(value);
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14>(TFailure1 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14>(value);
@@ -3516,6 +3638,10 @@ namespace GenericDataStructures
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14>(TFailure14 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14>(value);
 
+        public static bool operator ==(Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14> left, Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14> right) => Equals(left, right);
+
+        public static bool operator !=(Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14> left, Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14> right) => !Equals(left, right);
+
 #if NULLABLE_REFERENCE_TYPES_SUPPORTED
         public bool TryGetSuccessValue([MaybeNullWhen(false)] out TSuccess successValue)
 #else
@@ -3524,7 +3650,7 @@ namespace GenericDataStructures
         {
             if (IsSuccess)
             {
-                successValue = (TSuccess)_value;
+                successValue = SuccessValue;
                 return true;
             }
 
@@ -3545,7 +3671,7 @@ namespace GenericDataStructures
                     throw new ArgumentException($"No map function provided");
                 }
 
-                mappedValue = onSuccessFunc((TSuccess)_value);
+                mappedValue = onSuccessFunc(SuccessValue);
                 return true;
             }
 
@@ -3661,7 +3787,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No map function provided for {typeof(TSuccess).Name}");
                     }
 
-                    return onSuccessFunc((TSuccess)_value);
+                    return onSuccessFunc(SuccessValue);
             }
         }
 
@@ -3787,31 +3913,31 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(TSuccess).Name}");
                     }
 
-                    onSuccessAction((TSuccess)_value);
+                    onSuccessAction(SuccessValue);
                     break;
             }
         }
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex);
+            return obj is Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14> other && Equals(Value, other.Value) && _failureTypeIndex == other._failureTypeIndex;
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
+                return ((Value != null ? Value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
             }
         }
 
         public override string ToString()
         {
-            return _value != null ? _value.ToString() : string.Empty;
+            return Value != null ? Value.ToString() : string.Empty;
         }
     }
 
-    public sealed class Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15>
+    public struct Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15>
     {
         private readonly object _value;
         private readonly byte? _failureTypeIndex;
@@ -3819,6 +3945,7 @@ namespace GenericDataStructures
         public Result(TSuccess value)
         {
             _value = value;
+            _failureTypeIndex = null;
         }
 
         public Result(TFailure1 value)
@@ -3913,6 +4040,10 @@ namespace GenericDataStructures
 
         public bool IsSuccess => !_failureTypeIndex.HasValue;
 
+        private TSuccess SuccessValue => _value != null ? (TSuccess)_value : default(TSuccess);
+
+        private object Value => IsSuccess ? SuccessValue : _value;
+
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15>(TSuccess value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15>(value);
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15>(TFailure1 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15>(value);
@@ -3945,6 +4076,10 @@ namespace GenericDataStructures
 
         public static implicit operator Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15>(TFailure15 value) => new Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15>(value);
 
+        public static bool operator ==(Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15> left, Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15> right) => Equals(left, right);
+
+        public static bool operator !=(Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15> left, Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15> right) => !Equals(left, right);
+
 #if NULLABLE_REFERENCE_TYPES_SUPPORTED
         public bool TryGetSuccessValue([MaybeNullWhen(false)] out TSuccess successValue)
 #else
@@ -3953,7 +4088,7 @@ namespace GenericDataStructures
         {
             if (IsSuccess)
             {
-                successValue = (TSuccess)_value;
+                successValue = SuccessValue;
                 return true;
             }
 
@@ -3974,7 +4109,7 @@ namespace GenericDataStructures
                     throw new ArgumentException($"No map function provided");
                 }
 
-                mappedValue = onSuccessFunc((TSuccess)_value);
+                mappedValue = onSuccessFunc(SuccessValue);
                 return true;
             }
 
@@ -4097,7 +4232,7 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No map function provided for {typeof(TSuccess).Name}");
                     }
 
-                    return onSuccessFunc((TSuccess)_value);
+                    return onSuccessFunc(SuccessValue);
             }
         }
 
@@ -4231,27 +4366,27 @@ namespace GenericDataStructures
                         throw new ArgumentException($"No switch action provided for {typeof(TSuccess).Name}");
                     }
 
-                    onSuccessAction((TSuccess)_value);
+                    onSuccessAction(SuccessValue);
                     break;
             }
         }
 
         public override bool Equals(object obj)
         {
-            return ReferenceEquals(this, obj) || (obj is Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15> other && Equals(_value, other._value) && _failureTypeIndex == other._failureTypeIndex);
+            return obj is Result<TSuccess, TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15> other && Equals(Value, other.Value) && _failureTypeIndex == other._failureTypeIndex;
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return ((_value != null ? _value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
+                return ((Value != null ? Value.GetHashCode() : 0) * 397) ^ _failureTypeIndex.GetHashCode();
             }
         }
 
         public override string ToString()
         {
-            return _value != null ? _value.ToString() : string.Empty;
+            return Value != null ? Value.ToString() : string.Empty;
         }
     }
 }
