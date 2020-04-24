@@ -7,7 +7,7 @@ namespace GenericDataStructures.Tests
 {
     public class UnionTests
     {
-        private const int NumberOfTypesToTestWith = 8;
+        private const int NumberOfTypesToTestWith = 16;
 
         [Test]
         public void OnlyFuncForTheSameIndexedParameterTypeIsCalledOnMap()

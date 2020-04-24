@@ -119,7 +119,7 @@ namespace GenericDataStructures
 <#+
 private int GetNumberOfTypes()
 {
-    return 8;
+    return 16;
 }
 #>
 <#+

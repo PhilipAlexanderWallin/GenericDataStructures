@@ -7,7 +7,7 @@ namespace GenericDataStructures.Tests
 {
     public class VoidResultTests
     {
-        private const int NumberOfFailureTypesToTestWith = 8;
+        private const int NumberOfFailureTypesToTestWith = 16;
 
         [Test]
         public void WhenConstructedWithSuccessVoidResultIsSuccess()

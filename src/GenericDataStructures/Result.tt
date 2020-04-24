@@ -182,7 +182,7 @@ namespace GenericDataStructures
 <#+
 private int GetNumberOfFailureTypes()
 {
-    return 8;
+    return 15;
 }
 #>
 <#+
