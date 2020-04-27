@@ -79,14 +79,17 @@ public class MyResourceService
         var myResource = _myResourceRepository.Get(id);
         if (myResource == null)
         {
+            // Return error enum
             return DeleteMyResourceError.NotFound;
         }
 
         if (myResource.IsDeleted)
         {
+            // Return error enum
             return DeleteMyResourceError.AlreadyDeleted;
         }
 
+        // Return empty success result
         return VoidResult.Success;
     }
 
@@ -141,4 +144,24 @@ var shape = CreateRandomShape();
 shape.Switch(circle => Console.WriteLine($"You got a circle with {circle.Diameter} in diameter!"),
     rectangle => Console.WriteLine($"You got a {rectangle.Width}x{rectangle.Height} rectangle!"),
     triangle => Console.WriteLine($"You got a triangle with the side {triangle.Length}!"));
+```
+
+## Equality
+The three variants delegate equality to underlying types, but require the data type to been constructed with same generic parameter. The equality operator has been implemented to use Object.Equals.
+
+### Equality examples
+```csharp
+int one = 1;
+int two = 2;
+long oneLong = 1;
+Result<int, long> resultOne = one;
+Result<int, long> resultOneAgain = one;
+Result<int, long> resultTwo = two;
+Result<int, long> resultOneLong = oneLong;
+
+Console.WriteLine(one == oneLong); // True
+Console.WriteLine(resultOne == resultOneAgain); // True
+Console.WriteLine(resultOne == resultTwo); // False
+Console.WriteLine(resultOne == resultOneLong); // False
+Console.WriteLine(resultOne != resultTwo); // True
 ```
