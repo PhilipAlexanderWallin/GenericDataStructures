@@ -44,7 +44,6 @@ namespace GenericDataStructures.Tests
             }
         }
 
-
         [Test]
         public void WhenConstructedWithFailureTypeResultIsNotSuccess()
         {
