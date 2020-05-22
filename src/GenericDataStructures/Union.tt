@@ -17,9 +17,13 @@ namespace GenericDataStructures
     for(int types = 1; types <= GetNumberOfTypes(); types++)
     {
 #>
-    public struct <#= GetClassName(types) #>
+    public readonly struct <#= GetClassName(types) #>
     {
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        private readonly object? _value;
+#else
         private readonly object _value;
+#endif
         private readonly byte _typeIndex;
 
 <#

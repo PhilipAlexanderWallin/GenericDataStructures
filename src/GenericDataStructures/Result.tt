@@ -20,9 +20,13 @@ namespace GenericDataStructures
     for(int failureTypes = 1; failureTypes <= GetNumberOfFailureTypes(); failureTypes++)
     {
 #>
-    public struct <#= GetClassName(failureTypes) #>
+    public readonly struct <#= GetClassName(failureTypes) #>
     {
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        private readonly object? _value;
+#else
         private readonly object _value;
+#endif
         private readonly byte? _failureTypeIndex;
 
         public Result(TSuccess value)
