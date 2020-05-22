@@ -17,8 +17,10 @@ namespace GenericDataStructures
     for(int failureTypes = 1; failureTypes <= GetNumberOfFailureTypes(); failureTypes++)
     {
 #>
-    public struct <#= GetClassName(failureTypes) #>
+    public readonly struct <#= GetClassName(failureTypes) #>
     {
+        public static readonly <#= GetClassName(failureTypes) #> Success = default(<#= GetClassName(failureTypes) #>);
+
         private readonly object _value;
         private readonly byte? _failureTypeIndex;
 

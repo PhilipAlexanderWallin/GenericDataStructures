@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net40;net45;net451;net452;net46;net461;net462;net47;net471;net472;net48;netstandard1.0;netstandard1.1;netstandard1.2;netstandard1.3;netstandard1.4;netstandard1.5;netstandard1.6;netstandard2.0;netstandard2.1</TargetFrameworks>
+    <TargetFrameworks><!--net40;net45;net451;net452;net46;net461;net462;net47;net471;net472;net48;netstandard1.0;netstandard1.1;netstandard1.2;netstandard1.3;netstandard1.4;netstandard1.5;netstandard1.6;netstandard2.0;-->netstandard2.1</TargetFrameworks>
     <Authors>Philip Wallin</Authors>
     <Company>PAW Productions</Company>
     <Description>Generic discriminating union types to be used as results when you want to make sure every return type is handled explicitly.</Description>
@@ -13,7 +13,7 @@
     <RepositoryUrl>https://github.com/PhilipAlexanderWallin/GenericDataStructures</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageIcon>GenericDataStructures.png</PackageIcon>
-    <Version>1.0.3</Version>
+    <Version>1.1.0</Version>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
