@@ -7,9 +7,13 @@ using NotNullAttribute = JetBrains.Annotations.NotNullAttribute;
 
 namespace GenericDataStructures
 {
-    public struct Union<T1>
+    public readonly struct Union<T1>
     {
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        private readonly object? _value;
+#else
         private readonly object _value;
+#endif
         private readonly byte _typeIndex;
 
         public Union(T1 value)
@@ -87,9 +91,13 @@ namespace GenericDataStructures
         }
     }
 
-    public struct Union<T1, T2>
+    public readonly struct Union<T1, T2>
     {
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        private readonly object? _value;
+#else
         private readonly object _value;
+#endif
         private readonly byte _typeIndex;
 
         public Union(T1 value)
@@ -192,9 +200,13 @@ namespace GenericDataStructures
         }
     }
 
-    public struct Union<T1, T2, T3>
+    public readonly struct Union<T1, T2, T3>
     {
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        private readonly object? _value;
+#else
         private readonly object _value;
+#endif
         private readonly byte _typeIndex;
 
         public Union(T1 value)
@@ -322,9 +334,13 @@ namespace GenericDataStructures
         }
     }
 
-    public struct Union<T1, T2, T3, T4>
+    public readonly struct Union<T1, T2, T3, T4>
     {
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        private readonly object? _value;
+#else
         private readonly object _value;
+#endif
         private readonly byte _typeIndex;
 
         public Union(T1 value)
@@ -477,9 +493,13 @@ namespace GenericDataStructures
         }
     }
 
-    public struct Union<T1, T2, T3, T4, T5>
+    public readonly struct Union<T1, T2, T3, T4, T5>
     {
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        private readonly object? _value;
+#else
         private readonly object _value;
+#endif
         private readonly byte _typeIndex;
 
         public Union(T1 value)
@@ -657,9 +677,13 @@ namespace GenericDataStructures
         }
     }
 
-    public struct Union<T1, T2, T3, T4, T5, T6>
+    public readonly struct Union<T1, T2, T3, T4, T5, T6>
     {
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        private readonly object? _value;
+#else
         private readonly object _value;
+#endif
         private readonly byte _typeIndex;
 
         public Union(T1 value)
@@ -862,9 +886,13 @@ namespace GenericDataStructures
         }
     }
 
-    public struct Union<T1, T2, T3, T4, T5, T6, T7>
+    public readonly struct Union<T1, T2, T3, T4, T5, T6, T7>
     {
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        private readonly object? _value;
+#else
         private readonly object _value;
+#endif
         private readonly byte _typeIndex;
 
         public Union(T1 value)
@@ -1092,9 +1120,13 @@ namespace GenericDataStructures
         }
     }
 
-    public struct Union<T1, T2, T3, T4, T5, T6, T7, T8>
+    public readonly struct Union<T1, T2, T3, T4, T5, T6, T7, T8>
     {
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        private readonly object? _value;
+#else
         private readonly object _value;
+#endif
         private readonly byte _typeIndex;
 
         public Union(T1 value)
@@ -1347,9 +1379,13 @@ namespace GenericDataStructures
         }
     }
 
-    public struct Union<T1, T2, T3, T4, T5, T6, T7, T8, T9>
+    public readonly struct Union<T1, T2, T3, T4, T5, T6, T7, T8, T9>
     {
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        private readonly object? _value;
+#else
         private readonly object _value;
+#endif
         private readonly byte _typeIndex;
 
         public Union(T1 value)
@@ -1627,9 +1663,13 @@ namespace GenericDataStructures
         }
     }
 
-    public struct Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>
+    public readonly struct Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>
     {
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        private readonly object? _value;
+#else
         private readonly object _value;
+#endif
         private readonly byte _typeIndex;
 
         public Union(T1 value)
@@ -1932,9 +1972,13 @@ namespace GenericDataStructures
         }
     }
 
-    public struct Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>
+    public readonly struct Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>
     {
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        private readonly object? _value;
+#else
         private readonly object _value;
+#endif
         private readonly byte _typeIndex;
 
         public Union(T1 value)
@@ -2262,9 +2306,13 @@ namespace GenericDataStructures
         }
     }
 
-    public struct Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>
+    public readonly struct Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>
     {
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        private readonly object? _value;
+#else
         private readonly object _value;
+#endif
         private readonly byte _typeIndex;
 
         public Union(T1 value)
@@ -2617,9 +2665,13 @@ namespace GenericDataStructures
         }
     }
 
-    public struct Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>
+    public readonly struct Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>
     {
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        private readonly object? _value;
+#else
         private readonly object _value;
+#endif
         private readonly byte _typeIndex;
 
         public Union(T1 value)
@@ -2997,9 +3049,13 @@ namespace GenericDataStructures
         }
     }
 
-    public struct Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>
+    public readonly struct Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>
     {
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        private readonly object? _value;
+#else
         private readonly object _value;
+#endif
         private readonly byte _typeIndex;
 
         public Union(T1 value)
@@ -3402,9 +3458,13 @@ namespace GenericDataStructures
         }
     }
 
-    public struct Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>
+    public readonly struct Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>
     {
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        private readonly object? _value;
+#else
         private readonly object _value;
+#endif
         private readonly byte _typeIndex;
 
         public Union(T1 value)
@@ -3832,9 +3892,13 @@ namespace GenericDataStructures
         }
     }
 
-    public struct Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>
+    public readonly struct Union<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>
     {
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        private readonly object? _value;
+#else
         private readonly object _value;
+#endif
         private readonly byte _typeIndex;
 
         public Union(T1 value)

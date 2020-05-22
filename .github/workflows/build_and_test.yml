@@ -14,7 +14,7 @@ jobs:
       run: dotnet restore src
       
     - name: Build
-      run: dotnet build src -c Release --no-restore
+      run: dotnet build src -c Release --no-restore -p:TreatWarningsAsErrors=true
       
     - name: Test
       run: dotnet test src --no-restore --verbosity normal

@@ -7,9 +7,15 @@ using NotNullAttribute = JetBrains.Annotations.NotNullAttribute;
 
 namespace GenericDataStructures
 {
-    public struct VoidResult<TFailure1>
+    public readonly struct VoidResult<TFailure1>
     {
+        public static readonly VoidResult<TFailure1> Success = default(VoidResult<TFailure1>);
+
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        private readonly object? _value;
+#else
         private readonly object _value;
+#endif
         private readonly byte? _failureTypeIndex;
 
         public VoidResult(TFailure1 value)
@@ -91,9 +97,15 @@ namespace GenericDataStructures
         }
     }
 
-    public struct VoidResult<TFailure1, TFailure2>
+    public readonly struct VoidResult<TFailure1, TFailure2>
     {
+        public static readonly VoidResult<TFailure1, TFailure2> Success = default(VoidResult<TFailure1, TFailure2>);
+
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        private readonly object? _value;
+#else
         private readonly object _value;
+#endif
         private readonly byte? _failureTypeIndex;
 
         public VoidResult(TFailure1 value)
@@ -198,9 +210,15 @@ namespace GenericDataStructures
         }
     }
 
-    public struct VoidResult<TFailure1, TFailure2, TFailure3>
+    public readonly struct VoidResult<TFailure1, TFailure2, TFailure3>
     {
+        public static readonly VoidResult<TFailure1, TFailure2, TFailure3> Success = default(VoidResult<TFailure1, TFailure2, TFailure3>);
+
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        private readonly object? _value;
+#else
         private readonly object _value;
+#endif
         private readonly byte? _failureTypeIndex;
 
         public VoidResult(TFailure1 value)
@@ -328,9 +346,15 @@ namespace GenericDataStructures
         }
     }
 
-    public struct VoidResult<TFailure1, TFailure2, TFailure3, TFailure4>
+    public readonly struct VoidResult<TFailure1, TFailure2, TFailure3, TFailure4>
     {
+        public static readonly VoidResult<TFailure1, TFailure2, TFailure3, TFailure4> Success = default(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4>);
+
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        private readonly object? _value;
+#else
         private readonly object _value;
+#endif
         private readonly byte? _failureTypeIndex;
 
         public VoidResult(TFailure1 value)
@@ -481,9 +505,15 @@ namespace GenericDataStructures
         }
     }
 
-    public struct VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>
+    public readonly struct VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>
     {
+        public static readonly VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5> Success = default(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5>);
+
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        private readonly object? _value;
+#else
         private readonly object _value;
+#endif
         private readonly byte? _failureTypeIndex;
 
         public VoidResult(TFailure1 value)
@@ -657,9 +687,15 @@ namespace GenericDataStructures
         }
     }
 
-    public struct VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>
+    public readonly struct VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>
     {
+        public static readonly VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6> Success = default(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6>);
+
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        private readonly object? _value;
+#else
         private readonly object _value;
+#endif
         private readonly byte? _failureTypeIndex;
 
         public VoidResult(TFailure1 value)
@@ -856,9 +892,15 @@ namespace GenericDataStructures
         }
     }
 
-    public struct VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>
+    public readonly struct VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>
     {
+        public static readonly VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7> Success = default(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7>);
+
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        private readonly object? _value;
+#else
         private readonly object _value;
+#endif
         private readonly byte? _failureTypeIndex;
 
         public VoidResult(TFailure1 value)
@@ -1078,9 +1120,15 @@ namespace GenericDataStructures
         }
     }
 
-    public struct VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>
+    public readonly struct VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>
     {
+        public static readonly VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8> Success = default(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8>);
+
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        private readonly object? _value;
+#else
         private readonly object _value;
+#endif
         private readonly byte? _failureTypeIndex;
 
         public VoidResult(TFailure1 value)
@@ -1323,9 +1371,15 @@ namespace GenericDataStructures
         }
     }
 
-    public struct VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9>
+    public readonly struct VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9>
     {
+        public static readonly VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9> Success = default(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9>);
+
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        private readonly object? _value;
+#else
         private readonly object _value;
+#endif
         private readonly byte? _failureTypeIndex;
 
         public VoidResult(TFailure1 value)
@@ -1591,9 +1645,15 @@ namespace GenericDataStructures
         }
     }
 
-    public struct VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10>
+    public readonly struct VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10>
     {
+        public static readonly VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10> Success = default(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10>);
+
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        private readonly object? _value;
+#else
         private readonly object _value;
+#endif
         private readonly byte? _failureTypeIndex;
 
         public VoidResult(TFailure1 value)
@@ -1882,9 +1942,15 @@ namespace GenericDataStructures
         }
     }
 
-    public struct VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11>
+    public readonly struct VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11>
     {
+        public static readonly VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11> Success = default(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11>);
+
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        private readonly object? _value;
+#else
         private readonly object _value;
+#endif
         private readonly byte? _failureTypeIndex;
 
         public VoidResult(TFailure1 value)
@@ -2196,9 +2262,15 @@ namespace GenericDataStructures
         }
     }
 
-    public struct VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12>
+    public readonly struct VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12>
     {
+        public static readonly VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12> Success = default(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12>);
+
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        private readonly object? _value;
+#else
         private readonly object _value;
+#endif
         private readonly byte? _failureTypeIndex;
 
         public VoidResult(TFailure1 value)
@@ -2533,9 +2605,15 @@ namespace GenericDataStructures
         }
     }
 
-    public struct VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13>
+    public readonly struct VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13>
     {
+        public static readonly VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13> Success = default(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13>);
+
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        private readonly object? _value;
+#else
         private readonly object _value;
+#endif
         private readonly byte? _failureTypeIndex;
 
         public VoidResult(TFailure1 value)
@@ -2893,9 +2971,15 @@ namespace GenericDataStructures
         }
     }
 
-    public struct VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14>
+    public readonly struct VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14>
     {
+        public static readonly VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14> Success = default(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14>);
+
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        private readonly object? _value;
+#else
         private readonly object _value;
+#endif
         private readonly byte? _failureTypeIndex;
 
         public VoidResult(TFailure1 value)
@@ -3276,9 +3360,15 @@ namespace GenericDataStructures
         }
     }
 
-    public struct VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15>
+    public readonly struct VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15>
     {
+        public static readonly VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15> Success = default(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15>);
+
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        private readonly object? _value;
+#else
         private readonly object _value;
+#endif
         private readonly byte? _failureTypeIndex;
 
         public VoidResult(TFailure1 value)
@@ -3682,9 +3772,15 @@ namespace GenericDataStructures
         }
     }
 
-    public struct VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15, TFailure16>
+    public readonly struct VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15, TFailure16>
     {
+        public static readonly VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15, TFailure16> Success = default(VoidResult<TFailure1, TFailure2, TFailure3, TFailure4, TFailure5, TFailure6, TFailure7, TFailure8, TFailure9, TFailure10, TFailure11, TFailure12, TFailure13, TFailure14, TFailure15, TFailure16>);
+
+#if NULLABLE_REFERENCE_TYPES_SUPPORTED
+        private readonly object? _value;
+#else
         private readonly object _value;
+#endif
         private readonly byte? _failureTypeIndex;
 
         public VoidResult(TFailure1 value)

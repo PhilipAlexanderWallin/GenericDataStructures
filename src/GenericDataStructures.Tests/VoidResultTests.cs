@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using NUnit.Framework;
 
 namespace GenericDataStructures.Tests
@@ -10,13 +11,36 @@ namespace GenericDataStructures.Tests
         private const int NumberOfFailureTypesToTestWith = 16;
 
         [Test]
+        public void StaticSuccessVoidResultIsSuccess()
+        {
+            foreach (var voidResultType in AllVoidResultTypesToTest())
+            {
+                dynamic voidResult = CreateSuccessVoidResultUsingStaticSuccess(voidResultType);
+
+                Assert.IsTrue(voidResult.IsSuccess);
+            }
+        }
+
+        [Test]
         public void WhenConstructedWithSuccessVoidResultIsSuccess()
         {
             foreach (var voidResultType in AllVoidResultTypesToTest())
             {
-                dynamic voidResult = CreateSuccessVoidResult(voidResultType);
+                dynamic voidResult = CreateSuccessVoidResultUsingImplicitConversion(voidResultType);
 
                 Assert.IsTrue(voidResult.IsSuccess);
+            }
+        }
+
+        [Test]
+        public void StaticSuccessAndSuccessConstructedWithSuccessVoidResultAreEqual()
+        {
+            foreach (var voidResultType in AllVoidResultTypesToTest())
+            {
+                var staticSuccessResult = CreateSuccessVoidResultUsingStaticSuccess(voidResultType);
+                var successResultImplicitlyCreated = CreateSuccessVoidResultUsingImplicitConversion(voidResultType);
+
+                Assert.IsTrue(staticSuccessResult.Equals(successResultImplicitlyCreated));
             }
         }
 
@@ -136,8 +160,8 @@ namespace GenericDataStructures.Tests
         {
             foreach (var voidResultType in AllVoidResultTypesToTest())
             {
-                var firstVoidResult = CreateSuccessVoidResult(voidResultType);
-                var secondVoidResult = CreateSuccessVoidResult(voidResultType);
+                var firstVoidResult = CreateSuccessVoidResultUsingImplicitConversion(voidResultType);
+                var secondVoidResult = CreateSuccessVoidResultUsingImplicitConversion(voidResultType);
 
                 Assert.IsTrue(firstVoidResult.Equals(secondVoidResult));
                 Assert.IsTrue(secondVoidResult.Equals(firstVoidResult));
@@ -149,11 +173,11 @@ namespace GenericDataStructures.Tests
         {
             foreach (var firstVoidResultType in AllVoidResultTypesToTest())
             {
-                var firstVoidResult = CreateSuccessVoidResult(firstVoidResultType);
+                var firstVoidResult = CreateSuccessVoidResultUsingImplicitConversion(firstVoidResultType);
 
                 foreach (var secondVoidResultType in AllVoidResultTypesToTest().Where(voidResultTypeCandidate => voidResultTypeCandidate != firstVoidResultType))
                 {
-                    var secondVoidResult = CreateSuccessVoidResult(secondVoidResultType);
+                    var secondVoidResult = CreateSuccessVoidResultUsingImplicitConversion(secondVoidResultType);
 
                     Assert.IsFalse(firstVoidResult.Equals(secondVoidResult));
                     Assert.IsFalse(secondVoidResult.Equals(firstVoidResult));
@@ -166,7 +190,7 @@ namespace GenericDataStructures.Tests
         {
             foreach (var voidResultType in AllVoidResultTypesToTest())
             {
-                var successVoidResult = CreateSuccessVoidResult(voidResultType);
+                var successVoidResult = CreateSuccessVoidResultUsingImplicitConversion(voidResultType);
 
                 foreach (var valueType in GetFailureTypes(voidResultType))
                 {
@@ -272,7 +296,7 @@ namespace GenericDataStructures.Tests
                         Assert.AreEqual(firstVoidResult.GetHashCode(), secondVoidResult.GetHashCode());
                     }
 
-                    Assert.AreEqual(CreateSuccessVoidResult(voidResultType).GetHashCode(), CreateSuccessVoidResult(voidResultType).GetHashCode());
+                    Assert.AreEqual(CreateSuccessVoidResultUsingImplicitConversion(voidResultType).GetHashCode(), CreateSuccessVoidResultUsingImplicitConversion(voidResultType).GetHashCode());
                 }
             }
         }
@@ -291,7 +315,7 @@ namespace GenericDataStructures.Tests
                     }
                 }
 
-                yield return (CreateSuccessVoidResult(voidResultType), true, VoidResult.Success, typeof(VoidResult));
+                yield return (CreateSuccessVoidResultUsingImplicitConversion(voidResultType), true, VoidResult.Success, typeof(VoidResult));
             }
         }
 
@@ -323,9 +347,28 @@ namespace GenericDataStructures.Tests
             return resultType.GetGenericArguments();
         }
 
-        private static object CreateSuccessVoidResult(Type resultType)
+        private static object CreateSuccessVoidResultUsingStaticSuccess(Type voidResultType)
         {
-            var implicitConstructor = resultType.GetMethods()
+            var staticSuccessField = voidResultType.GetField("Success", BindingFlags.Public | BindingFlags.Static);
+
+            if (staticSuccessField == null)
+            {
+                throw new MissingMethodException("A static success field is expected but was not found");
+            }
+
+            var staticSuccessValue = staticSuccessField.GetValue(null);
+
+            if (staticSuccessValue == null)
+            {
+                throw new Exception("Success value should never be null");
+            }
+
+            return staticSuccessValue;
+        }
+
+        private static object CreateSuccessVoidResultUsingImplicitConversion(Type voidResultType)
+        {
+            var implicitConstructor = voidResultType.GetMethods()
                 .Where(method =>
                 {
                     if (method.Name != "op_Implicit")

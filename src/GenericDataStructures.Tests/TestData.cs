@@ -147,6 +147,13 @@ namespace GenericDataStructures.Tests
             },
         };
 
+        public enum SimpleEnum
+        {
+            Value1 = 1,
+            Value2 = 2,
+            Value3 = 3,
+        }
+
         public static IEnumerable<object?> GetPossibleValues(Type testType)
         {
             return TestDataDefinitions[testType];
@@ -184,13 +191,6 @@ namespace GenericDataStructures.Tests
             public int Number { get; set; }
 
             public SimpleClass? Child { get; set; }
-        }
-
-        public enum SimpleEnum
-        {
-            Value1 = 1,
-            Value2 = 2,
-            Value3 = 3,
         }
     }
 }

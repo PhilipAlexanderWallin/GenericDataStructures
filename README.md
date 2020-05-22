@@ -104,7 +104,7 @@ public class MyResourceService
         }
 
         // Return empty success result
-        return VoidResult.Success;
+        return VoidResult.Success; // A typed version, for example VoidResult<DeleteMyResourceError>.Success, is also available, which can be useful when returning from a generic method
     }
 
     //...//
